@@ -1,0 +1,217 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-6">
+                <span class="badge rounded-pill hero-badge mb-3">
+                    <i class="bi bi-stars me-1"></i> New Season · Best Deals
+                </span>
+                <h1 class="hero-title mb-3">
+                    Discover Products <div>You’ll Love</div>
+                </h1>
+                <p class="hero-subtitle mb-4">
+                    Shop trendy collections, gadgets, and essentials – all in one place.
+                    Fast delivery, secure payments, and exclusive offers waiting for you.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="#products-section" class="btn btn-primary hero-btn">
+                        <i class="bi bi-bag-check me-2"></i> Shop Now
+                    </a>
+                    <button class="btn btn-outline-light wish hero-btn-secondary">
+                        <a href="{% url 'wishlist' %}">
+                            ❤️ Wishlist
+                        </a>
+
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap gap-4  hero-stats">
+                    <div>
+                        <h4 class="mb-0">500+</h4>
+                        <small>Quality Products</small>
+                    </div>
+                    <div>
+                        <h4 class="mb-0">4.8★</h4>
+                        <small>Customer Rating</small>
+                    </div>
+                    <div>
+                        <h4 class="mb-0">24/7</h4>
+                        <small>Support</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-card shadow-lg">
+                    <div class="hero-badge-top">Today’s Hot Picks</div>
+                    <div class="hero-image-box">
+                        <img src="{% static 'store/images/hero-banner.png' %}" class="hero-image">
+                    </div>
+
+                    <p class="fw-semibold small mb-1">Up to 50% Off</p>
+                    <p class="fw-semibold mb-0">On selected categories · Limited time</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="py-4 features-section">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="bi bi-truck feature-icon"></i>
+                    <h6 class="mt-2 mb-1">Fast & Free Delivery</h6>
+                    <p class="small text-muted mb-0">On all orders above ₹999.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="bi bi-shield-check feature-icon"></i>
+                    <h6 class="mt-2 mb-1">Secure Payments</h6>
+                    <p class="small text-muted mb-0">100% secure & encrypted checkout.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="bi bi-arrow-repeat feature-icon"></i>
+                    <h6 class="mt-2 mb-1">Easy Returns</h6>
+                    <p class="small text-muted mb-0">Hassle-free 7-day returns.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- TOP CATEGORY ICON GRID -->
+<!-- CATEGORY IMAGE GRID -->
+<section class="py-4">
+    <div class="container ">
+        <div class="row g-3 row-cols-2 row-cols-md-4 row-cols-lg-6 text-center">
+
+            {% for cat in categories %}
+            <div class="col">
+                <a href="{% url 'category_products' cat.id %}" class="category-link">
+
+
+                    <div class="category-icon-wrap">
+                        {% if cat.icon %}
+                        <img src="{{ cat.icon.url }}" alt="{{ cat.name }}" class="category-icon-img">
+                        {% endif %}
+                    </div>
+
+                    <p class="category-icon-text">
+                        {{ cat.name }}
+                    </p>
+                </a>
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTS GRID -->
+<!-- PRODUCTS & CATEGORIES (BLINKIT STYLE) -->
+<section id="products-section" class="py-5 cats">
+    <div class="container">
+
+        {% for category in categories %}
+        {% if category.products.all %}
+
+        <!-- CATEGORY HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-3 mtt-4">
+            <h4 id="category-{{ category.id }}" class="fw-bold mb-0">
+                {{ category.name }}
+            </h4>
+            <a href="{% url 'category_products' category.id %}" class="small text-success text-decoration-none">
+                see all
+            </a>
+        </div>
+
+        <!-- HORIZONTAL PRODUCT ROW -->
+        <div class="row g-4 flex-nowrap overflow-auto pb-3">
+
+            {% for product in category.products.all|slice:":8" %}
+            <div class="col-6 col-md-4 col-lg-2">
+                <div class="card product-card h-100">
+
+                    <!-- Image -->
+                    <a href="{% url 'product_detail' product.id %}">
+
+                        <div class="product-image-wrapper position-relative">
+
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top product-image"
+                                alt="{{ product.name }}">
+                            {% endif %}
+
+                            <!-- Wishlist Button -->
+                            <button class="wishlist-icon wishlist-btn" data-product-id="{{ product.id }}" type="button">
+
+                                {% if product.id in wishlist_product_ids %}
+                                ❤️
+                                {% else %}
+                                🤍
+                                {% endif %}
+
+                            </button>
+
+                        </div>
+
+                    </a>
+                    <!-- Body -->
+                    <div class="card-body p-2 d-flex flex-column">
+
+                        <h6 class="small fw-semibold text-truncate mb-1">
+                            {{ product.name }}
+                        </h6>
+
+                        {% if product.display_price %}
+                        <p class="small text-muted mb-1">
+                            {{ product.display_quantity }}
+                        </p>
+
+                        <div class="price-row mb-2">
+                            <span class="selling-price">
+                                ₹{{ product.display_price }}
+                            </span>
+
+                            {% if product.display_mrp and product.display_mrp > product.display_price %}
+                            <span class="discount-badge ms-1">
+                                {{ product.discount_percent }}% OFF
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <p class="small text-muted">Price not available</p>
+                        {% endif %}
+
+                        {% if product.first_variant %}
+                        <button class="btn-add w-100 mt-auto add-to-cart-btn"
+                            data-variant-id="{{ product.first_variant.id }}">
+                            ADD
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+        {% endfor %}
+
+    </div>
+</section>
+
+
+
+{% endblock %}

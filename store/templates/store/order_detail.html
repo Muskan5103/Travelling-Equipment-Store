@@ -1,0 +1,267 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<div class="container py-4 order-detail-page">
+  <div class="row">
+
+    <!-- LEFT -->
+    <div class="col-md-8">
+      <div class="card p-3 mb-3">
+
+        {% with first_item=items.0 %}
+
+<a href="{% url 'product_detail' first_item.variant.product.id %}"
+   class="d-flex align-items-center gap-3 text-decoration-none text-dark">
+
+    <img src="{{ first_item.variant.product.image.url }}" class="product-img">
+
+    <div>
+        <h5>{{ first_item.variant.product.name }}</h5>
+
+        {% if items|length > 1 %}
+        <span class="text-primary"
+              style="cursor:pointer"
+              onclick="toggleItems(event, 'items-{{ order.id }}')">
+            +{{ items|length|add:"-1" }} more item{{ items|length|add:"-1"|pluralize }}
+        </span>
+        {% endif %}
+
+        <p class="fw-bold mt-1">₹ {{ first_item.variant.price }}</p>
+
+        {% if order.status == "delivered" %}
+            {% if first_item.return_status == "none" %}
+                <a href="{% url 'return_item' first_item.id %}"
+                   class="btn btn-warning btn-sm mt-1">
+                    Return Item
+                </a>
+            {% else %}
+                <span class="badge bg-info mm mt-1">
+                    Return {{ first_item.return_status|title }}
+                </span>
+            {% endif %}
+        {% endif %}
+    </div>
+</a>
+
+{% if first_item.return_status != "none" %}
+<ul class="return-steps mt-2">
+    <li class="{% if first_item.return_status in 'requested pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+        Requested
+    </li>
+    <li class="{% if first_item.return_status in 'pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+        Pickup
+    </li>
+    <li class="{% if first_item.return_status in 'picked refund_initiated refund_completed' %}done{% endif %}">
+        Picked
+    </li>
+    <li class="{% if first_item.return_status in 'refund_initiated refund_completed' %}done{% endif %}">
+        Refund
+    </li>
+</ul>
+{% endif %}
+
+{% endwith %}
+
+
+        <!-- EXTRA ITEMS -->
+        {% if items|length > 1 %}
+        <div class="extra-items mt-3" id="items-{{ order.id }}" style="display:none">
+
+          {% for item in items|slice:"1:" %}
+          <a href="{% url 'product_detail' item.variant.product.id %}" class="extra-item-link">
+
+            <div class="extra-item">
+              <img src="{{ item.variant.product.image.url }}">
+
+              <div class="extra-item-info">
+                <strong>{{ item.variant.product.name }}</strong><br>
+                <small>Qty: {{ item.quantity }}</small>
+              </div>
+
+              <!-- <div class="extra-item-price">
+                ₹ {{ item.variant.price }}
+              </div> -->
+              <div class="extra-item-price">
+                ₹ {{ item.variant.price }}
+
+                {% if order.status == "delivered" %}
+                {% if item.return_status == "none" %}
+                <div class="mt-1">
+                  <a href="{% url 'return_item' item.id %}" class="btn btn-outline-warning btn-sm">
+                    Return
+                  </a>
+                </div>
+                {% else %}
+                <div class="mt-1">
+                  <span class="badge bg-info">
+                    {{ item.return_status|title }}
+                  </span>
+                </div>
+                {% endif %}
+                {% endif %}
+              </div>
+{% if item.return_status != "none" %}
+<ul class="return-steps mt-2">
+    <li class="{% if item.return_status in 'requested pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+        Requested
+    </li>
+    <li class="{% if item.return_status in 'pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+        Pickup
+    </li>
+    <li class="{% if item.return_status in 'picked refund_initiated refund_completed' %}done{% endif %}">
+        Picked
+    </li>
+    <li class="{% if item.return_status in 'refund_initiated refund_completed' %}done{% endif %}">
+        Refund
+    </li>
+</ul>
+{% endif %}
+
+            </div>
+          </a>
+          {% endfor %}
+
+        </div>
+        {% endif %}
+
+        <!-- TIMELINE -->
+        {% if order.status == "returned" %}
+        <div class="alert alert-info mt-3">
+          🔄 <strong>Return Requested</strong><br>
+          Your return request has been received and is under processing.
+        </div>
+
+        <div class="card mt-3">
+          <div class="card-body">
+            <h6>Return Details</h6>
+            <p><strong>Reason:</strong> {{ order.return_reason }}</p>
+            {% if order.return_comment %}
+            <p><strong>Comment:</strong> {{ order.return_comment }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        {% else %}
+        <!-- EXISTING TIMELINE (UNCHANGED) -->
+        <div class="order-status-box mtt-4">
+          <div class="status-step done">
+            <span class="dot"></span>
+            <p>Order Confirmed</p>
+          </div>
+
+          <div class="status-step {% if order.status in 'shipped delivered' %}done{% endif %}">
+            <span class="dot"></span>
+            <p>Shipped</p>
+          </div>
+
+          <div class="status-step {% if order.status == 'delivered' %}done{% endif %}">
+            <span class="dot"></span>
+            <p>Delivered</p>
+          </div>
+        </div>
+        {% endif %}
+
+
+        {% if order.estimated_delivery %}
+        <p class="eta mt-2">
+          Estimated delivery by <b>{{ order.estimated_delivery }}</b>
+        </p>
+        {% endif %}
+
+        <!-- RATINGS -->
+        {% if order.status == "delivered" %}
+        {% for item in items %}
+        <div class="card p-3 mb-3 rating-box">
+          <h6>Rate {{ item.variant.product.name }}</h6>
+
+          <form method="post" action="{% url 'rate_product' item.id %}">
+            {% csrf_token %}
+            <div class="stars">
+              {% for i in "12345" %}
+              <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}_{{ item.id }}">
+              <label for="star{{ i }}_{{ item.id }}">★</label>
+              {% endfor %}
+            </div>
+
+            <button class="btn btn-primary btn-sm mt-2">Submit</button>
+          </form>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="col-md-4">
+
+      <!-- DELIVERY DETAILS -->
+      <div class="card p-3 mb-3">
+        <h6 class="fw-bold">Delivery details</h6>
+        <p><i class="fa-solid fa-house"></i> {{ order.address }}</p>
+        <p class="text-muted">
+          <i class="fa-solid fa-user"></i> {{ order.user.username }}
+        </p>
+      </div>
+
+      <!-- PRICE DETAILS -->
+      <div class="card p-3">
+        <h6 class="fw-bold">Price details</h6>
+
+        <div class="d-flex justify-content-between">
+          <span>MRP Total</span>
+          <span>₹ {{ order.mrp_total }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between text-success mt-1">
+          <span>Item Discount</span>
+          <span>- ₹ {{ order.item_discount }}</span>
+        </div>
+
+        {% if order.coupon_discount > 0 %}
+        <div class="d-flex justify-content-between text-success mt-1">
+          <span>
+            Coupon Discount
+            {% if order.coupon %}
+            ({{ order.coupon.code }})
+            {% endif %}
+          </span>
+          <span>- ₹ {{ order.coupon_discount }}</span>
+        </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-between mt-1">
+          <span>Delivery Fee</span>
+          <span>
+            {% if order.delivery_fee == 0 %}
+            <span class="text-success">Free</span>
+            {% else %}
+            ₹ {{ order.delivery_fee }}
+            {% endif %}
+          </span>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between fw-bold fs-6">
+          <span>Total Amount</span>
+          <span>₹ {{ order.total_amount }}</span>
+        </div>
+
+        <p class="d-flex justify-content-between mt-2">
+          Payment method <strong>{{ order.payment_method|title }}</strong>
+        </p>
+
+        <a href="{% url 'download_invoice' order.id %}" class="btn btn-outline-dark w-100">
+          Download Invoice
+        </a>
+
+        
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'store/base.html' %}
+{% block content %}
+
+<h2 class="text-center fw-bold my-4">My Wishlist ❤️</h2>
+
+{% if wishlist_items %}
+<section class="py-3 cats">
+    <div class="container wishhist-container">
+
+        <div class="row g-4">
+
+            {% for item in wishlist_items %}
+            {% with product=item.product %}
+            <div class="col-6 col-md-4 col-lg-2">
+
+                <div class="card product-card h-100">
+
+                    <!-- Image -->
+                    <a href="{% url 'product_detail' product.id %}">
+                        <div class="product-image-wrapper position-relative">
+
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top product-image"
+                                alt="{{ product.name }}">
+                            {% endif %}
+
+                            <!-- Wishlist Toggle -->
+                            <button type="button" class="wishlist-icon filled wishlist-remove-btn"
+                                data-product-id="{{ product.id }}" title="Remove from wishlist">
+                                ❤️
+                            </button>
+
+
+
+
+                        </div>
+                    </a>
+
+                    <!-- Body -->
+                    <div class="card-body p-2 d-flex flex-column">
+
+                        <h6 class="small fw-semibold text-truncate mb-1">
+                            {{ product.name }}
+                        </h6>
+
+                        {% if product.display_price %}
+                        <p class="small text-muted mb-1">
+                            {{ product.display_quantity }}
+                        </p>
+
+                        <div class="price-row mb-2">
+                            <span class="selling-price">
+                                ₹{{ product.display_price }}
+                            </span>
+
+                            {% if product.display_mrp and product.display_mrp > product.display_price %}
+                            <span class="discount-badge ms-1">
+                                {{ product.discount_percent }}% OFF
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        {% if product.first_variant %}
+                        <button class="btn-add w-100 mt-auto add-to-cart-btn"
+                            data-variant-id="{{ product.first_variant.id }}">
+                            ADD
+                        </button>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+{% else %}
+<p class="text-center fs-5 text-muted mt-5">
+    Your wishlist is empty 💔
+</p>
+{% endif %}
+
+{% endblock %}

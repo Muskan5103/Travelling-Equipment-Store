@@ -1,0 +1,84 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="checkout-container container py-5">
+
+    <h2 class="checkout-title mb-4">Checkout</h2>
+
+    <div class="row g-4">
+
+        <!-- LEFT: Order Summary -->
+        <div class="col-lg-7">
+            <div class="checkout-card shadow-sm">
+                <h4 class="checkout-heading">🧾 Order Summary</h4>
+                <hr>
+
+                {% for item in items %}
+                <div class="checkout-item d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <strong class="item-name">{{ item.product.name }}</strong>
+                        <div class="text-muted small">Qty: {{ item.quantity }}</div>
+                    </div>
+                    <div class="item-price">₹ {{ item.subtotal }}</div>
+                </div>
+                {% endfor %}
+
+                <hr>
+{% if coupon_discount > 0 %}
+<div class="d-flex justify-content-between text-success">
+  <span>
+    Coupon Discount
+    {% if coupon_code %}
+      ({{ coupon_code }})
+    {% endif %}
+  </span>
+  <span>- ₹ {{ coupon_discount }}</span>
+</div>
+{% endif %}
+<hr>
+
+<div class="d-flex justify-content-between">
+  <span>Delivery Fee</span>
+  <span>
+    {% if delivery_fee == 0 %}
+      <span class="text-success">FREE</span>
+    {% else %}
+      ₹ {{ delivery_fee }}
+    {% endif %}
+  </span>
+</div>
+
+<hr>
+
+                <div class="d-flex justify-content-between align-items-center total-section">
+                    <strong>Total Amount</strong>
+                    <strong class="total-amount">₹ {{ final_amount }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Delivery Address -->
+        <div class="col-lg-5">
+            <div class="checkout-card shadow-sm">
+                <h4 class="checkout-heading">📍 Delivery Address</h4>
+
+                <form method="POST" action="{% url 'checkout' %}">
+                    {% csrf_token %}
+
+                    <textarea
+                        name="address"
+                        class="form-control address-box mb-3"
+                        rows="4"
+                        placeholder="House no, Street, Area, City, Pincode"
+                        required></textarea>
+
+                    <button type="submit" class="place-order-btn w-100">
+                        Continue to Payment →
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

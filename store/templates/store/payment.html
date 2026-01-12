@@ -1,0 +1,146 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<div class="container py-5">
+  <h2 class="mb-4">Payment</h2>
+
+  <div class="row g-4">
+
+    <!-- LEFT: PAYMENT METHODS -->
+    <div class="col-lg-7">
+      <form method="POST" action="{% url 'place_order' %}">
+        {% csrf_token %}
+
+        <div class="payment-methods">
+
+          <!-- COD -->
+          <label class="payment-option">
+            <input type="radio" name="payment" value="cod">
+            <span>Cash on Delivery</span>
+          </label>
+
+          <!-- UPI -->
+          <label class="payment-option">
+            <input type="radio" name="payment" value="upi" checked>
+            <span>UPI (Google Pay / PhonePe / Paytm)</span>
+          </label>
+
+          <div class="payment-box" id="upi-box">
+            <div class="upi-options">
+  <label class="upi-app">
+    <input type="radio" name="upi_app" value="googlepay" >
+    <span>Google Pay</span>
+  </label>
+
+  <label class="upi-app">
+    <input type="radio" name="upi_app" value="phonepe">
+    <span>PhonePe</span>
+  </label>
+
+  <label class="upi-app">
+    <input type="radio" name="upi_app" value="paytm">
+    <span>Paytm</span>
+  </label>
+
+  <label class="upi-app">
+    <input type="radio" name="upi_app" value="bhim">
+    <span>BHIM UPI</span>
+  </label>
+</div>
+
+          </div>
+
+          <!-- Card -->
+          <label class="payment-option">
+            <input type="radio" name="payment" value="card">
+            <span>Debit / Credit Card</span>
+          </label>
+
+          <div class="payment-box " id="card-box">
+            <input type="text" placeholder="Card Number" maxlength="16">
+            <div class="card-row">
+              <input type="text" placeholder="MM/YY" maxlength="5">
+              <input type="password" placeholder="CVV" maxlength="3">
+            </div>
+            <input type="text" placeholder="Card Holder Name">
+          </div>
+
+          <!-- Net Banking -->
+          <label class="payment-option">
+            <input type="radio" name="payment" value="netbanking">
+            <span>Net Banking</span>
+          </label>
+
+          <div class="payment-box " id="netbanking-box">
+            <select>
+              <option>Select Bank</option>
+              <option>SBI</option>
+              <option>HDFC Bank</option>
+              <option>ICICI Bank</option>
+              <option>Axis Bank</option>
+              <option>PNB</option>
+              <option>Kotak Bank</option>
+            </select>
+          </div>
+
+        </div>
+
+        <button type="submit" class="pay-btn mt-4">
+          Pay ₹ {{ final_amount }}
+        </button>
+      </form>
+      
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div class="col-lg-5">
+      <div class="order-summary-box">
+        <h5 class="mb-3">Order Summary</h5>
+
+        {% for item in items %}
+          <div class="summary-row">
+            <span>{{ item.product.name }} × {{ item.quantity }}</span>
+            <span>₹ {{ item.subtotal }}</span>
+          </div>
+        {% endfor %}
+        <hr>
+{% if coupon_discount > 0 %}
+<div class="d-flex justify-content-between text-success">
+  <span>
+    Coupon Discount
+    {% if coupon_code %}
+      ({{ coupon_code }})
+    {% endif %}
+  </span>
+  <span>- ₹ {{ coupon_discount }}</span>
+</div>
+{% endif %}
+<hr>
+<div class="d-flex justify-content-between">
+  <span>Delivery Fee</span>
+  <span>
+    {% if delivery_fee == 0 %}
+      <span class="text-success">FREE</span>
+    {% else %}
+      ₹ {{ delivery_fee }}
+    {% endif %}
+  </span>
+</div>
+
+<hr>
+
+<p class="text-muted">
+  You saved ₹ {{ total_savings }}
+</p>
+        <hr>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>₹ {{ final_amount }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

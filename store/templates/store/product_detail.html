@@ -1,0 +1,153 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row g-5 align-items-start product-detail-container">
+
+        <!-- LEFT: Product Image -->
+        <div class="col-lg-6">
+            <div class="product-image-box">
+                <img src="{{ product.image.url }}" class="product-detail-img" alt="{{ product.name }}">
+            </div>
+        </div>
+
+
+        <!-- RIGHT: Product Info -->
+        <div class="col-lg-6">
+            <h2 class="product-title">{{ product.name }}</h2>
+
+            <p class="product-description mb-4">
+                {{ product.description }}
+            </p>
+
+
+            <div class="variant-section">
+                <h6 class="variant-title">Select Unit</h6>
+
+                {% for variant in product.variants.all %}
+                <div class="variant-row">
+
+                    <div class="variant-left">
+                        <div class="variant-qty">
+                            {{ variant.quantity }} {{ variant.unit }}
+                        </div>
+
+                        <div class="variant-price">
+                            ₹ {{ variant.price }}
+                            {% if variant.mrp and variant.mrp > variant.price %}
+                            <span class="variant-mrp">₹ {{ variant.mrp }}</span>
+                            <span class="variant-off">{{ variant.discount_percent }}% OFF</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="variant-tax">
+                            MRP inclusive of all taxes
+                        </div>
+                    </div>
+
+                    <button class="variant-add-btn btn-add-detail" data-variant-id="{{ variant.id }}">
+                        Add
+                    </button>
+
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <!-- Extra features -->
+            <div class="mtt-4">
+                <ul class="product-features">
+                    <li><i class="bi bi-check-circle-fill"></i> 100% Fresh & Quality Checked</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Fast Delivery Available</li>
+                    <li><i class="bi bi-check-circle-fill"></i> Secure Payment Options</li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="recommended-section mt-5">
+    <h4 class="recommended-title mb-3">You May Also Like</h4>
+
+    <!-- Slider Container -->
+    <div class="recommendation-wrapper">
+
+        <!-- Left Arrow -->
+        <button class="rec-arrow left" id="rec-left">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <!-- Cards Scrollable Area -->
+        <div class="recommendation-slider" id="rec-slider">
+            {% for p in recommendations %}
+            <div class="rec-card">
+
+                <a href="{% url 'product_detail' p.id %}" class="rec-img-box">
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}">
+                </a>
+
+                <div class="rec-info">
+                    <p class="rec-name">{{ p.name }}</p>
+
+                    {% if p.display_price %}
+                    <p class="small text-muted">
+                        {{ p.display_quantity }}
+                    </p>
+
+                    <div class="price-row">
+                        <span class="selling-price">₹ {{ p.display_price }}</span>
+
+                        {% if p.display_mrp and p.display_mrp > p.display_price %}
+                        <span class="mrp">₹ {{ p.display_mrp }}</span>
+                        <span class="pr">{{ p.discount_percent }}% OFF</span>
+                        {% endif %}
+                    </div>
+
+
+                    {% else %}
+                    <p class="small text-muted">Price not available</p>
+                    {% endif %}
+
+
+                    <div class="d-flex gap-2 mt-2">
+                        <a href="{% url 'product_detail' p.id %}" class="btn-view">
+                            View
+                        </a>
+
+                        {% if p.first_variant %}
+                        <button class="rec-add-btn add-to-cart-btn" data-variant-id="{{ p.first_variant.id }}">
+                            Add
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+
+        <!-- Right Arrow -->
+        <button class="rec-arrow right" id="rec-right">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+
+    </div>
+</div>
+
+
+
+
+<div class="sticky-cart-bar">
+    <span class="sticky-price">₹ {{ product.price }}</span>
+    <button class="sticky-add-btn">
+        <i class="bi bi-cart-plus me-1"></i> Add
+    </button>
+</div>
+
+
+{% endblock %}

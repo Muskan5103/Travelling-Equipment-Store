@@ -1,0 +1,77 @@
+{% extends "store/base.html" %} 
+{% block content %}
+
+<div class="container py-4">
+  <h2 class="mb-4">My Orders</h2>
+
+  {% for order in orders %}
+    {% with items=order.orderitem_set.all %}
+      {% with first_item=items.0 %}
+      
+      <div class="order-wrapper">
+
+        <!-- MAIN ORDER CARD -->
+        <a href="{% url 'order_detail' order.id %}" class="order-card">
+
+          <div class="order-left">
+            <img src="{{ first_item.variant.product.image.url }}" alt="">
+          </div>
+
+          <div class="order-middle">
+            <h5>{{ first_item.variant.product.name }}</h5>
+
+            {% if items|length > 1 %}
+              <p class="text-muted more-items"
+                 onclick="toggleItems(event, 'items-{{ order.id }}')">
+                +{{ items|length|add:"-1" }} more item{{ items|length|add:"-1"|pluralize }}
+              </p>
+            {% endif %}
+
+            <span class="order-status {{ order.status }}">
+              {{ order.get_status_display }}
+            </span>
+          </div>
+
+          <div class="order-right">
+            <p class="price">₹ {{ order.total_amount }}</p>
+            <small>{{ order.created_at|date:"d M Y" }}</small>
+          </div>
+
+        </a>
+
+        <!-- EXTRA ITEMS (HIDDEN) -->
+        {% if items|length > 1 %}
+<div class="extra-items" id="items-{{ order.id }}">
+
+  {% for item in items|slice:"1:" %}
+  <a href="{% url 'product_detail' item.variant.product.id %}"
+     class="extra-item-link">
+
+    <div class="extra-item">
+      <img src="{{ item.variant.product.image.url }}">
+
+      <div class="extra-item-info">
+        <span class="item-name">{{ item.variant.product.name }}</span>
+        <small>Qty: {{ item.quantity }}</small>
+      </div>
+
+      <div class="extra-item-price">
+        ₹ {{ item.variant.price }}
+      </div>
+    </div>
+
+  </a>
+  {% endfor %}
+
+</div>
+{% endif %}
+      </div>
+
+      {% endwith %}
+    {% endwith %}
+  {% empty %}
+    <p>No orders yet.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}
