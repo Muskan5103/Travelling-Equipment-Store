@@ -10,57 +10,56 @@
 
         {% with first_item=items.0 %}
 
-<a href="{% url 'product_detail' first_item.variant.product.id %}"
-   class="d-flex align-items-center gap-3 text-decoration-none text-dark">
+        <a href="{% url 'product_detail' first_item.variant.product.id %}"
+          class="d-flex align-items-center gap-3 text-decoration-none text-dark">
 
-    <img src="{{ first_item.variant.product.image.url }}" class="product-img">
+          <img src="{{ first_item.variant.product.image.url }}" class="product-img">
 
-    <div>
-        <h5>{{ first_item.variant.product.name }}</h5>
+          <div>
+            <h5>{{ first_item.variant.product.name }}</h5>
 
-        {% if items|length > 1 %}
-        <span class="text-primary"
-              style="cursor:pointer"
-              onclick="toggleItems(event, 'items-{{ order.id }}')">
-            +{{ items|length|add:"-1" }} more item{{ items|length|add:"-1"|pluralize }}
-        </span>
-        {% endif %}
-
-        <p class="fw-bold mt-1">₹ {{ first_item.variant.price }}</p>
-
-        {% if order.status == "delivered" %}
-            {% if first_item.return_status == "none" %}
-                <a href="{% url 'return_item' first_item.id %}"
-                   class="btn btn-warning btn-sm mt-1">
-                    Return Item
-                </a>
-            {% else %}
-                <span class="badge bg-info mm mt-1">
-                    Return {{ first_item.return_status|title }}
-                </span>
+            {% if items|length > 1 %}
+            <span class="text-primary" style="cursor:pointer" onclick="toggleItems(event, 'items-{{ order.id }}')">
+              +{{ items|length|add:"-1" }} more item{{ items|length|add:"-1"|pluralize }}
+            </span>
             {% endif %}
+
+            <p class="fw-bold mt-1">₹ {{ first_item.variant.price }}</p>
+
+            {% if order.status == "delivered" %}
+            {% if first_item.return_status == "none" %}
+            <a href="{% url 'return_item' first_item.id %}" class="btn btn-warning btn-sm mt-1">
+              Return Item
+            </a>
+            {% else %}
+            <span class="badge bg-info mm mt-1">
+              Return {{ first_item.return_status|title }}
+            </span>
+            {% endif %}
+            {% endif %}
+          </div>
+        </a>
+
+        {% if first_item.return_status != "none" %}
+        <ul class="return-steps mt-2">
+          <li
+            class="{% if first_item.return_status in 'requested pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+            Requested
+          </li>
+          <li
+            class="{% if first_item.return_status in 'pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+            Pickup
+          </li>
+          <li class="{% if first_item.return_status in 'picked refund_initiated refund_completed' %}done{% endif %}">
+            Picked
+          </li>
+          <li class="{% if first_item.return_status in 'refund_initiated refund_completed' %}done{% endif %}">
+            Refund
+          </li>
+        </ul>
         {% endif %}
-    </div>
-</a>
 
-{% if first_item.return_status != "none" %}
-<ul class="return-steps mt-2">
-    <li class="{% if first_item.return_status in 'requested pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
-        Requested
-    </li>
-    <li class="{% if first_item.return_status in 'pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
-        Pickup
-    </li>
-    <li class="{% if first_item.return_status in 'picked refund_initiated refund_completed' %}done{% endif %}">
-        Picked
-    </li>
-    <li class="{% if first_item.return_status in 'refund_initiated refund_completed' %}done{% endif %}">
-        Refund
-    </li>
-</ul>
-{% endif %}
-
-{% endwith %}
+        {% endwith %}
 
 
         <!-- EXTRA ITEMS -->
@@ -100,22 +99,24 @@
                 {% endif %}
                 {% endif %}
               </div>
-{% if item.return_status != "none" %}
-<ul class="return-steps mt-2">
-    <li class="{% if item.return_status in 'requested pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
-        Requested
-    </li>
-    <li class="{% if item.return_status in 'pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
-        Pickup
-    </li>
-    <li class="{% if item.return_status in 'picked refund_initiated refund_completed' %}done{% endif %}">
-        Picked
-    </li>
-    <li class="{% if item.return_status in 'refund_initiated refund_completed' %}done{% endif %}">
-        Refund
-    </li>
-</ul>
-{% endif %}
+              {% if item.return_status != "none" %}
+              <ul class="return-steps mt-2">
+                <li
+                  class="{% if item.return_status in 'requested pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+                  Requested
+                </li>
+                <li
+                  class="{% if item.return_status in 'pickup_scheduled picked refund_initiated refund_completed' %}done{% endif %}">
+                  Pickup
+                </li>
+                <li class="{% if item.return_status in 'picked refund_initiated refund_completed' %}done{% endif %}">
+                  Picked
+                </li>
+                <li class="{% if item.return_status in 'refund_initiated refund_completed' %}done{% endif %}">
+                  Refund
+                </li>
+              </ul>
+              {% endif %}
 
             </div>
           </a>
@@ -168,26 +169,35 @@
         </p>
         {% endif %}
 
-        <!-- RATINGS -->
         {% if order.status == "delivered" %}
         {% for item in items %}
         <div class="card p-3 mb-3 rating-box">
           <h6>Rate {{ item.variant.product.name }}</h6>
 
-          <form method="post" action="{% url 'rate_product' item.id %}">
+          <form method="POST" action="{% url 'rate_product' item.id %}">
             {% csrf_token %}
+
             <div class="stars">
               {% for i in "12345" %}
-              <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}_{{ item.id }}">
+              <input
+  type="radio"
+  name="rating"
+  value="{{ i }}"
+  id="star{{ i }}_{{ item.id }}"
+  {% if item.user_rating == i|add:"0" %}checked{% endif %}>
+
               <label for="star{{ i }}_{{ item.id }}">★</label>
               {% endfor %}
             </div>
 
-            <button class="btn btn-primary btn-sm mt-2">Submit</button>
+            <button type="submit" class="btn btn-primary btn-sm mt-2">
+              Submit
+            </button>
           </form>
         </div>
         {% endfor %}
         {% endif %}
+
 
       </div>
     </div>
@@ -256,7 +266,7 @@
           Download Invoice
         </a>
 
-        
+
       </div>
 
     </div>

@@ -1,0 +1,211 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% block title %}Warehouse Dashboard{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- <div class="row g-4 da mb-4">
+
+    <div class="col-md-4">
+        <div class="card stat-card stat-blue">
+            <div class="card-body">
+                <h4>{{ total_warehouses }}</h4>
+                <p>Total Warehouses</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card stat-card stat-purple">
+            <div class="card-body">
+                <h4>{{ total_sections }}</h4>
+                <p>Total Sections</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card stat-card stat-dark">
+            <div class="card-body">
+                <h4>{{ total_racks }}</h4>
+                <p>Total Racks</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card stat-card stat-green">
+            <div class="card-body">
+                <h4>{{ total_products }}</h4>
+                <p>Total Products</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card stat-card stat-teal">
+            <div class="card-body">
+                <h4>{{ total_stock }}</h4>
+                <p>Total Stock Qty</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card stat-card stat-red">
+            <div class="card-body">
+                <h4>{{ low_stock_products }}</h4>
+                <p>Low Stock</p>
+            </div>
+        </div>
+    </div>
+
+</div> -->
+<div class="row g-4 da mb-4">
+
+    <!-- Total Warehouses -->
+    <div class="col-md-4">
+        <a href="{% url 'warehouse_list' %}" class="card-link">
+            <div class="card stat-card stat-blue">
+                <div class="card-body">
+                    <h4>{{ total_warehouses }}</h4>
+                    <p>Total Warehouses</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Total Sections -->
+    <div class="col-md-4">
+        <a href="{% url 'section_list' %}" class="card-link">
+            <div class="card stat-card stat-purple">
+                <div class="card-body">
+                    <h4>{{ total_sections }}</h4>
+                    <p>Total Sections</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Total Racks -->
+    <div class="col-md-4">
+        <a href="{% url 'rack_list' %}" class="card-link">
+            <div class="card stat-card stat-dark">
+                <div class="card-body">
+                    <h4>{{ total_racks }}</h4>
+                    <p>Total Racks</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Total Products -->
+    <div class="col-md-4">
+        <a href="{% url 'product_location_list' %}" class="card-link">
+            <div class="card stat-card stat-green">
+                <div class="card-body">
+                    <h4>{{ total_products }}</h4>
+                    <p>Total Products</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Total Stock -->
+    <div class="col-md-4">
+        
+            <div class="card stat-card stat-teal">
+                <div class="card-body">
+                    <h4>{{ total_stock }}</h4>
+                    <p>Total Stock Qty</p>
+                </div>
+            </div>
+       
+    </div>
+
+    <!-- Low Stock -->
+    <div class="col-md-4">
+        
+            <div class="card stat-card stat-red">
+                <div class="card-body">
+                    <h4>{{ low_stock_products }}</h4>
+                    <p>Low Stock</p>
+                </div>
+            </div>
+      
+    </div>
+
+</div>
+
+<div class="image-divider">
+    <img src="{% static 'images/warehouse-divider.png' %}" alt="divider">
+</div>
+
+<div class="section-title">
+    <span></span>
+    <h2>STOCK OVERVIEW</h2>
+    <span></span>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-bordered table-hover text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th>Variant</th>
+                    <th>Price (₹)</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for v in variants %}
+                <tr class="{% if v.stock <= v.product.minimum_stock %}low-stock{% endif %}">
+                    <td>{{ v.product.name }}</td>
+                    <td>{{ v.product.category.name }}</td>
+
+                    <!-- Supplier -->
+                    <td>
+                        {% if v.product.supplier %}
+                        {{ v.product.supplier.name }}
+                        {% else %}
+                        —
+                        {% endif %}
+                    </td>
+
+
+                    <!-- Variant -->
+                    <td>{{ v.quantity }} {{ v.unit }}</td>
+
+                    <!-- Price -->
+                    <td>₹{{ v.price }}</td>
+
+                    <!-- Stock -->
+                    <td>{{ v.stock }}</td>
+
+                    <!-- Status -->
+                    <td>
+                        {% if v.stock == 0 %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                        {% elif v.stock <= v.product.minimum_stock %} <span class="badge bg-warning text-dark">Low
+                            Stock</span>
+                            {% else %}
+                            <span class="badge bg-success">In Stock</span>
+                            {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

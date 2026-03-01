@@ -9,6 +9,17 @@
             <p class="auth-error">{{ error }}</p>
         {% endif %}
 
+        <a href="/accounts/google/login/" class="google-btn">
+    <img src="https://developers.google.com/identity/images/g-logo.png" width="18">
+    Continue with Google
+</a>
+
+
+        <div class="auth-divider">
+            <span>OR</span>
+        </div>
+
+        <!-- 🔐 NORMAL LOGIN -->
         <form method="POST">
             {% csrf_token %}
 

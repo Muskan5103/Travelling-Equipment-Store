@@ -1,0 +1,125 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %}Return & Damage Management{% endblock %}
+
+{% block content %}
+
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f6f9;
+            padding: 40px 15px;
+        }
+
+        .dashboard-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, #0d6efd, #0a58ca);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .section-card {
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        h5 {
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <h2>📊 Reports & Analytics</h2>
+
+    <!-- KPI Card -->
+    <div class="kpi-card mb-4">
+        <h5>Total Stock Value</h5>
+        <h3>₹ {{ total_value }}</h3>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Fast Moving -->
+        <div class="col-md-6">
+            <div class="section-card">
+                <h5>🔥 Fast Moving Equipment</h5>
+                <ul>
+                    {% for item in fast_moving %}
+                        <li>
+                            <strong>{{ item.product__name }}</strong>
+                            (Sold: {{ item.total_sold }})
+                        </li>
+                    {% empty %}
+                        <li>No sales data</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dead Stock -->
+        <div class="col-md-6">
+            <div class="section-card">
+                <h5>⚠ Dead Stock</h5>
+                <ul>
+                    {% for item in dead_stock %}
+                        <li>{{ item.name }}</li>
+                    {% empty %}
+                        <li>No Dead Stock</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Category Chart -->
+    <div class="chart-container mt-4">
+        <h5>📦 Category Wise Stock</h5>
+        <canvas id="categoryChart"></canvas>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

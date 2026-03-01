@@ -1,0 +1,57 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<div class="container  bii mtt-4">
+    <div class="card shadow p-4">
+
+        <h4 class="mb-3">
+            {% if section %}Edit Section{% else %}Add Section{% endif %}
+        </h4>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Section Name -->
+            <div class="mb-3">
+                <label>Section Name</label>
+                <input type="text"
+                       name="name"
+                       class="form-control"
+                       value="{{ section.name|default:'' }}"
+                       required>
+            </div>
+
+            <!-- Select Warehouse -->
+            <div class="mb-3">
+                <label>Warehouse</label>
+                <select name="warehouse" class="form-control" required>
+                    <option value="">Select Warehouse</option>
+
+                    {% for wh in warehouses %}
+                        <option value="{{ wh.id }}"
+                            {% if section and section.warehouse.id == wh.id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ wh.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+
+            <a href="{% url 'section_list' %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

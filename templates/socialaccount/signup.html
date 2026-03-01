@@ -1,0 +1,41 @@
+
+{% load static %}
+{% load account socialaccount %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <h3 class="auth-title">Complete Your Signup</h3>
+
+    <p class="auth-social-note">
+      You are signing up using your Google account
+    </p>
+
+    <form method="post" action="">
+      {% csrf_token %}
+
+      {{ form.non_field_errors }}
+
+      {% for field in form %}
+        <div class="mb-3">
+          <label>{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="auth-error">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <button type="submit" class="auth-btn">
+        Finish Signup
+      </button>
+    </form>
+
+  </div>
+</div>
+{% endblock %}

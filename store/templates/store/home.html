@@ -1,63 +1,62 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% block content %}
+{% if request.user.is_staff %}
+  {% comment %} Staff should never see this page {% endcomment %}
+{% else %}
+  <!-- existing UI -->
+{% endif %}
 
 <!-- HERO SECTION -->
-<section class="hero-section py-5">
-    <div class="container">
-        <div class="row align-items-center gy-4">
-            <div class="col-lg-6">
-                <span class="badge rounded-pill hero-badge mb-3">
-                    <i class="bi bi-stars me-1"></i> New Season · Best Deals
-                </span>
-                <h1 class="hero-title mb-3">
-                    Discover Products <div>You’ll Love</div>
-                </h1>
-                <p class="hero-subtitle mb-4">
-                    Shop trendy collections, gadgets, and essentials – all in one place.
-                    Fast delivery, secure payments, and exclusive offers waiting for you.
-                </p>
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="#products-section" class="btn btn-primary hero-btn">
-                        <i class="bi bi-bag-check me-2"></i> Shop Now
-                    </a>
-                    <button class="btn btn-outline-light wish hero-btn-secondary">
-                        <a href="{% url 'wishlist' %}">
-                            ❤️ Wishlist
-                        </a>
+<section class="fullscreen-slider">
 
-                    </button>
-                </div>
-                <div class="d-flex flex-wrap gap-4  hero-stats">
-                    <div>
-                        <h4 class="mb-0">500+</h4>
-                        <small>Quality Products</small>
-                    </div>
-                    <div>
-                        <h4 class="mb-0">4.8★</h4>
-                        <small>Customer Rating</small>
-                    </div>
-                    <div>
-                        <h4 class="mb-0">24/7</h4>
-                        <small>Support</small>
-                    </div>
-                </div>
-            </div>
+  <div id="travelImageSlider"
+       class="carousel slide carousel-fade"
+       data-bs-ride="carousel"
+       data-bs-interval="3500">
 
-            <div class="col-lg-6">
-                <div class="hero-card shadow-lg">
-                    <div class="hero-badge-top">Today’s Hot Picks</div>
-                    <div class="hero-image-box">
-                        <img src="{% static 'store/images/hero-banner.png' %}" class="hero-image">
-                    </div>
+    <div class="carousel-inner">
 
-                    <p class="fw-semibold small mb-1">Up to 50% Off</p>
-                    <p class="fw-semibold mb-0">On selected categories · Limited time</p>
-                </div>
-            </div>
-        </div>
+      <div class="carousel-item active">
+        <img src="{% static 'store/images/travel/slide1.jpg' %}" class="slider-img">
+      </div>
+
+      <div class="carousel-item">
+        <img src="{% static 'store/images/travel/slide2.jpg' %}" class="slider-img">
+      </div>
+
+      <div class="carousel-item">
+        <img src="{% static 'store/images/travel/slide3.jpg' %}" class="slider-img">
+      </div>
+
+      <div class="carousel-item">
+        <img src="{% static 'store/images/travel/slide4.jpg' %}" class="slider-img">
+      </div>
+
     </div>
+
+    <!-- ✅ HERO OVERLAY INSIDE CAROUSEL -->
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Gear Up for Your <span>Next Adventure</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Premium backpacks, tents & travel essentials built for explorers
+        </p>
+
+        <a href="#products-section" class="hero-btn">Explore Gear</a>
+
+      </div>
+    </div>
+
+  </div>
+
 </section>
+
+
+
 
 <!-- FEATURES SECTION -->
 <section class="py-4 features-section">
@@ -126,7 +125,7 @@
 
         <!-- CATEGORY HEADER -->
         <div class="d-flex justify-content-between align-items-center mb-3 mtt-4">
-            <h4 id="category-{{ category.id }}" class="fw-bold mb-0">
+            <h4 id="category-{{ category.id }}" class="fw-bold top mb-0" >
                 {{ category.name }}
             </h4>
             <a href="{% url 'category_products' category.id %}" class="small text-success text-decoration-none">
@@ -166,7 +165,7 @@
 
                     </a>
                     <!-- Body -->
-                    <div class="card-body p-2 d-flex flex-column">
+                    <!-- <div class="card-body p-2 d-flex flex-column">
 
                         <h6 class="small fw-semibold text-truncate mb-1">
                             {{ product.name }}
@@ -199,7 +198,52 @@
                         </button>
                         {% endif %}
 
-                    </div>
+                    </div> -->
+                    <div class="card-body p-2 d-flex flex-column">
+
+    <h6 class="small fw-semibold text-truncate mb-1">
+        {{ product.name }}
+    </h6>
+
+    {% if product.display_price %}
+    <p class="small text-muted mb-1">
+        {{ product.display_quantity }}
+    </p>
+
+    <div class="price-row mb-2 d-flex align-items-center">
+
+        <!-- Selling Price -->
+        <span class="selling-price fw-semibold">
+            ₹{{ product.display_price }}
+        </span>
+
+        <!-- MRP (Strikethrough) -->
+        {% if product.display_mrp and product.display_mrp > product.display_price %}
+            <span class="text-muted text-decoration-line-through ms-2">
+                ₹{{ product.display_mrp }}
+            </span>
+
+            <!-- Discount Badge -->
+            <span class="discount-badge ms-2">
+                {{ product.discount_percent }}% OFF
+            </span>
+        {% endif %}
+
+    </div>
+
+    {% else %}
+    <p class="small text-muted">Price not available</p>
+    {% endif %}
+
+    {% if product.first_variant %}
+    <button class="btn-add w-100 mt-auto add-to-cart-btn"
+        data-variant-id="{{ product.first_variant.id }}">
+        ADD
+    </button>
+    {% endif %}
+
+</div>
+
                 </div>
             </div>
             {% endfor %}

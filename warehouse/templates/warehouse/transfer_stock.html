@@ -1,0 +1,95 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0" style="color:white";>🚚 Transfer Stock Between Racks</h4>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="row">
+
+                    <!-- Product Variant -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Product Variant</label>
+                        <select name="variant" class="form-control" required>
+                            <option value="">Select Variant</option>
+                            {% for v in variants %}
+                                <option value="{{ v.id }}">
+                                    {{ v.product.name }} - {{ v }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" name="quantity" class="form-control" min="1" required>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- From Rack -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">From Rack</label>
+                        <select name="from_rack" class="form-control" required>
+                            <option value="">Select Source Rack</option>
+                            {% for rack in racks %}
+                                <option value="{{ rack.id }}">
+                                    {{ rack.section.warehouse.name }} → 
+                                    {{ rack.section.name }} → 
+                                    Rack {{ rack.rack_number }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- To Rack -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">To Rack</label>
+                        <select name="to_rack" class="form-control" required>
+                            <option value="">Select Destination Rack</option>
+                            {% for rack in racks %}
+                                <option value="{{ rack.id }}">
+                                    {{ rack.section.warehouse.name }} → 
+                                    {{ rack.section.name }} → 
+                                    Rack {{ rack.rack_number }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success px-4">
+                        🔁 Move Stock
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

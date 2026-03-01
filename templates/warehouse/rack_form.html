@@ -1,0 +1,57 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<div class="container bii mtt-4">
+    <div class="card shadow p-4">
+
+        <h4 class="mb-3">
+            {% if rack %}Edit Rack{% else %}Add Rack{% endif %}
+        </h4>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Rack Number -->
+            <div class="mb-3">
+                <label>Rack Number</label>
+                <input type="text"
+                       name="rack_number"
+                       class="form-control"
+                       value="{{ rack.rack_number|default:'' }}"
+                       required>
+            </div>
+
+            <!-- Select Section -->
+            <div class="mb-3">
+                <label>Section</label>
+                <select name="section" class="form-control" required>
+                    <option value="">Select Section</option>
+
+                    {% for sec in sections %}
+                        <option value="{{ sec.id }}"
+                            {% if rack and rack.section.id == sec.id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ sec.name }} ({{ sec.warehouse.name }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+
+            <a href="{% url 'rack_list' %}"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

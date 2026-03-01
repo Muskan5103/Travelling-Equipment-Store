@@ -1,0 +1,67 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<div class="container bii mtt-4">
+
+    <!-- Header -->
+    <div class="page-header">
+        <h3>📦 Sections</h3>
+
+        <a href="{% url 'section_create' %}" class="btn btn-success btn-sm">
+            ➕ Add Section
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="card section-card">
+        <div class="card-body">
+
+            <table class="table section-table text-center align-middle">
+    <thead class="section-head">
+        <tr>
+            <th>Section Name</th>
+            <th>Warehouse</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for section in sections %}
+        <tr>
+            <td>{{ section.name }}</td>
+            <td>{{ section.warehouse.name }}</td>
+            <td>{{ section.created_at|date:"d M Y" }}</td>
+            <td>
+                <a href="{% url 'section_update' section.id %}"
+                   class="btn btn-primary btn-sm">
+                    Edit
+                </a>
+
+                <form method="POST"
+                      action="{% url 'section_delete' section.id %}"
+                      style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="btn btn-danger btn-sm">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No sections available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

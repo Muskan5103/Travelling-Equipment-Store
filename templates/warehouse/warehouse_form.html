@@ -1,0 +1,46 @@
+{% extends "store/base.html" %}
+
+{% block title %}Warehouse Form{% endblock %}
+
+{% block content %}
+<div class="container bii mtt-4">
+    <div class="card shadow p-4">
+
+        <h4 class="mb-3">Warehouse Form</h4>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control"
+                       value="{{ warehouse.name|default:'' }}">
+            </div>
+
+            <div class="mb-3">
+                <label>Location</label>
+                <input type="text" name="location" class="form-control"
+                       value="{{ warehouse.location|default:'' }}">
+            </div>
+
+            <div class="mb-3">
+                <label>Capacity</label>
+                <input type="number" name="capacity" class="form-control"
+                       value="{{ warehouse.capacity|default:'' }}">
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+
+            <a href="{% url 'warehouse_list' %}
+"
+               class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}

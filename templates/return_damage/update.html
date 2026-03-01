@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Action Status</title>
+    <link rel="stylesheet" href="{% static 'css/return_damage.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-wrapper">
+
+        <h2>Update Action Status</h2>
+
+        <!-- Record Info Card -->
+        <div class="record-info">
+            <p><strong>Equipment:</strong> {{ record.product.name }}</p>
+            <p><strong>Customer:</strong> {{ record.customer_name }}</p>
+            <p><strong>Quantity:</strong> {{ record.quantity }}</p>
+            <p><strong>Current Status:</strong> {{ record.status }}</p>
+            <p><strong>Current Action:</strong> {{ record.action_status }}</p>
+        </div>
+
+        <form method="POST" class="custom-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Select New Action Status</label>
+                <select name="action_status" required>
+                    <option value="Pending" {% if record.action_status == "Pending" %}selected{% endif %}>Pending</option>
+                    <option value="Repairing" {% if record.action_status == "Repairing" %}selected{% endif %}>Repairing</option>
+                    <option value="Repaired" {% if record.action_status == "Repaired" %}selected{% endif %}>Repaired</option>
+                    <option value="Replaced" {% if record.action_status == "Replaced" %}selected{% endif %}>Replaced</option>
+                    <option value="Discarded" {% if record.action_status == "Discarded" %}selected{% endif %}>Discarded</option>
+                </select>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-update-status">Update Status</button>
+                <a href="{% url 'return_damage_list' %}" class="btn-back">Back</a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

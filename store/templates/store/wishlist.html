@@ -16,25 +16,27 @@
                 <div class="card product-card h-100">
 
                     <!-- Image -->
-                    <a href="{% url 'product_detail' product.id %}">
-                        <div class="product-image-wrapper position-relative">
+                    <div class="product-image-wrapper position-relative">
 
-                            {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top product-image"
-                                alt="{{ product.name }}">
-                            {% endif %}
+    <!-- Product image link -->
+    <a href="{% url 'product_detail' product.id %}">
+        {% if product.image %}
+            <img src="{{ product.image.url }}"
+                 class="card-img-top product-image"
+                 alt="{{ product.name }}">
+        {% endif %}
+    </a>
 
-                            <!-- Wishlist Toggle -->
-                            <button type="button" class="wishlist-icon filled wishlist-remove-btn"
-                                data-product-id="{{ product.id }}" title="Remove from wishlist">
-                                ❤️
-                            </button>
+    <!-- Wishlist button (NOT inside <a>) -->
+    <button type="button"
+            class="wishlist-btn wishlist-icon filled"
+            data-product-id="{{ product.id }}"
+            title="Remove from wishlist">
+        ❤️
+    </button>
 
+</div>
 
-
-
-                        </div>
-                    </a>
 
                     <!-- Body -->
                     <div class="card-body p-2 d-flex flex-column">

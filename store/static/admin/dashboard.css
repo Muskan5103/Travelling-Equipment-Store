@@ -1,0 +1,128 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: #020617;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: #38bdf8;
+    margin-bottom: 30px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: #020617;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.sidebar li:hover {
+    background: #1e293b;
+}
+
+/* Main Content */
+.main {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Stats Cards */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #020617;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+
+.card h3 {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.card p {
+    font-size: 28px;
+    margin-top: 10px;
+    color: #38bdf8;
+}
+
+/* Table */
+.table-section {
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #020617;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+}
+
+thead {
+    background: #020617;
+    color: #94a3b8;
+}
+
+tbody tr {
+    border-bottom: 1px solid #1e293b;
+}
+
+tbody tr:hover {
+    background: #1e293b;
+}
+
+/* Status Colors */
+.status.placed {
+    color: orange;
+}
+.status.shipped {
+    color: #38bdf8;
+}
+.status.delivered {
+    color: #22c55e;
+}
+.status.cancelled {
+    color: #ef4444;
+}

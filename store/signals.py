@@ -70,3 +70,16 @@ Order ID: {instance.order.id}
 """,
         to_email=instance.order.user.email
     )
+
+from warehouse.models import OutwardStock
+
+
+@receiver(post_save, sender=OrderItem)
+def create_outward_stock(sender, instance, created, **kwargs):
+    if created:
+        OutwardStock.objects.create(
+            order_item=instance,
+            variant=instance.variant,
+            quantity_issued=instance.quantity,
+            destination="customer"
+        )

@@ -1,0 +1,135 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- DASHBOARD CARDS -->
+   <div class="row mb-4">
+
+    <!-- TOTAL ORDERS -->
+    <div class="col-lg-3 col-6">
+        <a href="{% url 'admin:store_order_changelist' %}" style="text-decoration:none;">
+            <div class="card bg-primary text-white shadow dashboard-card">
+                <div class="card-body">
+                    <h6>Total Orders</h6>
+                    <h2>{{ total_orders }}</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- PENDING ORDERS -->
+    <div class="col-lg-3 col-6">
+        <a href="{% url 'admin:store_order_changelist' %}?status__exact=placed"
+           style="text-decoration:none;">
+            <div class="card bg-warning text-dark shadow dashboard-card">
+                <div class="card-body">
+                    <h6>Pending Orders</h6>
+                    <h2>{{ pending_orders }}</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- TOTAL REVENUE (not clickable) -->
+    <div class="col-lg-3 col-6">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body">
+                <h6>Total Revenue</h6>
+                <h2>₹ {{ total_revenue }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOTAL PRODUCTS -->
+    <div class="col-lg-3 col-6">
+        <a href="{% url 'admin:store_product_changelist' %}" style="text-decoration:none;">
+            <div class="card bg-info text-white shadow dashboard-card">
+                <div class="card-body">
+                    <h6>Total Products</h6>
+                    <h2>{{ total_products }}</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</div>
+<div class="row mb-4">
+
+    <div class="col-lg-6">
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="mb-0">Orders per Day</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow">
+            <div class="card-header">
+                <h6 class="mb-0">Revenue per Month</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    <!-- RECENT ORDERS -->
+    <div class="card shadow mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Recent Orders</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in recent_orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.user }}</td>
+                        <td>₹ {{ order.total_amount }}</td>
+                        <td>
+                            <span class="badge badge-info">
+                                {{ order.status|upper }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center p-3">
+                            No recent orders
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- KEEP DEFAULT APP LIST -->
+    {{ block.super }}
+
+</div>
+{% load static %}
+
+{{ orders_per_day|json_script:"orders-data" }}
+{{ revenue_per_month|json_script:"revenue-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'store/js/main.js' %}"></script>
+
+{% endblock %}

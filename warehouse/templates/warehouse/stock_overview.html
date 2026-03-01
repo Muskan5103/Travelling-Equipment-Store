@@ -1,0 +1,137 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+
+<div class="container mt-5">
+
+    <h2 class="mb-4 text-center">📦 Travel Equipment Stock Overview</h2>
+<div class="mb-3 text-end">
+
+    <a href="{% url 'export_stock_excel' %}?{{ request.GET.urlencode }}"
+       class="btn btn-success">
+       📊 Download Excel
+    </a>
+
+    <a href="{% url 'export_low_stock_excel' %}"
+       class="btn btn-warning">
+       ⚠ Low Stock Excel
+    </a>
+
+    <a href="{% url 'export_professional_pdf' %}"
+       class="btn btn-danger">
+       📄 Download PDF
+    </a>
+
+</div>
+    <!-- FILTER CARD -->
+    <div class="card shadow p-4 mb-4">
+        <form method="GET" class="row g-3">
+
+            <div class="col-md-3">
+                <input type="text" name="search"
+                       class="form-control"
+                       placeholder="Search Product"
+                       value="{{ request.GET.search }}">
+            </div>
+
+            <div class="col-md-2">
+                <select name="warehouse" class="form-select">
+                    <option value="">Warehouse</option>
+                    {% for w in warehouses %}
+                        <option value="{{ w.id }}"
+                            {% if request.GET.warehouse == w.id|stringformat:"s" %}selected{% endif %}>
+                            {{ w.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select name="section" class="form-select">
+                    <option value="">Section</option>
+                    {% for s in sections %}
+                        <option value="{{ s.id }}"
+                            {% if request.GET.section == s.id|stringformat:"s" %}selected{% endif %}>
+                            {{ s.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select name="rack" class="form-select">
+                    <option value="">Rack</option>
+                    {% for r in racks %}
+                        <option value="{{ r.id }}"
+                            {% if request.GET.rack == r.id|stringformat:"s" %}selected{% endif %}>
+                            {{ r.rack_number }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select name="status" class="form-select">
+                    <option value="">Stock Status</option>
+                    <option value="out">Out of Stock</option>
+                    <option value="low">Low Stock</option>
+                    <option value="in">In Stock</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 d-grid">
+                <button class="btn btn-primary">Filter</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- TABLE -->
+    <div class="card shadow">
+        <div class="card-body">
+
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Warehouse</th>
+                        <th>Section</th>
+                        <th>Rack</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in locations %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.rack.section.warehouse.name }}</td>
+                        <td>{{ item.rack.section.name }}</td>
+                        <td>{{ item.rack.rack_number }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>
+                            {% if item.quantity == 0 %}
+                                <span class="badge bg-danger">Out of Stock</span>
+                            {% elif item.quantity <= 5 %}
+                                <span class="badge bg-warning text-dark">Low Stock</span>
+                            {% else %}
+                                <span class="badge bg-success">In Stock</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No records found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

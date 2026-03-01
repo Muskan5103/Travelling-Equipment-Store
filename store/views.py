@@ -15,10 +15,24 @@ from django.contrib import messages
 from .models import Product, Order, OrderItem, ProductRating
 from decimal import Decimal
 from django.db.models import Q
+from warehouse.models import WarehouseStock, StockOut
+
 from store.utils.whatsapp import send_whatsapp_message
 
 
+
+
+from django.shortcuts import render, redirect
+from .models import Category, Product, Wishlist
+
 def home(request):
+
+    # 🚫 STAFF / ADMIN SHOULD NOT SEE STORE UI
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('warehouse_dashboard')  
+        # 👆 make sure this URL name exists
+
+    # ✅ NORMAL USER FLOW
     categories = Category.objects.all().order_by("name")
 
     category_id = request.GET.get("category")
@@ -32,7 +46,7 @@ def home(request):
 
     active_category = None
 
-    # ✅ Filter by category (when clicking category image)
+    # Filter by category
     if category_id:
         try:
             category_id = int(category_id)
@@ -41,7 +55,7 @@ def home(request):
         except (ValueError, TypeError):
             products = Product.objects.none()
 
-    # ✅ Filter by search
+    # Filter by search
     if query:
         products = products.filter(name__icontains=query)
 
@@ -63,6 +77,16 @@ def home(request):
     return render(request, "store/home.html", context)
 
 
+def admin_dashboard(request):
+    context = {
+        "total_orders": Order.objects.count(),
+        "total_products": Product.objects.count(),
+        "total_revenue": Order.objects.filter(status="delivered")
+                            .aggregate(Sum("total_amount"))["total_amount__sum"] or 0,
+        "pending_orders": Order.objects.filter(status="placed").count(),
+        "recent_orders": Order.objects.order_by("-id")[:5],
+    }
+    return render(request, "admin/dashboard.html", context)
 
 
 
@@ -363,8 +387,13 @@ def apply_coupon(request):
 
     return redirect("cart")
 
+
+
+
+
 def calculate_cart_totals(request):
     from decimal import Decimal
+    from .models import ProductVariant
 
     cart = request.session.get("cart", {})
     applied_coupon = request.session.get("coupon")
@@ -374,11 +403,17 @@ def calculate_cart_totals(request):
 
     for variant_id, qty in cart.items():
         variant = ProductVariant.objects.get(id=int(variant_id))
-        total_price += variant.price * qty
-        total_mrp += (variant.mrp * qty) if variant.mrp else (variant.price * qty)
 
+        subtotal = variant.price * qty
+        mrp_total = (variant.mrp * qty) if variant.mrp else subtotal
+
+        total_price += subtotal
+        total_mrp += mrp_total
+
+    # ✅ Item Discount
     item_discount = total_mrp - total_price
 
+    # ✅ Coupon Logic
     COUPONS = {
         "SAVE10": {"type": "flat", "value": Decimal("10"), "min_amount": Decimal("100")},
         "SAVE20": {"type": "flat", "value": Decimal("20"), "min_amount": Decimal("200")},
@@ -391,6 +426,7 @@ def calculate_cart_totals(request):
     }
 
     coupon_discount = Decimal("0.00")
+
     if applied_coupon in COUPONS:
         c = COUPONS[applied_coupon]
         if total_price >= c["min_amount"]:
@@ -402,11 +438,20 @@ def calculate_cart_totals(request):
                     c.get("max_discount", Decimal("99999"))
                 )
 
-    final_amount = total_price - coupon_discount
+    # ✅ Delivery Fee (from session or fixed)
+    delivery_fee = Decimal(request.session.get("delivery_fee", "0.00"))
 
-    return final_amount, coupon_discount
+    # ✅ Final Amount
+    final_amount = total_price - coupon_discount + delivery_fee
 
-
+    return {
+        "total_price": total_price,
+        "total_mrp": total_mrp,
+        "item_discount": item_discount,
+        "coupon_discount": coupon_discount,
+        "delivery_fee": delivery_fee,
+        "final_amount": final_amount,
+    }
 
 @login_required
 def update_cart(request, variant_id):
@@ -465,6 +510,10 @@ def login_view(request):
 
 
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+
 def signup_view(request):
     if request.method == "POST":
         name = request.POST.get("name")
@@ -472,10 +521,18 @@ def signup_view(request):
         password = request.POST.get("password")
 
         if User.objects.filter(email=email).exists():
-            return render(request, "store/signup.html", {"error": "Email already registered"})
+            return render(request, "store/signup.html", {
+                "error": "Email already registered"
+            })
 
-        username = email.split("@")[0]
+        username = email
 
+
+        # ✅ If username exists, modify it
+        if User.objects.filter(username=username).exists():
+            username = username + str(User.objects.count())
+
+        # Create user
         user = User.objects.create_user(
             username=username,
             email=email,
@@ -483,10 +540,16 @@ def signup_view(request):
             first_name=name
         )
 
-        login(request, user)
-        return redirect("home")
+        # Authenticate
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("home")
 
     return render(request, "store/signup.html")
+
+
 
 
 def logout_view(request):
@@ -592,6 +655,13 @@ def checkout(request):
 
 
 
+
+import razorpay
+from django.conf import settings
+from decimal import Decimal
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
 @login_required
 def payment(request):
     cart = request.session.get("cart", {})
@@ -623,44 +693,34 @@ def payment(request):
             "subtotal": subtotal,
         })
 
-    # 🟢 ITEM DISCOUNT
     item_discount = total_mrp - total_price
 
-    # 🎟️ SAME COUPONS (KEEP CONSISTENT)
-    COUPONS = {
-        "SAVE10": {"type": "flat", "value": Decimal("10"), "min_amount": Decimal("100")},
-        "SAVE20": {"type": "flat", "value": Decimal("20"), "min_amount": Decimal("200")},
-        "BIGSAVE": {
-            "type": "percent",
-            "value": Decimal("15"),
-            "max_discount": Decimal("100"),
-            "min_amount": Decimal("300"),
-        },
-        "FREESHIP": {"type": "shipping", "value": Decimal("0"), "min_amount": Decimal("150")},
-        "NEW50": {"type": "flat", "value": Decimal("50"), "min_amount": Decimal("500")},
-    }
-
-    # 🟢 COUPON DISCOUNT
-    coupon_discount = Decimal("0.00")
-
-    if applied_coupon in COUPONS:
-        coupon = COUPONS[applied_coupon]
-
-        if total_price >= coupon["min_amount"]:
-            if coupon["type"] == "flat":
-                coupon_discount = coupon["value"]
-
-            elif coupon["type"] == "percent":
-                coupon_discount = (total_price * coupon["value"]) / Decimal("100")
-                coupon_discount = min(coupon_discount, coupon.get("max_discount", coupon_discount))
-
-    # 💰 FINAL PAYABLE
-    # final_amount = total_price - coupon_discount
     final_amount = Decimal(request.session.get("final_amount", "0.00"))
     coupon_discount = Decimal(request.session.get("coupon_discount", "0.00"))
+    delivery_fee = Decimal(request.session.get("delivery_fee", "0.00"))
 
     total_savings = item_discount + coupon_discount
-    delivery_fee = Decimal(request.session.get("delivery_fee", "0.00"))
+
+    # 🔥 RAZORPAY ORDER CREATION
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+
+    razorpay_amount = int(final_amount * 100)  # paise
+
+    razorpay_order = client.order.create({
+        "amount": razorpay_amount,
+        "currency": "INR",
+        "payment_capture": 1,
+         "receipt": f"order_rcpt_{request.user.id}"
+    })
+
+    request.session["razorpay_order_id"] = razorpay_order["id"]
+    request.session["total_mrp"] = str(total_mrp)
+    request.session["item_discount"] = str(item_discount)
+    request.session["coupon_discount"] = str(coupon_discount)
+    request.session["delivery_fee"] = str(delivery_fee)
+    request.session["final_amount"] = str(final_amount)
 
     return render(request, "store/payment.html", {
         "items": items,
@@ -671,8 +731,12 @@ def payment(request):
         "total_savings": total_savings,
         "applied_coupon": applied_coupon,
         "delivery_fee": delivery_fee,
-    })
 
+        # 👇 Razorpay data
+        "razorpay_key": settings.RAZORPAY_KEY_ID,
+        "razorpay_order_id": razorpay_order["id"],
+        "razorpay_amount": razorpay_amount,
+    })
 
 
 @login_required
@@ -688,89 +752,157 @@ def process_payment(request):
 
 
 
+
+
+
+import json
+from decimal import Decimal
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def place_order(request):
     if request.method != "POST":
         return redirect("cart")
 
-    cart = request.session.get("cart")
-    payment_method = request.POST.get("payment")
-    address = request.session.get("address")
-    applied_coupon = request.session.get("coupon")
+    payment_method = request.POST.get("payment")  # 👈 FORM DATA
 
-    if not cart or not payment_method or not address:
-        return redirect("cart")
-
-    # UPI validation
-    upi_app = request.POST.get("upi_app") if payment_method == "upi" else None
-    if payment_method == "upi" and not upi_app:
-        messages.error(request, "Please select a UPI app")
+    if payment_method != "cod":
         return redirect("payment")
 
-    COUPONS = {
-        "SAVE10": {"type": "flat", "value": Decimal("10"), "min_amount": Decimal("100")},
-        "SAVE20": {"type": "flat", "value": Decimal("20"), "min_amount": Decimal("200")},
-        "BIGSAVE": {
-            "type": "percent",
-            "value": Decimal("15"),
-            "max_discount": Decimal("100"),
-            "min_amount": Decimal("300"),
-        },
-        "FREESHIP": {"type": "shipping", "min_amount": Decimal("150")},
-        "NEW50": {"type": "flat", "value": Decimal("50"), "min_amount": Decimal("500")},
-    }
+    cart = request.session.get("cart")
+    address = request.session.get("address")
+
+    if not cart or not address:
+        return redirect("cart")
 
     mrp_total = Decimal("0.00")
-    item_discount = Decimal("0.00")
     subtotal = Decimal("0.00")
 
-    # Calculate totals from SESSION CART
     for variant_id, qty in cart.items():
         variant = ProductVariant.objects.get(id=int(variant_id))
         mrp_total += variant.mrp * qty
         subtotal += variant.price * qty
-        item_discount += (variant.mrp - variant.price) * qty
 
     delivery_fee = Decimal("40.00") if mrp_total < 199 else Decimal("0.00")
-    coupon_discount = Decimal("0.00")
-
-    # Apply coupon
-    if applied_coupon in COUPONS:
-        coupon = COUPONS[applied_coupon]
-
-        if subtotal >= coupon["min_amount"]:
-            if coupon["type"] == "flat":
-                coupon_discount = coupon["value"]
-
-            elif coupon["type"] == "percent":
-                coupon_discount = (subtotal * coupon["value"]) / Decimal("100")
-                coupon_discount = min(
-                    coupon_discount,
-                    coupon.get("max_discount", coupon_discount),
-                )
-
-            elif coupon["type"] == "shipping":
-                delivery_fee = Decimal("0.00")
-
+    coupon_discount = Decimal(request.session.get("coupon_discount", "0.00"))
     total_amount = subtotal - coupon_discount + delivery_fee
 
-    # Create order
     order = Order.objects.create(
         user=request.user,
-        payment_method=payment_method,
-        upi_app=upi_app,
+        payment_method="cod",
+        payment_status="pending",
         address=address,
         mrp_total=mrp_total,
-        item_discount=item_discount,
+        item_discount=mrp_total - subtotal,
         coupon_discount=coupon_discount,
         delivery_fee=delivery_fee,
         total_amount=total_amount,
-        # coupon_code=applied_coupon if applied_coupon else None,
     )
 
-    # Create order items
     for variant_id, qty in cart.items():
         variant = ProductVariant.objects.get(id=int(variant_id))
+        product = variant.product
+
+        # try:
+        #     stock = WarehouseStock.objects.get(product=product)
+        # except WarehouseStock.DoesNotExist:
+        #     messages.error(request, f"{product.name} stock not found")
+        #     return redirect("cart")
+
+        # if stock.quantity < qty:
+        #     messages.error(request, f"{product.name} is out of stock")
+        #     return redirect("cart")
+        if variant.stock < qty:
+            messages.error(request, f"{variant.product.name} is out of stock")
+            return redirect("cart")
+
+        OrderItem.objects.create(
+        order=order,
+        variant=variant,
+        quantity=qty,
+        price=variant.price,
+    )
+        variant.stock -= qty
+        variant.save()
+
+    
+
+
+    clear_checkout_session(request)
+
+    return redirect("order_success")
+
+
+from django.views.decorators.csrf import csrf_exempt
+
+
+
+
+import json
+import razorpay
+from decimal import Decimal
+from django.http import JsonResponse
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
+
+
+@login_required
+@csrf_exempt
+def verify_razorpay_payment(request):
+
+    if request.method != "POST":
+        return JsonResponse({"status": "failed"})
+
+    data = json.loads(request.body)
+
+    payment_id = data.get("razorpay_payment_id")
+    order_id = data.get("razorpay_order_id")
+    signature = data.get("razorpay_signature")
+
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+
+    # ✅ Verify Signature
+    try:
+        client.utility.verify_payment_signature({
+            "razorpay_payment_id": payment_id,
+            "razorpay_order_id": order_id,
+            "razorpay_signature": signature,
+        })
+    except:
+        return JsonResponse({"status": "failed"})
+
+    cart = request.session.get("cart", {})
+    address = request.session.get("address")
+
+    if not cart:
+        return JsonResponse({"status": "failed"})
+
+    totals = calculate_cart_totals(request)
+
+    # 🔥 CREATE ORDER HERE
+    order = Order.objects.create(
+        user=request.user,
+        payment_method="razorpay",
+        payment_status="paid",
+        razorpay_payment_id=payment_id,
+        razorpay_order_id=order_id,
+        address=address,
+        total_amount=totals["final_amount"],
+        mrp_total=totals["total_mrp"],
+        item_discount=totals["item_discount"],
+        coupon_discount=totals["coupon_discount"],
+        delivery_fee=totals["delivery_fee"],
+    )
+
+    # 🔥 CREATE ORDER ITEMS
+    for variant_id, qty in cart.items():
+        variant = ProductVariant.objects.get(id=int(variant_id))
+
         OrderItem.objects.create(
             order=order,
             variant=variant,
@@ -779,38 +911,36 @@ def place_order(request):
         )
 
     # Clear session
+    clear_checkout_session(request)
+
+    return JsonResponse({
+        "status": "success",
+        "order_id": order.id
+    })
+
+
+
+def clear_checkout_session(request):
     for key in [
         "cart", "coupon", "address",
         "final_amount", "coupon_discount", "delivery_fee"
     ]:
         request.session.pop(key, None)
 
-            # ================================
-    # SEND WHATSAPP ORDER CONFIRMATION
-    # ================================
 
+def send_whatsapp(order):
     try:
-        phone_number = "919878441443"  # test number
-
+        phone_number = "919878441443"
         message = (
             "🎉 *Order Confirmed!*\n\n"
             f"🧾 Order ID: {order.id}\n"
-            f"💳 Payment: {payment_method.upper()}\n"
-            f"💰 Total: ₹{total_amount}\n\n"
-            "📦 Your order is being processed.\n"
-            "Thank you for shopping with us 💙"
+            f"💳 Payment: {order.payment_method.upper()}\n"
+            f"💰 Total: ₹{order.total_amount}\n"
         )
-
-        print("📲 Sending WhatsApp to:", phone_number)
-        response = send_whatsapp_message(phone_number, message)
-        print("📨 WhatsApp response:", response)
-
+        send_whatsapp_message(phone_number, message)
     except Exception as e:
-        print("❌ WhatsApp error:", e)
-        
+        print("WhatsApp error:", e)
 
-
-    return redirect("order_success")
 
 from .utils.email_utils import send_user_email
     
@@ -927,7 +1057,6 @@ def my_orders(request):
     })
 
 
-
 @login_required
 def order_detail(request, order_id):
     order = get_object_or_404(
@@ -937,15 +1066,22 @@ def order_detail(request, order_id):
     )
 
     items = order.orderitem_set.select_related("variant__product")
-    items_price = sum(
-    item.quantity * item.price
-    for item in items
-)
+
+    ratings = ProductRating.objects.filter(user=request.user)
+
+    for item in items:
+        rating = ratings.filter(
+            product=item.variant.product
+        ).first()
+        item.user_rating = rating.rating if rating else None
+
     return render(request, "store/order_detail.html", {
         "order": order,
         "items": items,
-        
     })
+
+
+
 
 
 
@@ -1083,4 +1219,25 @@ def category_products(request, category_id):
     
 
     return render(request, "store/category_products.html", context)
+
+
+
+from django.http import JsonResponse
+import razorpay
+from django.conf import settings
+
+def razorpay_health_check(request):
+    client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+    order = client.order.create({
+        "amount": 100,
+        "currency": "INR",
+        "payment_capture": 1
+    })
+    return JsonResponse(order)
+
+
+
+
 

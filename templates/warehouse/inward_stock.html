@@ -1,0 +1,18 @@
+{% extends "store/base.html" %}
+{% block title %}Inward Stock{% endblock %}
+
+{% block content %}
+<div class="inward-stock-page">
+    <div class="card shadow-sm p-4">
+        <h4 class="mb-3">📦 Inward Stock (Goods Received)</h4>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button class="btn btn-success">Save Stock</button>
+            <a href="{% url 'warehouse_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

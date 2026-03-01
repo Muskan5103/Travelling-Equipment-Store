@@ -41,5 +41,11 @@ path("category/<int:category_id>/", views.category_products, name="category_prod
 
 path("wishlist/", views.wishlist_page, name="wishlist"),
 path("wishlist/toggle/<int:product_id>/", views.toggle_wishlist, name="toggle_wishlist"),
+path("rzp-test/", views.razorpay_health_check),
+path(
+    "verify-razorpay-payment/",
+    views.verify_razorpay_payment,
+    name="verify_razorpay_payment"
+),
 
 ]

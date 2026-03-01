@@ -1,0 +1,23 @@
+{% extends "socialaccount/base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+
+        <h2 class="auth-title">Sign in with Google</h2>
+        <p class="auth-subtitle">
+            You are about to sign in using your Google account.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="google-btn">
+                <img src="https://developers.google.com/identity/images/g-logo.png" width="18">
+                Continue with Google
+            </button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

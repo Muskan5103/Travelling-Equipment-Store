@@ -24,3 +24,39 @@ def cart_count(request):
         "cart_count": sum(clean_cart.values())
     }
 
+from .models import Order, Product
+from django.db.models import Sum, Count
+from django.db.models.functions import TruncDay, TruncMonth
+
+def admin_dashboard_data(request):
+    if not request.user.is_staff:
+        return {}
+
+    orders_per_day = (
+        Order.objects
+        .annotate(day=TruncDay("created_at"))
+        .values("day")
+        .annotate(count=Count("id"))
+        .order_by("day")
+    )
+
+    revenue_per_month = (
+        Order.objects
+        .filter(status="delivered")
+        .annotate(month=TruncMonth("created_at"))
+        .values("month")
+        .annotate(total=Sum("total_amount"))
+        .order_by("month")
+    )
+
+    return {
+        "total_orders": Order.objects.count(),
+        "pending_orders": Order.objects.filter(status="placed").count(),
+        "total_products": Product.objects.count(),
+        "total_revenue": Order.objects.filter(status="delivered")
+            .aggregate(Sum("total_amount"))["total_amount__sum"] or 0,
+        "recent_orders": Order.objects.order_by("-id")[:5],
+        "orders_per_day": list(orders_per_day),
+        "revenue_per_month": list(revenue_per_month),
+    }
+

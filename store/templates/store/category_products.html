@@ -26,15 +26,16 @@
           </a>
 
           <!-- ❤️ Wishlist Icon -->
-          <a href="{% url 'toggle_wishlist' product.id %}" class="wishlist-iconn">
+          <button type="button"
+        class="wishlist-btn wishlist-icon"
+        data-product-id="{{ product.id }}">
+    {% if product.id in wishlist_product_ids %}
+        ❤️
+    {% else %}
+        🤍
+    {% endif %}
+</button>
 
-            {% if product.id in wishlist_product_ids %}
-            ❤️
-            {% else %}
-            🤍
-            {% endif %}
-
-          </a>
 
         </div>
 

@@ -1,0 +1,367 @@
+[
+{
+  "model": "store.category",
+  "pk": 15,
+  "fields": {
+    "name": "Luggage and Bags",
+    "icon": "category_icons/lb.avif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 16,
+  "fields": {
+    "name": "Clothing & Apparel",
+    "icon": "category_icons/cl.jpeg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 17,
+  "fields": {
+    "name": "Toiletries & Health",
+    "icon": "category_icons/hy.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 18,
+  "fields": {
+    "name": "Electronics & Tech",
+    "icon": "category_icons/el.jpg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 19,
+  "fields": {
+    "name": "Comfort & Entertainment",
+    "icon": "category_icons/books.avif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 20,
+  "fields": {
+    "name": "Documents & Security",
+    "icon": "category_icons/wa.webp"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 21,
+  "fields": {
+    "name": "Footwear & Accessories",
+    "icon": "category_icons/sh.webp"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 22,
+  "fields": {
+    "name": "Travel Accessories",
+    "icon": "category_icons/btt.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 23,
+  "fields": {
+    "name": "Adventure & Outdoor Gear",
+    "icon": "category_icons/tent.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 24,
+  "fields": {
+    "name": "Packing & Organization",
+    "icon": "category_icons/pac.webp"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 25,
+  "fields": {
+    "name": "Safety, Security & Anti-Theft",
+    "icon": "category_icons/lock.jpg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 26,
+  "fields": {
+    "name": "Weather-Specific Travel Gear",
+    "icon": "category_icons/we.jpg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 27,
+  "fields": {
+    "name": "Transport-Based Travel Gear",
+    "icon": "category_icons/tra.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 28,
+  "fields": {
+    "name": "Destination-Based Categories",
+    "icon": "category_icons/des.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 29,
+  "fields": {
+    "name": "Navigation & Smart Travel",
+    "icon": "category_icons/nav.jfif"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 17,
+  "fields": {
+    "name": "Backpacks",
+    "description": "An adventure or outdoor backpack is a specially designed bag you carry on your back to safely and comfortably transport gear — whether you’re hiking, trekking, camping, traveling, or exploring nature.",
+    "image": "products/backpack.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 18,
+  "fields": {
+    "name": "Kids tent",
+    "description": "Kids Summer Camping Dome Tent - 152 x 152 x 111cm",
+    "image": "products/tent1.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 19,
+  "fields": {
+    "name": "Camping Tent",
+    "description": "Nyalkaran Camping Tent Waterproof, Portable Tent for Outdoor, Traveling,Hiking,Camping, Tent - For 8 Person (Multicolor)",
+    "image": "products/ten.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 20,
+  "fields": {
+    "name": "Canvas Bell Tent",
+    "description": "VEVORbrand Canvas Bell Tent 23ft Cotton Canvas Tent with Wall Stove Jacket Glamping Tent Waterproof Bell Tent for Family Camping Outdoor Hunting in 4 Seasons",
+    "image": "products/tent2.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 21,
+  "fields": {
+    "name": "Privacy Tent",
+    "description": "Pop Up Privacy Tent Portable Outdoor Camping Bathroom Toilet Changing Dressing Room Privacy Shelters Room for Hiking and Beach - UPF 40+ Waterproof with Carry Bag",
+    "image": "products/tent3.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 22,
+  "fields": {
+    "name": "Canopy Tent",
+    "description": "Holiday Umbrella's Portable & Foldable Gazebo Tent & Pop-up Canopy Tent 10 x 10 Ft/ 3x3 Meter, (RED) (22 kg)",
+    "image": "products/canopy.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 23,
+  "fields": {
+    "name": "Canopy Tent",
+    "description": "Canopy tent 10 x 20 feet with side walls Premium Quality | Invezo",
+    "image": "products/tent4.avif",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 24,
+  "fields": {
+    "name": "Sleeping bag",
+    "description": "RHINOKraft -10 Degree|Soft Fur Lining |Air Travel Pillow|Soft and Warm Adventure Sleeping Bag (Multicolor)",
+    "image": "products/sb.webp",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 26,
+  "fields": {
+    "name": "Sleeping bag",
+    "description": "RHINOKraft -10 Degree|Soft Fur Lining |Air Travel Pillow|Soft and Warm Adventure Sleeping Bag (Multicolor)",
+    "image": "products/ml_ZxLIL4u.jfif",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 27,
+  "fields": {
+    "name": "Backpack Durable",
+    "description": "KAKA Travel Backpack, Carry On Backpack Durable Convertible Duffle Bag Fit for 15.6 Inch Laptop for Men and Women(Medium 35L)",
+    "image": "products/bag.jpg",
+    "category": 23,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 28,
+  "fields": {
+    "name": "Men's Windproof Hiking Jacket",
+    "description": "Men's Windproof Hiking Jacket Water & I Breathable Mesh Liner Detachable Hood I Trekking &Daily Use Windbreaker (Matching Women's Jacket Available)",
+    "image": "products/jack1.jpg",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 29,
+  "fields": {
+    "name": "Jacket",
+    "description": "Winter Coats: Waterproof Breathable Jackets - Outdoor and Country | Blog",
+    "image": "products/jackk2.jfif",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 30,
+  "fields": {
+    "name": "Windbreaker",
+    "description": "ZEEL Windbreaker Windcheater for Men, Stylish & Lightweight Winter Jacket, Sports Wear for Trekking & Jogging, Cycling Jackets for Men, BMW04",
+    "image": "products/jack3.jpg",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 31,
+  "fields": {
+    "name": "Women jacket",
+    "description": "Buy Women Red/Black Colourblocked Hooded Windcheater Oversized Sports Jacket | Chkokko",
+    "image": "products/jack4.webp",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 33,
+  "fields": {
+    "name": "Lime Green Windcheater",
+    "description": "Bewakoof Women's Lime Green Color Block Windcheater Jacket Green XS",
+    "image": "products/ack5_Q9VHvRR.avif",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 34,
+  "fields": {
+    "name": "Insulated Jacket",
+    "description": "Insulated Jacket Down Jacket Best Brands Insulated Jackets Good Down Jacket Brands Clothing Brands",
+    "image": "products/jack5.webp",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 35,
+  "fields": {
+    "name": "Insulated Jackets",
+    "description": "Insulated Jackets The North Face Men&#039;s Xl Jacket The North Face Men's Hathersage Insulated",
+    "image": "products/jack6.jfif",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 36,
+  "fields": {
+    "name": "Puffer Jacket",
+    "description": "Men's Winter with Hood Puffer Jacket Thicken Insulated Warm Down Coat Windproof Waterproof",
+    "image": "products/jaqck7.jpg",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 37,
+  "fields": {
+    "name": "Snow Jackets",
+    "description": "Waterproof Jacket Snow Jackets For Women Down Jacket Ladies Insulated Winter Coats Puffer Jacket",
+    "image": "products/jaqck8.jpg",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 38,
+  "fields": {
+    "name": "Softshell Jacket",
+    "description": "Men's Softshell Jackets Online : Buy Camping & Hiking Softshell Jackets for Men in India",
+    "image": "products/ack8.jpg",
+    "category": 16,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 39,
+  "fields": {
+    "name": "Raincoats",
+    "description": 

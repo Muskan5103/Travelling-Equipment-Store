@@ -1,0 +1,118 @@
+/* Page background */
+.auth-wrapper {
+    min-height: calc(100vh - 90px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f4f6f9, #eef1f5);
+    padding: 40px 15px;
+}
+
+/* Card */
+.auth-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 14px;
+    padding: 32px 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.auth-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Google signup note */
+.auth-social-note {
+    font-size: 0.9rem;
+    color: #6c757d;
+    background: #f8f9fa;
+    border-left: 4px solid #0d6efd;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+/* Form labels */
+.auth-card label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 4px;
+}
+
+/* Inputs */
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: all 0.2s ease;
+}
+
+.auth-card input:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.2);
+    outline: none;
+}
+
+/* Errors */
+.auth-error {
+    font-size: 0.8rem;
+    color: #dc3545;
+    margin-top: 4px;
+}
+
+/* Submit button */
+.auth-card button[type="submit"] {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(135deg, #198754, #2ecc71);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-card button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(25, 135, 84, 0.35);
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 26px 20px;
+    }
+
+    .auth-title {
+        font-size: 1.4rem;
+    }
+}
+/* Flash messages – no layout break */
+.flash-messages {
+    position: absolute;
+    top: 70px; /* height of navbar */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    z-index: 1050;
+}
+
+.flash-messages .alert {
+    margin: 0;
+    border-radius: 10px;
+}

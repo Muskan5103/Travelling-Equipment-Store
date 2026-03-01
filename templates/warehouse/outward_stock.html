@@ -1,0 +1,60 @@
+{% extends "store/base.html" %}
+{% block title %}Outward Stock{% endblock %}
+
+{% block content %}
+<div class="outward-stock-page">
+    <h4 class="mb-3">🚚 Outward Stock (Goods Issued)</h4>
+<div class="mb-3 text-end">
+    <a href="{% url 'outward_stock_add' %}" class="btn btn-success">
+        ➕ Add Outward Stock
+    </a>
+</div>
+
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Product</th>
+                <th>Variant</th>
+                
+
+                <th>Qty</th>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Destination</th>
+                <th>Current Stock</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in outward_list %}
+            <tr>
+                <td>{{ o.variant.product.name }}</td>
+                <td>{{ o.variant.quantity }}{{ o.variant.unit }}</td>
+                
+
+                <td class="qty-issued">{{ o.quantity_issued }}</td>
+                <td class="order-id">#{{ o.order_item.order.id }}</td>
+                <td>{{ o.issued_date|date:"d M Y" }}</td>
+                <td>
+                    <span class="destination {% if o.destination == 'Customer' %}customer{% else %}store{% endif %}">
+                        {{ o.destination }}
+                    </span>
+                </td>
+                <td>{{ o.variant.stock }}</td>
+                <td>
+    <form method="POST" action="{% url 'outward_stock_delete' o.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">
+            Delete
+        </button>
+    </form>
+</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

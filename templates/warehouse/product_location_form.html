@@ -1,0 +1,86 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<div class="container bii mtt-4">
+
+    <div class="card shadow p-4">
+
+        <h4 class="mb-4">
+            {% if location %}
+                ✏ Edit Product Location
+            {% else %}
+                ➕ Add Product Location
+            {% endif %}
+        </h4>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Product -->
+            <div class="mb-3">
+                <label class="form-label">Product</label>
+                <select name="product" class="form-control" required>
+                    <option value="">Select Product</option>
+
+                    {% for product in products %}
+                        <option value="{{ product.id }}"
+                            {% if location and location.product.id == product.id %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ product.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Rack -->
+            <div class="mb-3">
+                <label class="form-label">Rack</label>
+                <select name="rack" class="form-control" required>
+                    <option value="">Select Rack</option>
+
+                    {% for rack in racks %}
+                        <option value="{{ rack.id }}"
+                            {% if location and location.rack.id == rack.id %}
+                                selected
+                            {% endif %}
+                        >
+                            Rack {{ rack.rack_number }} 
+                            ({{ rack.section.name }} - {{ rack.section.warehouse.name }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Quantity -->
+            <div class="mb-3">
+                <label class="form-label">Quantity</label>
+                <input type="number"
+                       name="quantity"
+                       class="form-control"
+                       min="0"
+                       value="{{ location.quantity|default:'' }}"
+                       required>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success">
+                    Save
+                </button>
+
+                <a href="{% url 'product_location_list' %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

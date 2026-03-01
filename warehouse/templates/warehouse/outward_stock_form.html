@@ -1,0 +1,45 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+<div class="container bii mtt-4">
+    <h4>Add Outward Stock</h4>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+<div class="mb-3">
+    <label>Order</label>
+    <select name="order_item" class="form-control" required>
+        {% for o in order_items %}
+            <option value="{{ o.id }}">
+                Order #{{ o.order.id }} - {{ o.product_variant.product.name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+        <div class="mb-3">
+            <label>Product Variant</label>
+            <select name="variant" class="form-control" required>
+                {% for v in variants %}
+                    <option value="{{ v.id }}">
+                        {{ v.product.name }} (Stock: {{ v.stock }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Quantity</label>
+            <input type="number" name="quantity" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Save
+        </button>
+    </form>
+</div>
+{% endblock %}

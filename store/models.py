@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+from warehouse.models import Supplier
+
 
 
 class Category(models.Model):
@@ -10,16 +12,35 @@ class Category(models.Model):
         return self.name
 
 
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="products/", blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name="products"
+    )
+
+    # ✅ Added to match admin.py
+    supplier = models.ForeignKey(
+        Supplier,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="products"
+    )
+
+    # ✅ Added to match admin.py
+    minimum_stock = models.PositiveIntegerField(default=5)
 
     def __str__(self):
         return self.name
 
-    # ✅ Cheapest / default variant
+    # Cheapest / default variant
     @property
     def first_variant(self):
         return self.variants.order_by("price").first()
@@ -77,6 +98,8 @@ class ProductVariant(models.Model):
     unit = models.CharField(max_length=10, choices=UNIT_CHOICES)
 
     mrp = models.DecimalField(
+
+        
         max_digits=8,
         decimal_places=2,
         null=True,
@@ -97,7 +120,6 @@ class ProductVariant(models.Model):
 
 
 
-
 class Order(models.Model):
     STATUS_CHOICES = [
         ("placed", "Placed"),
@@ -115,6 +137,7 @@ class Order(models.Model):
     PAYMENT_CHOICES = [
         ("cod", "Cash on Delivery"),
         ("upi", "UPI"),
+        ("razorpay", "Razorpay"), 
         ("card", "Card"),
         ("netbanking", "Net Banking"),
     ]
@@ -128,7 +151,18 @@ class Order(models.Model):
         choices=STATUS_CHOICES,
         default="placed"
     )
-    
+    PAYMENT_STATUS_CHOICES = [
+    ("pending", "Pending"),
+    ("completed", "Completed"),
+    ("failed", "Failed"),
+]
+
+    payment_status = models.CharField(
+    max_length=20,
+    choices=PAYMENT_STATUS_CHOICES,
+    default="pending"
+)
+
     created_at = models.DateTimeField(auto_now_add=True)
     mrp_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     item_discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -137,6 +171,9 @@ class Order(models.Model):
     return_requested = models.BooleanField(default=False)
     return_reason = models.CharField(max_length=100, blank=True, null=True)
     return_comment = models.TextField(blank=True, null=True)
+    razorpay_payment_id = models.CharField(max_length=255, blank=True, null=True)
+    razorpay_order_id = models.CharField(max_length=255, blank=True, null=True)
+
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.username}"

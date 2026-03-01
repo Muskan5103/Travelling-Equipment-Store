@@ -34,37 +34,203 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-  /* ===============================
-     PAYMENT METHOD TOGGLE
-  ================================ */
+  
 
-  const radios = document.querySelectorAll('input[name="payment"]');
+const radios = document.querySelectorAll('input[name="payment"]');
 
-  const boxes = {
-    upi: document.getElementById("upi-box"),
-    card: document.getElementById("card-box"),
-    netbanking: document.getElementById("netbanking-box")
-  };
+const boxes = {
+  upi: document.getElementById("upi-box"),
+  card: document.getElementById("card-box"),
+  netbanking: document.getElementById("netbanking-box")
+};
 
-  function hideAll() {
-    Object.values(boxes).forEach(box => {
-      if (box) box.style.display = "none";
-    });
-  }
-
-  radios.forEach(radio => {
-    radio.addEventListener("change", () => {
-      hideAll();
-      if (boxes[radio.value]) {
-        boxes[radio.value].style.display = "block";
-      }
-    });
+function hideAll() {
+  Object.values(boxes).forEach(box => {
+    if (box) box.style.display = "none";
   });
+}
 
-  const checked = document.querySelector('input[name="payment"]:checked');
-  if (checked && boxes[checked.value]) {
-    boxes[checked.value].style.display = "block";
-  }
+radios.forEach(radio => {
+  radio.addEventListener("change", () => {
+    hideAll();
+
+    // ❌ COD → no box
+    if (radio.value === "cod") return;
+
+    // ✅ Show selected payment box
+    if (boxes[radio.value]) {
+      boxes[radio.value].style.display = "block";
+    }
+  });
+});
+
+// Show default selected payment box
+const checked = document.querySelector('input[name="payment"]:checked');
+if (checked && boxes[checked.value]) {
+  boxes[checked.value].style.display = "block";
+}
+
+
+// const payBtn = document.getElementById("pay-btn");
+
+// if (payBtn) {
+//   payBtn.addEventListener("click", function () {
+
+//     console.log(RAZORPAY_KEY, ORDER_ID, AMOUNT); // 🔍 debug once
+
+//     const options = {
+//       key: RAZORPAY_KEY,
+//       amount: AMOUNT,
+//       currency: "INR",
+//       name: "Travel Equipment Store",
+//       description: "Order Payment",
+//       order_id: ORDER_ID,
+
+//       handler: function (response) {
+//         fetch("/verify-razorpay-payment/", {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//             "X-CSRFToken": getCookie("csrftoken"),
+//           },
+//           body: JSON.stringify(response),
+//         })
+//         .then(res => res.json())
+//         .then(data => {
+//           if (data.status === "success") {
+//             window.location.href = "/order-success/";
+//           } else {
+//             alert("Payment verification failed");
+//           }
+//         });
+//       }
+//     };
+
+//     const rzp = new Razorpay(options);
+//     rzp.open();
+//   });
+// }
+
+
+// const payBtn = document.getElementById("pay-btn");
+
+// if (payBtn) {
+//   payBtn.addEventListener("click", function () {
+
+//     const selected = document.querySelector('input[name="payment"]:checked');
+
+//     if (!selected) {
+//       alert("Please select a payment method");
+//       return;
+//     }
+
+//     // ✅ COD → normal form submit
+//     if (selected.value === "cod") {
+//       document.getElementById("payment-form").submit();
+//       return;
+//     }
+
+//     // 🔵 ONLINE PAYMENT → RAZORPAY
+//     const options = {
+//       key: RAZORPAY_KEY,
+//       amount: AMOUNT,
+//       currency: "INR",
+//       name: "Travel Equipment Store",
+//       description: "Order Payment",
+//       order_id: ORDER_ID,
+
+//      handler: function (response) {
+//   fetch("/verify-razorpay-payment/", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "X-CSRFToken": getCookie("csrftoken"),
+//     },
+//     body: JSON.stringify({
+//       razorpay_payment_id: response.razorpay_payment_id,
+//       razorpay_order_id: response.razorpay_order_id,
+//       razorpay_signature: response.razorpay_signature,
+//     }),
+//   })
+//   .then(res => res.json())
+//   .then(data => {
+//     if (data.status === "success") {
+//       window.location.href = "/order-success/";
+//     } else {
+//       alert("Payment verification failed");
+//     }
+//   });
+// }
+
+
+//     };
+
+//     const rzp = new Razorpay(options);
+//     rzp.open();
+
+//   }); // ✅ closes addEventListener
+// } // ✅ closes if(payBtn)
+
+
+const payBtn = document.getElementById("pay-btn");
+
+if (payBtn) {
+  payBtn.addEventListener("click", function () {
+
+    const selected = document.querySelector('input[name="payment"]:checked');
+
+    if (!selected) {
+      alert("Please select a payment method");
+      return;
+    }
+
+    // ✅ COD
+    if (selected.value === "cod") {
+      document.getElementById("payment-form").submit();
+      return;
+    }
+
+    // 🔵 RAZORPAY
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: AMOUNT,
+      currency: "INR",
+      name: "Travel Equipment Store",
+      description: "Order Payment",
+      order_id: ORDER_ID,
+
+      handler: function (response) {
+  fetch("/verify-razorpay-payment/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCookie("csrftoken"),
+    },
+    body: JSON.stringify({
+      razorpay_payment_id: response.razorpay_payment_id,
+      razorpay_order_id: response.razorpay_order_id,
+      razorpay_signature: response.razorpay_signature,
+    }),
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      // ✅ Redirect to actual order
+      window.location.href = `/order-success/`;
+    } else {
+      alert("Payment verification failed");
+    }
+  });
+}
+
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  });
+}
+
+
 
 
   /* ===============================
@@ -203,6 +369,119 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const profileBtn = document.querySelector(".profile-btn");
+  const profileMenu = document.querySelector(".profile-menu");
+
+  if (!profileBtn || !profileMenu) return;
+
+  // Toggle on profile button click
+  profileBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    profileMenu.style.display =
+      profileMenu.style.display === "block" ? "none" : "block";
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".profile-dropdown")) {
+      profileMenu.style.display = "none";
+    }
+  });
+});
+
+
+
+
+const ordersDataEl = document.getElementById("orders-data");
+const revenueDataEl = document.getElementById("revenue-data");
+
+if (ordersDataEl && revenueDataEl) {
+
+  const ordersRaw = JSON.parse(ordersDataEl.textContent);
+  const revenueRaw = JSON.parse(revenueDataEl.textContent);
+
+  // ---------------- ORDERS PER DAY ----------------
+  const ordersLabels = ordersRaw.map(o => {
+    const date = new Date(o.day);
+    return date.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short"
+    });
+  });
+
+  const ordersCounts = ordersRaw.map(o => o.count);
+
+  new Chart(document.getElementById("ordersChart"), {
+    type: "line",
+    data: {
+      labels: ordersLabels,
+      datasets: [{
+        label: "Orders",
+        data: ordersCounts,
+        borderWidth: 2,
+        tension: 0.4,
+        fill: false
+      }]
+    }
+  });
+
+  // ---------------- REVENUE PER MONTH ----------------
+  const revenueLabels = revenueRaw.map(r => {
+    const date = new Date(r.month);
+    return date.toLocaleDateString("en-IN", {
+      month: "short",
+      year: "numeric"
+    });
+  });
+
+  const revenueTotals = revenueRaw.map(r => r.total || 0);
+
+  new Chart(document.getElementById("revenueChart"), {
+    type: "bar",
+    data: {
+      labels: revenueLabels,
+      datasets: [{
+        label: "Revenue (₹)",
+        data: revenueTotals,
+        borderWidth: 1
+      }]
+    }
+  });
+
+}
+
+
+
+
+function toggleDrawer() {
+    const drawer = document.getElementById("sideDrawer");
+    const overlay = document.getElementById("overlay");
+
+    drawer.classList.toggle("active");
+    overlay.classList.toggle("active");
+
+    document.body.classList.toggle("no-scroll");
+}
+
+function closeDrawer() {
+    document.getElementById("sideDrawer").classList.remove("active");
+    document.getElementById("overlay").classList.remove("active");
+
+    document.body.classList.remove("no-scroll");
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

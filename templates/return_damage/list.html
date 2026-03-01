@@ -1,0 +1,203 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %}Return & Damage Management{% endblock %}
+
+{% block content %}
+
+<style>
+    .return-wrapper {
+        max-width: 1250px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .return-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .return-header h2 {
+        font-weight: 600;
+        margin: 0;
+        color: #1f2d3d;
+    }
+
+    .btn-add {
+        background: linear-gradient(135deg, #4f6ef7, #2a3fb0);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+        text-decoration: none;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 12px rgba(79, 110, 247, 0.3);
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(79, 110, 247, 0.4);
+        color: white;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background-color: #1f2d3d;
+        color: white;
+    }
+
+    th {
+        padding: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    td {
+        padding: 14px;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    tbody tr {
+        transition: 0.2s ease;
+    }
+
+    tbody tr:hover {
+        background-color: #f4f7ff;
+        transform: scale(1.01);
+    }
+
+    .badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .returned {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .damaged {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .action {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .btn-update {
+        background-color: #0d6efd;
+        padding: 6px 14px;
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-update:hover {
+        background-color: #084298;
+        transform: scale(1.05);
+        color: white;
+    }
+
+    .no-data {
+        padding: 25px;
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+        .return-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+    }
+</style>
+
+<div class="return-wrapper">
+
+    <div class="return-header">
+        <h2>Return & Damage Management</h2>
+        <a href="{% url 'add_return_damage' %}" class="btn-add">
+            + Add New Record
+        </a>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Equipment</th>
+                    <th>Customer</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action Status</th>
+                    <th>Date</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.product.name }}</td>
+                    <td>{{ record.customer_name }}</td>
+                    <td><strong>{{ record.quantity }}</strong></td>
+
+                    <td>
+                        {% if record.status == "Returned" %}
+                            <span class="badge returned">Returned</span>
+                        {% else %}
+                            <span class="badge damaged">Damaged</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="badge action">
+                            {{ record.action_status }}
+                        </span>
+                    </td>
+
+                    <td>{{ record.date_reported|date:"d M Y, h:i A" }}</td>
+
+                    <td>
+                        <a href="{% url 'update_action_status' record.id %}" 
+                           class="btn-update">
+                            Update
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="no-data">
+                        No records found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

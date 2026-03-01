@@ -1,0 +1,45 @@
+from django.urls import path
+from .views import warehouse_dashboard, stock_in
+from . import views
+from .views import stock_overview 
+urlpatterns = [
+    path('', warehouse_dashboard, name='warehouse_dashboard'),
+    path('stock-in/', stock_in, name='stock_in'),
+    path("inward/", views.inward_stock, name="inward_stock"),
+    path("outward/", views.outward_stock_list, name="outward_stock"),
+    path('suppliers/', views.supplier_list, name='supplier_list'),
+    path('suppliers/add/', views.add_supplier, name='add_supplier'),
+    path('suppliers/delete/<int:id>/', views.delete_supplier, name='delete_supplier'),
+    path('reports/', views.reports, name='reports'),
+    path('return_damage_list/', views.return_damage_list, name='return_damage_list'),
+    path('add/', views.add_return_damage, name='add_return_damage'),
+    path('update/<int:pk>/', views.update_action_status, name='update_action_status'),
+    path("warehouses/", views.warehouse_list, name="warehouse_list"),
+path("sections/", views.section_list, name="section_list"),
+path("racks/", views.rack_list, name="rack_list"),
+path("product-locations/", views.product_location_list, name="product_location_list"),
+path('warehouses/create/', views.warehouse_create, name='warehouse_create'),
+path('warehouses/<int:pk>/update/', views.warehouse_update, name='warehouse_update'),
+path('warehouses/<int:pk>/delete/', views.warehouse_delete, name='warehouse_delete'),
+path('sections/create/', views.section_create, name='section_create'),
+path('sections/<int:pk>/update/', views.section_update, name='section_update'),
+path('sections/<int:pk>/delete/', views.section_delete, name='section_delete'),
+path('racks/create/', views.rack_create, name='rack_create'),
+path('racks/<int:pk>/update/', views.rack_update, name='rack_update'),
+path('racks/<int:pk>/delete/', views.rack_delete, name='rack_delete'),
+path('product-locations/create/', views.product_location_create, name='product_location_create'),
+path('product-locations/<int:pk>/update/', views.product_location_update, name='product_location_update'),
+path('product-locations/<int:pk>/delete/', views.product_location_delete, name='product_location_delete'),
+path('stock-history/', views.stock_history, name='stock_history'),
+path("outward-stock/create/", views.outward_stock_create, name="outward_stock_create"),
+path("outward/delete/<int:pk>/", views.outward_stock_delete, name="outward_stock_delete"),
+path("outward/add/", views.outward_stock_create, name="outward_stock_add"),
+path("transfer-stock/", views.transfer_stock, name="transfer_stock"),
+path("stock-overview/", views.stock_overview, name="stock_overview"),
+path("export/excel/", views.export_stock_excel, name="export_stock_excel"),
+    path("export/low-stock/", views.export_low_stock_excel, name="export_low_stock_excel"),
+    
+    path("export/pro-pdf/", views.export_professional_pdf, name="export_professional_pdf"),
+    path("scan/", views.scan_stock, name="scan_stock"),
+]
+

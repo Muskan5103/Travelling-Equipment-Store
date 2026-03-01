@@ -1,0 +1,128 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<style>
+    .history-wrapper {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .history-title {
+        font-weight: 600;
+        margin-bottom: 25px;
+        color: #1f2d3d;
+    }
+
+    .table thead {
+        background-color: #1f2d3d;
+        color: white;
+    }
+
+    .table th {
+        padding: 14px !important;
+        font-weight: 500;
+    }
+
+    .table td {
+        padding: 14px !important;
+        vertical-align: middle !important;
+    }
+
+    .table tbody tr {
+        transition: 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f4f7ff;
+        transform: scale(1.01);
+    }
+
+    .badge {
+        padding: 6px 12px;
+        font-size: 13px;
+        border-radius: 20px;
+    }
+
+    .badge-in {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-out {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .user-name {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .date-text {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+        .history-wrapper {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="history-wrapper">
+
+    <h3 class="history-title">📊 Stock History</h3>
+
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>User</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td>{{ t.product_variant.product.name }}</td>
+
+                    <td>
+                        {% if t.transaction_type == "IN" %}
+                            <span class="badge badge-in">IN</span>
+                        {% else %}
+                            <span class="badge badge-out">OUT</span>
+                        {% endif %}
+                    </td>
+
+                    <td><strong>{{ t.quantity }}</strong></td>
+
+                    <td class="user-name">
+                        {{ t.user|default:"System" }}
+                    </td>
+
+                    <td class="date-text">
+                        {{ t.created_at|date:"d M Y, h:i A" }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-muted py-4">
+                        No stock transactions found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
