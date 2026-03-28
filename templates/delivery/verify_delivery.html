@@ -1,0 +1,105 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %}
+Complete Delivery
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-body p-4">
+
+                    <h4 class="text-center mb-4">
+                        📦 Complete Delivery
+                    </h4>
+
+                    <!-- Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Order Info -->
+                    <div class="mb-3">
+                        <p><strong>Order ID:</strong> #{{ order.id }}</p>
+                        <p><strong>Customer:</strong> {{ order.user.username }}</p>
+                        <p><strong>Address:</strong> {{ order.address }}</p>
+                    </div>
+
+                    <hr>
+
+                    <!-- FORM -->
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- OTP -->
+                        <div class="mb-3">
+                            <label class="form-label">🔐 Enter OTP</label>
+                            <input type="text"
+                                   name="otp"
+                                   class="form-control"
+                                   placeholder="Enter 6-digit OTP"
+                                   required>
+                        </div>
+
+                        <!-- Upload Image -->
+                        <div class="mb-3">
+                            <label class="form-label">📷 Upload Delivery Photo</label>
+                            <input type="file"
+                                   name="photo"
+                                   class="form-control"
+                                   accept="image/*"
+                                   required>
+                        </div>
+
+                        <!-- Preview Image -->
+                        <div class="mb-3 text-center">
+                            <img id="preview"
+                                 src="#"
+                                 alt="Preview"
+                                 style="display:none; max-width:100%; height:150px; object-fit:cover; border-radius:10px;">
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-grid">
+                            <button type="submit"
+                                    class="btn btn-success btn-lg rounded-3">
+                                ✅ Submit Delivery
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- IMAGE PREVIEW SCRIPT -->
+<script>
+document.querySelector('input[name="photo"]').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('preview');
+
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+    }
+});
+</script>
+
+{% endblock %}

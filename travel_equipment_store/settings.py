@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     'store',
     'warehouse',
+    'delivery',
 ]
 SITE_ID = 1
 
@@ -103,7 +104,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "store.context_processors.admin_dashboard_data",
                 'warehouse.context_processors.stock_notifications',
-
+                'delivery.context_processors.delivery_partner',
             ],
         },
     },
@@ -202,7 +203,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "musu5103@gmail.com"
 EMAIL_HOST_PASSWORD = "cjpy yuif wifa zlli"
 
-DEFAULT_FROM_EMAIL = "My Shop <yourgmail@gmail.com>"
+DEFAULT_FROM_EMAIL = "Trek Ready <your-email@gmail.com>"
 ALLOWED_HOSTS = ['192.168.1.11', 'localhost', '127.0.0.1']
 
 

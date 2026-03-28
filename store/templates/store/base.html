@@ -3,429 +3,585 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Ecommerce Site</title>
+    <title>Ecommerce Site</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Bootstrap Icons (for nice icons) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Bootstrap Icons (for nice icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-  <!-- Your custom CSS -->
-  <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/warehouse.css' %}">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/warehouse.css' %}">
+    <link rel="stylesheet" href="{% static 'css/delivery_dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
+    {% if messages %}
+    <div class="toast-container position-fixed top-0 end-0 p-3">
 
-<nav class="main-navbar">
-  <div class="container d-flex align-items-center justify-content-between">
+        {% for message in messages %}
+        <div class="toast show align-items-center text-bg-primary border-0 mb-2">
 
-    <!-- LEFT: Hamburger + Logo -->
-    <div class="d-flex align-items-center gap-3">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
 
-      {% if request.user.is_authenticated and request.user.is_staff %}
-      <!-- Hamburger (ONLY for staff) -->
-      <button class="menu-toggle-navbar" onclick="toggleDrawer()">
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
 
-        <i class="bi bi-list"></i>
-      </button>
-      {% endif %}
-
-      <!-- Logo -->
-      <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
-        <img src="{% static 'store/images/logo.png' %}" 
-             alt="Travel Gear" 
-             class="nav-logo-img">
-        <span class="nav-logo-text">Trek Ready</span>
-      </a>
-      {% if request.user.is_staff %}
-    <a href="{% url 'warehouse_dashboard' %}" class="nav-home-btn">
-        <i class="bi bi-house-door"></i> Home
-    </a>
-{% else %}
-    <a href="{% url 'home' %}" class="nav-home-btn">
-        <i class="bi bi-house-door"></i> Home
-    </a>
-{% endif %}
-
+        </div>
+        {% endfor %}
 
     </div>
-<li class="nav-item dropdown">
-    <a class="nav-link navbar-bell" href="#" data-bs-toggle="dropdown">
-        <i class="fas fa-bell"></i>
+    {% endif %}
+    <nav class="main-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
 
-        {% if low_stock_count > 0 or out_of_stock_count > 0 %}
-        <span class="notification-badge">
-            {{ low_stock_count|add:out_of_stock_count }}
-        </span>
-        {% endif %}
-    </a>
+            <!-- LEFT: Hamburger + Logo -->
+            <div class="d-flex align-items-center gap-3">
 
-    <ul class="dropdown-menu dropdown-menu-end shadow">
-        <li class="dropdown-header">Stock Alerts</li>
+                {% if request.user.is_authenticated and request.user.is_staff %}
+                <button class="menu-toggle-navbar" onclick="toggleDrawer()">
+                    <i class="bi bi-list"></i>
+                </button>
+                {% endif %}
 
-        {% if low_stock_count > 0 %}
-        <li>
-            <span class="dropdown-item text-warning">
-                ⚠ {{ low_stock_count }} Low Stock
-            </span>
-        </li>
-        {% endif %}
+                <!-- Logo -->
+                <a href="{% url 'home' %}" class="nav-logo d-flex align-items-center">
+                    <img src="{% static 'store/images/logo.png' %}" alt="Travel Gear" class="nav-logo-img">
+                    <span class="nav-logo-text">Trek Ready</span>
+                </a>
 
-        {% if out_of_stock_count > 0 %}
-        <li>
-            <span class="dropdown-item text-danger">
-                ❌ {{ out_of_stock_count }} Out of Stock
-            </span>
-        </li>
-        {% endif %}
+                {% if request.user.is_staff %}
+                <a href="{% url 'warehouse_dashboard' %}" class="nav-home-btn">
+                    <i class="bi bi-house-door"></i> Home
+                </a>
+                {% else %}
+                <a href="{% url 'home' %}" class="nav-home-btn">
+                    <i class="bi bi-house-door"></i> Home
+                </a>
+                {% endif %}
 
-        {% if low_stock_count == 0 and out_of_stock_count == 0 %}
-        <li>
-            <span class="dropdown-item text-success">
-                ✅ All Products In Stock
-            </span>
-        </li>
-        {% endif %}
-    </ul>
-</li>
+            </div>
 
-    <!-- CENTER: Search (ONLY for normal users) -->
-    {% if not request.user.is_staff %}
-    <!-- <a href="{% url 'home' %}"
-       class="nav-link home-btn {% if request.path == '/' %}active{% endif %}">
-       🏠 Home
-    </a> -->
 
-    <div class="nav-search-wrapper d-flex align-items-center">
-      <form method="GET" action="{% url 'home' %}" class="search-form">
-        <input type="text" name="q"
-               placeholder="Search backpacks, tents, shoes..."
-               class="search-input">
-        <button type="submit" class="nav-search-btn">
-          <i class="bi bi-search"></i>
-        </button>
-      </form>
-      <div id="searchResults" class="search-results"></div>
+            <!-- STOCK ALERT (Staff Only) -->
+            {% if request.user.is_staff %}
+            <li class="nav-item dropdown">
+                <a class="nav-link navbar-bell" href="#" data-bs-toggle="dropdown">
+                    <i class="fas fa-bell"></i>
+
+                    {% if low_stock_count > 0 or out_of_stock_count > 0 %}
+                    <span class="notification-badge">
+                        {{ low_stock_count|add:out_of_stock_count }}
+                    </span>
+                    {% endif %}
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li class="dropdown-header">Stock Alerts</li>
+
+                    {% if low_stock_count > 0 %}
+                    <li>
+                        <span class="dropdown-item text-warning">
+                            ⚠ {{ low_stock_count }} Low Stock
+                        </span>
+                    </li>
+                    {% endif %}
+
+                    {% if out_of_stock_count > 0 %}
+                    <li>
+                        <span class="dropdown-item text-danger">
+                            ❌ {{ out_of_stock_count }} Out of Stock
+                        </span>
+                    </li>
+                    {% endif %}
+
+                    {% if low_stock_count == 0 and out_of_stock_count == 0 %}
+                    <li>
+                        <span class="dropdown-item text-success">
+                            ✅ All Products In Stock
+                        </span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% endif %}
+
+
+            <!-- SEARCH (Customers Only) -->
+            {% if not request.user.is_staff and not is_delivery_partner %}
+            <div class="nav-search-wrapper d-flex align-items-center">
+                <form method="GET" action="{% url 'home' %}" class="search-form">
+                    <input type="text" id="searchInput" name="q" placeholder="Search backpacks, tents, shoes..." class="search-input">
+
+                    <button type="submit" class="nav-search-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+
+                <div id="searchResults" class="search-results"></div>
+            </div>
+            {% endif %}
+
+
+            <!-- RIGHT SIDE -->
+            <div class="nav-right d-flex align-items-center gap-3">
+
+                {% if request.user.is_authenticated %}
+
+                <!-- STAFF -->
+                {% if request.user.is_staff %}
+
+                <a href="/admin/" class="btn btn-secondary btn-sm">
+                    ⚙ Admin Panel
+                </a>
+
+                <div class="profile-dropdown">
+                    <button class="profile-btn">
+                        <i class="bi bi-person-badge"></i>
+                        <span class="profile-name">{{ request.user.username }}</span>
+                        <i class="bi bi-caret-down-fill"></i>
+                    </button>
+
+                    <div class="profile-menu">
+                        <span class="dropdown-header">Staff Account</span>
+                        <div class="dropdown-divider"></div>
+
+                        <a href="{% url 'logout' %}" class="logout-item">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- DELIVERY PARTNER -->
+                {% elif is_delivery_partner %}
+                <div class="dashboard-header">
+                    <div class="container d-flex justify-content-between align-items-center">
+                        <h4 class="hf">🚚 Delivery Partner Dashboard</h4>
+
+
+                    </div>
+                </div>
+                <div class="position-relative me-3">
+
+                    <a href="/delivery/history/" class="text-white fs-5">
+                        🔔
+                    </a>
+
+                    <span id="orderCount"
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+                        0
+
+                    </span>
+
+                </div>
+                <div class="profile-dropdown">
+
+                    <button class="profile-btn">
+                        <i class="bi bi-truck"></i>
+                        <span class="profilee-name">{{ request.user.username }}</span>
+                        <i class="bi bi-caret-down-fill"></i>
+                    </button>
+
+                    <div class="profile-menu">
+
+                        <!-- PROFILE -->
+                        <a href="/delivery/profile/">
+                            <i class="bi bi-person"></i> My Profile
+                        </a>
+
+                        <!-- DASHBOARD -->
+                        <a href="/delivery/dashboard/">
+                            <i class="bi bi-speedometer2"></i> Delivery Dashboard
+                        </a>
+                        <a href="/delivery/history/">
+                            <i class="bi bi-clock-history"></i> Delivery History
+                        </a>
+                        <div class="dropdown-divider"></div>
+
+                        <!-- LOGOUT -->
+                        <a href="{% url 'logout' %}" class="logout-item">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CUSTOMER -->
+                {% else %}
+
+                <div class="profile-dropdown">
+                    <button class="profile-btn">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="profilee-name">
+                            {{ request.user.first_name|default:request.user.username }}
+                        </span>
+                        <i class="bi bi-caret-down-fill"></i>
+                    </button>
+
+                    <div class="profile-menu">
+
+                        <a href="{% url 'wishlist' %}">
+                            <i class="bi bi-heart"></i> Wishlist
+                        </a>
+
+                        <a href="{% url 'my_orders' %}">
+                            <i class="bi bi-map"></i> My Trips
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a href="{% url 'logout' %}" class="logout-item">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+
+                    </div>
+                </div>
+
+                <a href="{% url 'cart' %}" class="nav-cart d-flex align-items-center">
+                    <i class="bi bi-backpack me-1"></i> Gear Bag
+
+                    {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                    {% endif %}
+                </a>
+
+                {% endif %}
+
+                {% else %}
+
+                <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Login</a>
+                <a href="{% url 'signup' %}" class="btn btn-success btn-sm">Sign Up</a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    </nav>
+
+
+    {% if messages %}
+    <div class="flash-messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
     </div>
     {% endif %}
 
-    <!-- RIGHT SIDE -->
-    <div class="nav-right d-flex align-items-center gap-3">
 
-      {% if request.user.is_authenticated %}
 
-        {% if request.user.is_staff %}
 
-          <a href="/admin/" class="btn btn-secondary btn-sm">
-            ⚙ Admin Panel
-          </a>
 
-          <div class="profile-dropdown">
-            <button class="profile-btn">
-              <i class="bi bi-person-badge"></i>
-              <span class="profile-name">{{ request.user.username }}</span>
-              <i class="bi bi-caret-down-fill"></i>
-            </button>
 
-            <div class="profile-menu">
-              <span class="dropdown-header">Staff Account</span>
-              <div class="dropdown-divider"></div>
+    <main class="page-wrapper">
+        {% block content %}{% endblock %}
+    </main>
 
-              <a href="{% url 'logout' %}" class="logout-item">
-                <i class="bi bi-box-arrow-right"></i> Logout
-              </a>
+
+    {% if request.user.is_authenticated and not request.user.is_staff and not is_delivery_partner %}
+    <footer class="blinkit-footer">
+        <div class="footer-container">
+
+            <!-- FOOTER TOP -->
+            <div class="footer-grid">
+
+                <!-- Useful Links -->
+                <div class="footer-column">
+                    <h6>Useful Links</h6>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div class="footer-column">
+                    <h6>Company</h6>
+                    <ul>
+                        <li><a href="#">Partner</a></li>
+                        <li><a href="#">Franchise</a></li>
+                        <li><a href="#">Seller</a></li>
+                        <li><a href="#">Warehouse</a></li>
+                        <li><a href="#">Deliver</a></li>
+                        <li><a href="#">Resources</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <!-- Categories -->
+                <div class="footer-column footer-wide">
+                    <div class="footer-header">
+                        <h6>Categories</h6>
+                        <a href="#" class="see-all">see all</a>
+                    </div>
+
+                    <div class="category-grid">
+                        <ul>
+                            <li>Backpacks & Rucksacks</li>
+                            <li>Tents & Shelters</li>
+                            <li>Sleeping Bags & Mats</li>
+                            <li>Camping Furniture</li>
+                            <li>Trekking Poles</li>
+                            <li>Hiking Accessories</li>
+                            <li>Climbing Gear</li>
+                            <li>Adventure Kits</li>
+                            <li>Outdoor Safety Gear</li>
+                        </ul>
+
+                        <ul>
+                            <li>Travel Bags & Luggage</li>
+                            <li>Packing Cubes & Organizers</li>
+                            <li>Water Bottles & Hydration</li>
+                            <li>Travel Toiletries</li>
+                            <li>First Aid & Survival</li>
+                            <li>Power Banks & Gadgets</li>
+                            <li>Headlamps & Flashlights</li>
+                            <li>Multi-tools & Knives</li>
+                            <li>Weather Protection Gear</li>
+                        </ul>
+
+                        <ul>
+                            <li>Footwear & Accessories</li>
+                            <li>Jackets & Thermal Wear</li>
+                            <li>Rainwear & Ponchos</li>
+                            <li>Caps, Gloves & Socks</li>
+                            <li>Navigation & GPS</li>
+                            <li>Travel Locks & Security</li>
+                            <li>Document Holders</li>
+                            <li>Electronics & Tech Gear</li>
+                            <li>Emergency Essentials</li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
-          </div>
 
-        {% else %}
-          <!-- NORMAL USER SECTION (unchanged) -->
-          <div class="profile-dropdown">
-            <button class="profile-btn">
-              <i class="bi bi-person-circle"></i>
-              <span class="profile-name">
-                {{ request.user.first_name|default:request.user.username }}
-              </span>
-              <i class="bi bi-caret-down-fill"></i>
-            </button>
+            <!-- FOOTER BOTTOM -->
+            <div class="footer-bottom">
+                <p>© {{ now|date:"Y" }} Trek Ready. All rights reserved.</p>
 
-            <div class="profile-menu">
-              <a href="{% url 'wishlist' %}">
-                <i class="bi bi-heart"></i> Wishlist
-              </a>
-
-              <a href="{% url 'my_orders' %}">
-                <i class="bi bi-map"></i> My Trips
-              </a>
-
-              <div class="dropdown-divider"></div>
-
-              <a href="{% url 'logout' %}" class="logout-item">
-                <i class="bi bi-box-arrow-right"></i> Logout
-              </a>
+                <div class="footer-social">
+                    <span>Download App</span>
+                    <img src="{% static 'store/images/appstore.png' %}" alt="">
+                    <img src="{% static 'store/images/playstore.png' %}" alt="">
+                </div>
             </div>
-          </div>
 
-          <a href="{% url 'cart' %}" class="nav-cart d-flex align-items-center">
-            <i class="bi bi-backpack me-1"></i> Gear Bag
-            {% if cart_count > 0 %}
-              <span class="cart-badge">{{ cart_count }}</span>
-            {% endif %}
-          </a>
-        {% endif %}
+        </div>
+    </footer>
+    {% endif %}
 
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Login</a>
-        <a href="{% url 'signup' %}" class="btn btn-success btn-sm">Sign Up</a>
-      {% endif %}
+    <div id="overlay" class="overlay" onclick="closeDrawer()">
 
+
+
+        <div id="sideDrawer" class="side-drawer">
+
+            <div class="drawer-header drawer-section-title">
+                <h5 class="m-0">Warehouse Menu</h5>
+                <span onclick="closeDrawer()" class="close-btn">&times;</span>
+            </div>
+
+            <!-- Dashboard -->
+            <a href="{% url 'warehouse_dashboard' %}" class="drawer-link">
+                🏠 Dashboard
+            </a>
+
+            <!-- Warehouse Structure -->
+            <div class="drawer-section-title">Warehouse Structure</div>
+
+            <a href="{% url 'warehouse_list' %}" class="drawer-link">
+                🏢 Warehouses
+            </a>
+
+            <a href="{% url 'section_list' %}" class="drawer-link">
+                🧱 Sections
+            </a>
+
+            <a href="{% url 'rack_list' %}" class="drawer-link">
+                🗄️ Racks
+            </a>
+
+            <a href="{% url 'product_location_list' %}" class="drawer-link">
+                📍 Product Locations
+            </a>
+            <a href="{% url 'transfer_stock' %}" class="drawer-link">
+                🔁 Stock Transfer
+            </a>
+
+            <!-- Inventory -->
+            <div class="drawer-section-title">Inventory</div>
+
+            <a href="{% url 'stock_in' %}" class="drawer-link">
+                ➕ Stock In
+            </a>
+
+            <a href="{% url 'inward_stock' %}" class="drawer-link">
+                📥 Inward Stock
+            </a>
+
+            <a href="{% url 'outward_stock' %}" class="drawer-link">
+                📤 Stock Out
+            </a>
+
+            <a href="{% url 'stock_overview' %}" class="drawer-link">
+                📦 Stock Overview
+            </a>
+
+            <!-- Management -->
+            <div class="drawer-section-title">Management</div>
+
+            <a href="{% url 'supplier_list' %}" class="drawer-link">
+                👥 Suppliers
+            </a>
+
+            <a href="{% url 'return_damage_list' %}" class="drawer-link text-danger">
+                🔄 Return & Damage
+            </a>
+
+            <a href="{% url 'reports' %}" class="drawer-link">
+                📊 Reports
+            </a>
+            <a href="{% url 'stock_history' %}" class="drawer-link">
+                <i class="fas fa-history"></i> Stock History
+            </a>
+
+        </div>
     </div>
-  </div>
-</nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'store/js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('categoryChart');
 
-
-  {% if messages %}
-<div class="flash-messages">
-  {% for message in messages %}
-  <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center" role="alert">
-    {{ message }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-  </div>
-  {% endfor %}
-</div>
-{% endif %}
-
-
-
-
-
-
-  <main class="page-wrapper">
-    {% block content %}{% endblock %}
-  </main>
-
-  
- {% if not request.user.is_staff %}
-<footer class="blinkit-footer">
-  <div class="footer-container">
-
-    <!-- FOOTER TOP -->
-    <div class="footer-grid">
-
-      <!-- Useful Links -->
-      <div class="footer-column">
-        <h6>Useful Links</h6>
-        <ul>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Security</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-
-      <!-- Company -->
-      <div class="footer-column">
-        <h6>Company</h6>
-        <ul>
-          <li><a href="#">Partner</a></li>
-          <li><a href="#">Franchise</a></li>
-          <li><a href="#">Seller</a></li>
-          <li><a href="#">Warehouse</a></li>
-          <li><a href="#">Deliver</a></li>
-          <li><a href="#">Resources</a></li>
-        </ul>
-      </div>
-
-      <!-- Categories -->
-     <!-- Categories -->
-<div class="footer-column footer-wide">
-  <div class="footer-header">
-    <h6>Categories</h6>
-    <a href="#" class="see-all">see all</a>
-  </div>
-
-  <div class="category-grid">
-    <ul>
-      <li>Backpacks & Rucksacks</li>
-      <li>Tents & Shelters</li>
-      <li>Sleeping Bags & Mats</li>
-      <li>Camping Furniture</li>
-      <li>Trekking Poles</li>
-      <li>Hiking Accessories</li>
-      <li>Climbing Gear</li>
-      <li>Adventure Kits</li>
-      <li>Outdoor Safety Gear</li>
-    </ul>
-
-    <ul>
-      <li>Travel Bags & Luggage</li>
-      <li>Packing Cubes & Organizers</li>
-      <li>Water Bottles & Hydration</li>
-      <li>Travel Toiletries</li>
-      <li>First Aid & Survival</li>
-      <li>Power Banks & Gadgets</li>
-      <li>Headlamps & Flashlights</li>
-      <li>Multi-tools & Knives</li>
-      <li>Weather Protection Gear</li>
-    </ul>
-
-    <ul>
-      <li>Footwear & Accessories</li>
-      <li>Jackets & Thermal Wear</li>
-      <li>Rainwear & Ponchos</li>
-      <li>Caps, Gloves & Socks</li>
-      <li>Navigation & GPS</li>
-      <li>Travel Locks & Security</li>
-      <li>Document Holders</li>
-      <li>Electronics & Tech Gear</li>
-      <li>Emergency Essentials</li>
-    </ul>
-  </div>
-</div>
-
-    </div>
-
-    <!-- FOOTER BOTTOM -->
-    <div class="footer-bottom">
-      <p>© {{ now|date:"Y" }} Trek Ready. All rights reserved.</p>
-
-      <div class="footer-social">
-        <span>Download App</span>
-        <img src="{% static 'store/images/appstore.png' %}" alt="">
-        <img src="{% static 'store/images/playstore.png' %}" alt="">
-      </div>
-    </div>
-
-  </div>
-</footer>
-{% endif %}
-
-<div id="overlay" class="overlay" onclick="closeDrawer()">
-
-
-
-<div id="sideDrawer" class="side-drawer">
-
-    <div class="drawer-header drawer-section-title">
-        <h5 class="m-0">Warehouse Menu</h5>
-        <span onclick="closeDrawer()" class="close-btn">&times;</span>
-    </div>
-
-    <!-- Dashboard -->
-    <a href="{% url 'warehouse_dashboard' %}" class="drawer-link">
-        🏠 Dashboard
-    </a>
-
-    <!-- Warehouse Structure -->
-    <div class="drawer-section-title">Warehouse Structure</div>
-
-    <a href="{% url 'warehouse_list' %}" class="drawer-link">
-        🏢 Warehouses
-    </a>
-
-    <a href="{% url 'section_list' %}" class="drawer-link">
-        🧱 Sections
-    </a>
-
-    <a href="{% url 'rack_list' %}" class="drawer-link">
-        🗄️ Racks
-    </a>
-
-    <a href="{% url 'product_location_list' %}" class="drawer-link">
-        📍 Product Locations
-    </a>
-    <a href="{% url 'transfer_stock' %}" class="drawer-link">
-        🔁 Stock Transfer
-    </a>
-
-    <!-- Inventory -->
-    <div class="drawer-section-title">Inventory</div>
-
-    <a href="{% url 'stock_in' %}" class="drawer-link">
-        ➕ Stock In
-    </a>
-
-    <a href="{% url 'inward_stock' %}" class="drawer-link">
-        📥 Inward Stock
-    </a>
-
-    <a href="{% url 'outward_stock' %}" class="drawer-link">
-        📤 Stock Out
-    </a>
-
-    <a  href="{% url 'stock_overview' %}" class="drawer-link">
-            📦 Stock Overview
-          </a>
-
-    <!-- Management -->
-    <div class="drawer-section-title">Management</div>
-
-    <a href="{% url 'supplier_list' %}" class="drawer-link">
-        👥 Suppliers
-    </a>
-
-    <a href="{% url 'return_damage_list' %}" class="drawer-link text-danger">
-        🔄 Return & Damage
-    </a>
-
-    <a href="{% url 'reports' %}" class="drawer-link">
-        📊 Reports
-    </a>
-    <a href="{% url 'stock_history' %}" class="drawer-link">
-        <i class="fas fa-history"></i> Stock History
-    </a>
-
-</div>
-</div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{% static 'store/js/main.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const ctx = document.getElementById('categoryChart');
-
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: [
-            {% for data in category_data %}
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        {% for data in category_data %}
                 '{{ data.product__category__name }}',
-            {% endfor %}
-        ],
+                {% endfor %}
+            ],
         datasets: [{
             label: 'Stock Quantity',
             data: [
                 {% for data in category_data %}
                     {{ data.total }},
-                {% endfor %}
-            ],
+        {% endfor %}
+        ],
             backgroundColor: '#0d6efd',
-            borderRadius: 6
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: false }
+                borderRadius: 6
+            }]
         },
-        scales: {
-            y: { beginAtZero: true }
+        options: {
+            responsive: true,
+                plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
         }
-    }
-});
-</script>
+    });
+}
+    </script>
+    <script>
+        let lastCount = null;
+
+        function checkNotifications() {
+
+            fetch("/delivery/api/check-orders/")
+                .then(response => response.json())
+                .then(data => {
+
+                    const orderCountEl = document.getElementById("orderCount");
+
+                    // ✅ FIX: check before using
+                    if (orderCountEl) {
+                        orderCountEl.innerText = data.new_orders;
+                    }
+
+                    // First load → don't show toast
+                    if (lastCount === null) {
+                        lastCount = data.new_orders;
+                        return;
+                    }
+
+                    if (data.new_orders > lastCount) {
+
+                        showToast("🔔 " + data.new_orders + " New Order(s) Available!");
+
+                        const sound = document.getElementById("notificationSound");
+                        if (sound) sound.play();   // ✅ safe
+                    }
+
+                    lastCount = data.new_orders;
+                })
+                .catch(err => console.error("Notification error:", err)); // ✅ also add this
+        }
+
+        // Run immediately on page load
+        checkNotifications();
+
+        // Then run every 5 seconds
+        setInterval(checkNotifications, 5000);
+
+
+
+        function showToast(message) {
+
+            let toast = document.createElement("div");
+            toast.className = "toast show align-items-center text-bg-primary border-0 mb-2";
+            toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto"></button>
+        </div>
+    `;
+
+            let container = document.querySelector(".toast-container");
+
+            if (!container) {
+                container = document.createElement("div");
+                container.className = "toast-container position-fixed top-0 end-0 p-3";
+                document.body.appendChild(container);
+            }
+
+            container.appendChild(toast);
+
+            // Auto remove after 4 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+    </script>
 </body>
 
 </html>

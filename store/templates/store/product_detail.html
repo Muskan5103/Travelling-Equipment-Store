@@ -23,7 +23,7 @@
             </p>
 
 
-             <div class="variant-section"> 
+            <div class="variant-section">
                 <h6 class="variant-title">Select Unit</h6>
 
                 {% for variant in product.variants.all %}
@@ -53,7 +53,7 @@
 
                 </div>
                 {% endfor %}
-            </div> 
+            </div>
 
 
             <!-- Extra features -->
@@ -68,6 +68,18 @@
 
 
     </div>
+    <h3>Customer Reviews</h3>
+
+    {% for review in product.reviews.all %}
+    <div style="border-bottom:1px solid #ddd; margin-bottom:10px;">
+        <strong>{{ review.user }}</strong>
+        <p>⭐ {{ review.rating }}/5</p>
+        <p>{{ review.comment }}</p>
+        <small>{{ review.created_at }}</small>
+    </div>
+    {% empty %}
+    <p>No reviews yet.</p>
+    {% endfor %}
 </div>
 <div class="recommended-section mt-5">
     <h4 class="recommended-title mb-3">You May Also Like</h4>
@@ -81,7 +93,7 @@
         </button>
 
         <!-- Cards Scrollable Area -->
-        <div class="recommendation-slider" id="rec-slider">
+        <!-- <div class="recommendation-slider" id="rec-slider">
             {% for p in recommendations %}
             <div class="rec-card">
 
@@ -103,6 +115,14 @@
                         {% if p.display_mrp and p.display_mrp > p.display_price %}
                         <span class="mrp">₹ {{ p.display_mrp }}</span>
                         <span class="pr">{{ p.discount_percent }}% OFF</span>
+                        <div class="rating-box">
+                            <span class="rating-value">
+                                {{ product.avg_rating|default:0|floatformat:1 }} ★
+                            </span>
+                            <span class="review-count">
+                                {{ product.total_reviews }} Reviews
+                            </span>
+                        </div>
                         {% endif %}
                     </div>
 
@@ -128,8 +148,64 @@
             </div>
             {% endfor %}
 
-        </div>
+        </div> -->
+<div class="recommendation-slider" id="rec-slider">
+{% for p in recommendations %}
 
+<div class="rec-card">
+
+<a href="{% url 'product_detail' p.id %}" class="rec-img-box">
+<img src="{{ p.image.url }}" alt="{{ p.name }}">
+</a>
+
+<div class="rec-info">
+<p class="rec-name">{{ p.name }}</p>
+
+{% if p.display_price %}
+<p class="small text-muted">
+{{ p.display_quantity }}
+</p>
+
+<div class="price-row">
+<span class="selling-price">₹ {{ p.display_price }}</span>
+
+{% if p.display_mrp and p.display_mrp > p.display_price %}
+<span class="mrp">₹ {{ p.display_mrp }}</span>
+<span class="pr">{{ p.discount_percent }}% OFF</span>
+{% endif %}
+</div>
+
+<!-- ⭐ Rating Section -->
+<div class="rating-box">
+<span class="rating-value">
+{{ p.avg_rating|default:0|floatformat:1 }} ★
+</span>
+
+<span class="review-count">
+{{ p.review_count|default:0 }} Reviews
+</span>
+</div>
+
+{% else %}
+<p class="small text-muted">Price not available</p>
+{% endif %}
+
+<div class="d-flex gap-2 mt-2">
+<a href="{% url 'product_detail' p.id %}" class="btn-view">View</a>
+
+{% if p.first_variant %}
+<button class="rec-add-btn add-to-cart-btn"
+data-variant-id="{{ p.first_variant.id }}">
+Add
+</button>
+{% endif %}
+</div>
+
+</div>
+</div>
+
+{% endfor %}
+</div>
 
         <!-- Right Arrow -->
         <button class="rec-arrow right" id="rec-right">

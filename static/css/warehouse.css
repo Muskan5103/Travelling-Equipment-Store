@@ -825,3 +825,14 @@ body {
         margin: 10px;
     }
 }
+
+
+.stat-orange {
+    background: linear-gradient(135deg, #ff9a3c, #ff6a00);
+    color: white;
+}
+
+.stat-orange .card-body h4,
+.stat-orange .card-body p {
+    color: white;
+}

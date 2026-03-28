@@ -5,16 +5,16 @@
   <h2 class="mb-4">My Orders</h2>
 
   {% for order in orders %}
-    {% with items=order.orderitem_set.all %}
+    {% with items=order.items.all %}
       {% with first_item=items.0 %}
       
       <div class="order-wrapper">
 
         <!-- MAIN ORDER CARD -->
-        <a href="{% url 'order_detail' order.id %}" class="order-card">
+       <a href="{% url 'order_detail' order.id %}" class="order-card">
 
           <div class="order-left">
-            <img src="{{ first_item.variant.product.image.url }}" alt="">
+            <img src="{% if first_item.variant.product.image %}{{ first_item.variant.product.image.url }}{% else %}/static/default.png{% endif %}" alt="">
           </div>
 
           <div class="order-middle">

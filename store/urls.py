@@ -47,5 +47,5 @@ path(
     views.verify_razorpay_payment,
     name="verify_razorpay_payment"
 ),
-
+path('submit-review/', views.submit_review, name='submit_review')
 ]

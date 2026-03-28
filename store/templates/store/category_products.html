@@ -26,15 +26,13 @@
           </a>
 
           <!-- ❤️ Wishlist Icon -->
-          <button type="button"
-        class="wishlist-btn wishlist-icon"
-        data-product-id="{{ product.id }}">
-    {% if product.id in wishlist_product_ids %}
-        ❤️
-    {% else %}
-        🤍
-    {% endif %}
-</button>
+          <button type="button" class="wishlist-btn wishlist-icon" data-product-id="{{ product.id }}">
+            {% if product.id in wishlist_product_ids %}
+            ❤️
+            {% else %}
+            🤍
+            {% endif %}
+          </button>
 
 
         </div>
@@ -48,6 +46,15 @@
           {% if product.display_mrp and product.display_mrp > product.display_price %}
           <span class="mrp">₹ {{ product.display_mrp }}</span>
           <span class="discount-badge">{{ product.discount_percent }}% OFF</span>
+          <div class="rating-box">
+           <span class="rating-value">
+  {{ product.avg_rating|default:0|floatformat:1 }} ★
+</span>
+
+<span class="review-count">
+  {{ product.review_count }} Reviews
+</span>
+          </div>
           {% endif %}
         </div>
         {% else %}

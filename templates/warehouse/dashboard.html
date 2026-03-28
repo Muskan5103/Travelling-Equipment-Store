@@ -7,63 +7,7 @@
 {% block content %}
 
 
-<!-- <div class="row g-4 da mb-4">
 
-    <div class="col-md-4">
-        <div class="card stat-card stat-blue">
-            <div class="card-body">
-                <h4>{{ total_warehouses }}</h4>
-                <p>Total Warehouses</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card stat-card stat-purple">
-            <div class="card-body">
-                <h4>{{ total_sections }}</h4>
-                <p>Total Sections</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card stat-card stat-dark">
-            <div class="card-body">
-                <h4>{{ total_racks }}</h4>
-                <p>Total Racks</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card stat-card stat-green">
-            <div class="card-body">
-                <h4>{{ total_products }}</h4>
-                <p>Total Products</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card stat-card stat-teal">
-            <div class="card-body">
-                <h4>{{ total_stock }}</h4>
-                <p>Total Stock Qty</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="card stat-card stat-red">
-            <div class="card-body">
-                <h4>{{ low_stock_products }}</h4>
-                <p>Low Stock</p>
-            </div>
-        </div>
-    </div>
-
-</div> -->
 <div class="row g-4 da mb-4">
 
     <!-- Total Warehouses -->
@@ -115,27 +59,36 @@
     </div>
 
     <!-- Total Stock -->
-    <div class="col-md-4">
-        
-            <div class="card stat-card stat-teal">
-                <div class="card-body">
-                    <h4>{{ total_stock }}</h4>
-                    <p>Total Stock Qty</p>
-                </div>
-            </div>
-       
-    </div>
+    <!-- <div class="col-md-4">
 
+        <div class="card stat-card stat-teal">
+            <div class="card-body">
+                <h4>{{ total_stock }}</h4>
+                <p>Total Stock Qty</p>
+            </div>
+        </div>
+
+    </div> -->
+    <div class="col-md-4">
+    <a href="{% url 'orders_to_pack' %}" class="card-link">
+        <div class="card stat-card stat-orange">
+            <div class="card-body">
+                <h4>{{ orders.count }}</h4>
+                <p>Orders To Pack</p>
+            </div>
+        </div>
+    </a>
+</div>
     <!-- Low Stock -->
     <div class="col-md-4">
-        
-            <div class="card stat-card stat-red">
-                <div class="card-body">
-                    <h4>{{ low_stock_products }}</h4>
-                    <p>Low Stock</p>
-                </div>
+
+        <div class="card stat-card stat-red">
+            <div class="card-body">
+                <h4>{{ low_stock_products }}</h4>
+                <p>Low Stock</p>
             </div>
-      
+        </div>
+
     </div>
 
 </div>

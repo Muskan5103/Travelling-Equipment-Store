@@ -1,0 +1,71 @@
+{% extends "store/base.html" %}
+{% block title %}Orders To Pack{% endblock %}
+
+{% block content %}
+
+<div class="container mtt-4">
+
+<h2 class="text-center mb-4">Orders To Pack</h2>
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<table class="table table-bordered table-hover text-center">
+
+<thead class="table-dark">
+<tr>
+<th>Order ID</th>
+<th>Customer</th>
+<th>Address</th>
+<th>Total Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for order in orders %}
+
+<tr>
+
+<td>#{{ order.id }}</td>
+<td>{{ order.user.email }}</td>
+<td>{{ order.address }}</td>
+<td>₹ {{ order.total_amount }}</td>
+
+<td>
+<span class="badge bg-warning text-dark">
+{{ order.status }}
+</span>
+</td>
+
+<td>
+
+<a href="{% url 'mark_packed' order.id %}"
+class="btn btn-primary btn-sm">
+Mark Packed
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6">No orders to pack</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+</div>
+
+</div>
+
+{% endblock %}

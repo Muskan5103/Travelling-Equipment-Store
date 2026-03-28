@@ -1,0 +1,67 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container do mtt-4">
+
+<h3 class="mb-4">Edit Delivery Profile</h3>
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<div class="mb-3">
+<label class="form-label">Phone</label>
+<input type="text" name="phone" value="{{ partner.phone }}" class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Vehicle Type</label>
+<select name="vehicle_type" class="form-control">
+<option value="">Select Vehicle</option>
+<option value="Bike" {% if partner.vehicle_type == "Bike" %}selected{% endif %}>Bike</option>
+<option value="Scooter" {% if partner.vehicle_type == "Scooter" %}selected{% endif %}>Scooter</option>
+<option value="Car" {% if partner.vehicle_type == "Car" %}selected{% endif %}>Car</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Vehicle Number</label>
+<input type="text" name="vehicle_number" value="{{ partner.vehicle_number }}" class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">License Number</label>
+<input type="text" name="license_number" value="{{ partner.license_number }}" class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Current Location</label>
+<input type="text" name="current_location" value="{{ partner.current_location }}" class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">Availability</label>
+<select name="availability" class="form-control">
+<option value="True" {% if partner.availability %}selected{% endif %}>Online</option>
+<option value="False" {% if not partner.availability %}selected{% endif %}>Offline</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Profile Photo</label>
+<input type="file" name="profile_photo" class="form-control">
+</div>
+
+<div class="mb-3">
+<label class="form-label">ID Proof</label>
+<input type="file" name="id_proof" class="form-control">
+</div>
+
+<button type="submit" class="btn btn-primary">Update Profile</button>
+
+</form>
+
+</div>
+
+{% endblock %}

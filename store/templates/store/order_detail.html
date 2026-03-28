@@ -169,34 +169,50 @@
         </p>
         {% endif %}
 
-        {% if order.status == "delivered" %}
-        {% for item in items %}
-        <div class="card p-3 mb-3 rating-box">
-          <h6>Rate {{ item.variant.product.name }}</h6>
+       {% if order.status == "delivered" %}
+{% for item in items %}
 
-          <form method="POST" action="{% url 'rate_product' item.id %}">
-            {% csrf_token %}
+<div class="card p-3 mb-3 rating-boxx">
+  <h6>Rate {{ item.variant.product.name }}</h6>
 
-            <div class="stars">
-              {% for i in "12345" %}
-              <input
-  type="radio"
-  name="rating"
-  value="{{ i }}"
-  id="star{{ i }}_{{ item.id }}"
-  {% if item.user_rating == i|add:"0" %}checked{% endif %}>
+  <form method="POST" action="{% url 'rate_product' item.id %}">
+    {% csrf_token %}
 
-              <label for="star{{ i }}_{{ item.id }}">★</label>
-              {% endfor %}
-            </div>
+    <div class="stars">
+      {% for i in "12345" %}
+      <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}_{{ item.id }}"
+      {% if item.user_rating and item.user_rating.rating == i|add:"0" %} checked {% endif %}>
+      <label for="star{{ i }}_{{ item.id }}">★</label>
+      {% endfor %}
+    </div>
 
-            <button type="submit" class="btn btn-primary btn-sm mt-2">
-              Submit
-            </button>
-          </form>
-        </div>
-        {% endfor %}
-        {% endif %}
+    <!-- Review box -->
+   <div id="review-box-{{ item.id }}" style="display:none; margin-top:10px;">
+
+    <textarea name="review"
+        id="review-text-{{ item.id }}"
+        placeholder="Write your review..."
+        rows="3"
+        style="width:100%; padding:8px;">
+    </textarea>
+
+    <button class="btn btn-success btn-sm mt-2">
+        Submit Review
+    </button>
+
+</div>
+
+<button type="button"
+    class="btn btn-primary btn-sm mt-2"
+    onclick="showReviewBox({{ item.id }})">
+    Write Review
+</button>
+
+  </form>
+</div>
+
+{% endfor %}
+{% endif %}
 
 
       </div>
@@ -273,5 +289,22 @@
 
   </div>
 </div>
+<script>
+function showReviewBox(id) {
 
+    const box = document.getElementById("review-box-" + id);
+
+    if (!box) {
+        console.log("Review box not found for id:", id);
+        return;
+    }
+
+    if (box.style.display === "none" || box.style.display === "") {
+        box.style.display = "block";
+    } else {
+        box.style.display = "none";
+    }
+
+}
+</script>
 {% endblock %}

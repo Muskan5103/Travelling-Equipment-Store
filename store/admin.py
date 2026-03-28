@@ -1,14 +1,9 @@
-
-
-
-
-
-
-
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.timezone import now
 from datetime import timedelta
+
+from delivery.models import DeliveryPartner
 
 from .models import (
     Category,
@@ -50,12 +45,14 @@ class OrderAdmin(admin.ModelAdmin):
         "status_badge",
         "short_address",
         "created_at",
+        "delivery_partner",
+        'image_preview'
     )
 
     list_filter = ("status", "payment_method", "created_at")
     search_fields = ("user__username", "address")
     date_hierarchy = "created_at"
-
+    readonly_fields = ['delivery_otp', 'delivery_image']
     readonly_fields = (
         "user",
         "total_amount",
@@ -104,7 +101,20 @@ class OrderAdmin(admin.ModelAdmin):
         self.message_user(request, f"{updated} order(s) marked as Delivered")
     mark_delivered.short_description = "✅ Mark selected orders as Delivered"
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "delivery_partner":
+            kwargs["queryset"] = DeliveryPartner.objects.filter(is_online=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+    def image_preview(self, obj):
+        if obj.delivery_image:
+            return format_html(
+                '<img src="{}" width="50" height="50" style="border-radius:5px;" />',
+                obj.delivery_image.url
+            )
+        return "No Image"
+
+    image_preview.short_description = "Proof"
 # =========================
 # PRODUCT VARIANT INLINE
 # =========================
@@ -183,4 +193,18 @@ class SupplierAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "email", "phone")
     search_fields = ("name",)
 
+
+from django.contrib import admin
+from .models import Product, Review
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ("product", "user", "rating", "created_at")
+    list_filter = ("rating", "created_at")
+    search_fields = ("product__name", "user__username")
+
+
+from .models import ProductRating
+
+admin.site.register(ProductRating)
 

@@ -1,0 +1,302 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block title %}
+Delivery Partner Dashboard
+{% endblock %}
+
+{% block content %}
+
+<!-- 🔵 DELIVERY STATUS TOGGLE -->
+<div class="card shadow-sm p-3 mb-4 status-container">
+
+    <div class="status-left">
+        <span id="statusDot"></span>
+        <strong id="statusText">Checking...</strong>
+    </div>
+
+    <label class="switch">
+        <input type="checkbox" id="toggleStatus">
+        <span class="slider"></span>
+    </label>
+
+</div>
+
+<div class="container do mtt-4">
+
+<div class="row mb-4">
+
+<div class="col-md-6">
+<div class="card shadow-sm">
+<div class="card-body">
+
+<h5>📅 Today's Earnings</h5>
+
+<p class="mb-1">
+Orders Completed: <strong>{{ today_completed }}</strong>
+</p>
+
+<p class="mb-0">
+Earnings: <strong>₹{{ today_earnings }}</strong>
+</p>
+
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card shadow-sm">
+<div class="card-body">
+
+<h5>📊 Weekly Earnings</h5>
+
+<p class="mb-1">
+Orders: <strong>{{ weekly_completed }}</strong>
+</p>
+
+<p class="mb-0">
+Earnings: <strong>₹{{ weekly_earnings }}</strong>
+</p>
+
+</div>
+</div>
+</div>
+
+</div>
+
+
+<div class="table-container">
+
+<h5 class="mb-4">📦 Assigned Orders</h5>
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+<tr>
+
+<th>Order ID</th>
+<th>Customer</th>
+<th>Address</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+<th>Location</th>
+<th>Time</th>
+<th>Proof</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for order in orders %}
+
+<tr>
+
+<td>
+<a href="{% url 'order_detail' order.id %}">
+#{{ order.id }}
+</a>
+</td>
+<td>{{order.user.username}}</td>
+<td>{{order.address}}</td>
+<td>₹ {{order.total_amount}}</td>
+
+<td>
+<span class="status-badge {{order.status}}">
+{{order.status}}
+</span>
+</td>
+
+
+<td>
+
+{% if order.delivery_response == "pending" %}
+
+<a href="/delivery/accept/{{ order.id }}/" class="btn btn-success btn-sm">
+Accept
+</a>
+
+<a href="/delivery/reject/{{ order.id }}/" class="btn btn-danger btn-sm">
+Reject
+</a>
+
+{% elif order.status == "packed" %}
+
+<a href="/delivery/update-status/{{ order.id }}/out_for_delivery/"
+class="btn btn-warning btn-sm">
+🚚 Start Delivery
+</a>
+
+{% elif order.status == "out_for_delivery" %}
+
+<a href="/delivery/verify-delivery/{{ order.id }}/"
+   class="btn btn-success btn-sm">
+
+   📦 Complete Delivery
+
+</a>
+
+
+{% elif order.status == "delivered" %}
+
+<span class="text-success fw-bold">Delivered ✔</span>
+
+{% endif %}
+
+</td>
+<td>
+
+<a 
+href="https://www.google.com/maps/dir/?api=1&destination={{ order.address|urlencode }}"
+target="_blank"
+class="btn btn-info btn-sm">
+
+🧭 Navigate
+
+</a>
+
+</td>
+<td>
+    <span class="order-timer" data-time="{{ order.assigned_at|date:'c' }}">
+        Loading...
+    </span>
+</td>
+<td>
+    {% if order.delivery_image %}
+        <img src="{{ order.delivery_image.url }}" 
+             width="60" 
+             style="border-radius:8px;">
+    {% else %}
+        <span class="text-muted">No Image</span>
+    {% endif %}
+</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6" class="text-center">
+No orders assigned yet
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const toggle = document.getElementById("toggleStatus");
+    const statusText = document.getElementById("statusText");
+    const statusDot = document.getElementById("statusDot");
+
+    // CSRF
+    function getCSRFToken() {
+        return document.cookie.split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            ?.split('=')[1];
+    }
+
+    // Load current status
+    function loadStatus() {
+    console.log("🚀 Calling API...");
+
+    fetch('/delivery/get-status/')
+    .then(res => res.json())
+    .then(data => {
+        console.log("✅ Response:", data);
+
+        updateUI(data.status === "online");
+    })
+    .catch(err => {
+        console.log("❌ Error:", err);
+    });
+}
+
+    // Toggle click
+    toggle.addEventListener("change", () => {
+        fetch('/delivery/toggle-status/', {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCSRFToken()
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            updateUI(data.status === "online");
+        });
+    });
+
+    function updateUI(isOnline) {
+    console.log("🎯 updateUI called:", isOnline);
+
+    const toggle = document.getElementById("toggleStatus");
+    const statusText = document.getElementById("statusText");
+    const statusDot = document.getElementById("statusDot");
+
+    if (!toggle || !statusText || !statusDot) {
+        console.log("❌ Elements not found");
+        return;
+    }
+
+    toggle.checked = isOnline;
+
+    if (isOnline) {
+        statusText.textContent = "Online";
+        statusText.style.color = "#28a745";
+        statusDot.style.background = "#28a745";
+    } else {
+        statusText.textContent = "Offline";
+        statusText.style.color = "#dc3545";
+        statusDot.style.background = "#dc3545";
+    }
+}
+
+    // Load on page open
+    loadStatus();
+
+});
+</script>
+
+<script>
+function updateTimers() {
+    const timers = document.querySelectorAll(".order-timer");
+
+    timers.forEach(timer => {
+        const assignedTime = new Date(timer.dataset.time);
+        const now = new Date();
+
+        const diff = Math.floor((now - assignedTime) / 1000); // seconds
+
+        let text = "";
+
+        if (diff < 60) {
+            text = diff + " sec ago";
+        } else if (diff < 3600) {
+            text = Math.floor(diff / 60) + " min ago";
+        } else {
+            text = Math.floor(diff / 3600) + " hr ago";
+        }
+
+        timer.textContent = text;
+    });
+}
+
+// Run every second
+setInterval(updateTimers, 1000);
+updateTimers();
+</script>
+
+{% endblock %}
+<script>
+setInterval(function(){
+    location.reload();
+}, 5000);  // refresh every 5 seconds
+</script>

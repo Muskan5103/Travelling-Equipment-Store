@@ -11,31 +11,28 @@
 
             {% for item in wishlist_items %}
             {% with product=item.product %}
-            <div class="col-6 col-md-4 col-lg-2">
+            <div class="col-6 col-md-4 col-lg-2 wii">
 
                 <div class="card product-card h-100">
 
                     <!-- Image -->
                     <div class="product-image-wrapper position-relative">
 
-    <!-- Product image link -->
-    <a href="{% url 'product_detail' product.id %}">
-        {% if product.image %}
-            <img src="{{ product.image.url }}"
-                 class="card-img-top product-image"
-                 alt="{{ product.name }}">
-        {% endif %}
-    </a>
+                        <!-- Product image link -->
+                        <a href="{% url 'product_detail' product.id %}">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" class="card-img-top product-image"
+                                alt="{{ product.name }}">
+                            {% endif %}
+                        </a>
 
-    <!-- Wishlist button (NOT inside <a>) -->
-    <button type="button"
-            class="wishlist-btn wishlist-icon filled"
-            data-product-id="{{ product.id }}"
-            title="Remove from wishlist">
-        ❤️
-    </button>
+                        <!-- Wishlist button (NOT inside <a>) -->
+                        <button type="button" class="wishlist-btn wishlist-icon filled"
+                            data-product-id="{{ product.id }}" title="Remove from wishlist">
+                            ❤️
+                        </button>
 
-</div>
+                    </div>
 
 
                     <!-- Body -->
@@ -59,16 +56,37 @@
                             <span class="discount-badge ms-1">
                                 {{ product.discount_percent }}% OFF
                             </span>
+                            <div class="rating-box">
+    <span class="rating-value">
+        {{ item.avg_rating|default:0|floatformat:1 }} ★
+    </span>
+
+    <span class="review-count">
+        {{ item.review_count }} Reviews
+    </span>
+</div>
                             {% endif %}
                         </div>
                         {% endif %}
 
-                        {% if product.first_variant %}
+                        <!-- {% if product.first_variant %}
                         <button class="btn-add w-100 mt-auto add-to-cart-btn"
                             data-variant-id="{{ product.first_variant.id }}">
                             ADD
                         </button>
-                        {% endif %}
+                        {% endif %} -->
+                        <div class="rec-actions mt-2">
+                            <a href="{% url 'product_detail' product.id %}" class="btnn-view">
+                                View
+                            </a>
+
+                            {% if product.first_variant %}
+                            <button class="add-btn btn-add-detail add-to-cart-btn"
+                                data-variant-id="{{ product.first_variant.id }}">
+                                Add
+                            </button>
+                            {% endif %}
+                        </div>
 
                     </div>
                 </div>

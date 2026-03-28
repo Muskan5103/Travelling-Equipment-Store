@@ -41,5 +41,7 @@ path("export/excel/", views.export_stock_excel, name="export_stock_excel"),
     
     path("export/pro-pdf/", views.export_professional_pdf, name="export_professional_pdf"),
     path("scan/", views.scan_stock, name="scan_stock"),
+    path("pack/<int:order_id>/", views.mark_packed, name="mark_packed"),
+    path("orders-to-pack/", views.orders_to_pack, name="orders_to_pack"),
 ]
 

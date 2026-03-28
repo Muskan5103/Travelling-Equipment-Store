@@ -1,0 +1,85 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="profile-container">
+
+<div class="profile-card">
+
+<div class="row align-items-center">
+
+<!-- PROFILE IMAGE -->
+<div class="col-md-3 text-center">
+
+{% if partner.profile_photo %}
+<img src="{{ partner.profile_photo.url }}" class="profile-img">
+{% else %}
+<img src="{% static 'store/images/default-user.png' %}" class="profile-img">
+{% endif %}
+
+{% if partner.id_proof %}
+<p class="id-proof mt-3">
+<strong>ID Proof:</strong>
+<a href="{{ partner.id_proof.url }}" target="_blank">View Document</a>
+</p>
+{% endif %}
+
+</div>
+
+<!-- PROFILE INFO -->
+<div class="col-md-7 profile-info">
+
+<div class="profile-name">{{ request.user.username }}</div>
+
+<p><strong>Phone:</strong> {{ partner.phone }}</p>
+
+<p><strong>Email:</strong> {{ request.user.email }}</p>
+
+<p><strong>Vehicle:</strong>
+{{ partner.vehicle_type|default:"Not Added" }}
+{% if partner.vehicle_number %}({{ partner.vehicle_number }}){% endif %}
+</p>
+
+<p><strong>License Number:</strong>
+{{ partner.license_number|default:"Not Added" }}
+</p>
+
+<p><strong>Current Location:</strong>
+{{ partner.current_location|default:"Not Available" }}
+</p>
+
+<p><strong>Status:</strong>
+{{ partner.status|title }}
+</p>
+
+<p><strong>Availability:</strong>
+{% if partner.availability %}
+<span class="badge-online">Online</span>
+{% else %}
+<span class="badge-offline">Offline</span>
+{% endif %}
+</p>
+
+<p><strong>Joined Date:</strong>
+{{ partner.joined_date|date:"d M Y" }}
+</p>
+
+</div>
+
+<!-- EDIT BUTTON -->
+<div class="col-md-2 text-end">
+
+<a href="/delivery/edit-profile/" class="edit-btn">
+Edit Profile
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

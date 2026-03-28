@@ -16,46 +16,52 @@ from .models import Product, Order, OrderItem, ProductRating
 from decimal import Decimal
 from django.db.models import Q
 from warehouse.models import WarehouseStock, StockOut
-
+from django.db.models import Avg, Count, OuterRef, Subquery
+from .models import ProductRating
 from store.utils.whatsapp import send_whatsapp_message
 
-
+from django.db.models import Avg, Count, OuterRef, Subquery
+from .models import ProductRating
 
 
 from django.shortcuts import render, redirect
 from .models import Category, Product, Wishlist
 
+from django.db.models import Avg, Count, Prefetch
+
 def home(request):
 
-    # 🚫 STAFF / ADMIN SHOULD NOT SEE STORE UI
     if request.user.is_authenticated and request.user.is_staff:
-        return redirect('warehouse_dashboard')  
-        # 👆 make sure this URL name exists
+        return redirect('warehouse_dashboard')
 
-    # ✅ NORMAL USER FLOW
-    categories = Category.objects.all().order_by("name")
+    if request.user.is_authenticated and DeliveryPartner.objects.filter(user=request.user).exists():
+        return redirect("/delivery/dashboard/")
 
     category_id = request.GET.get("category")
     query = request.GET.get("q")
 
-    products = (
-        Product.objects
-        .select_related("category")
-        .prefetch_related("variants")
+    # Annotated products
+    rated_products = Product.objects.annotate(
+        avg_rating=Avg("productrating__rating"),
+        review_count=Count("productrating", distinct=True)
     )
 
+    # Prefetch products with ratings into categories
+    categories = Category.objects.prefetch_related(
+        Prefetch("products", queryset=rated_products)
+    ).order_by("name")
+
+    products = rated_products
     active_category = None
 
-    # Filter by category
     if category_id:
         try:
             category_id = int(category_id)
-            products = products.filter(category_id=category_id)
+            products = rated_products.filter(category_id=category_id)
             active_category = category_id
         except (ValueError, TypeError):
             products = Product.objects.none()
 
-    # Filter by search
     if query:
         products = products.filter(name__icontains=query)
 
@@ -76,6 +82,11 @@ def home(request):
 
     return render(request, "store/home.html", context)
 
+def with_ratings(queryset):
+    return queryset.annotate(
+        avg_rating=Avg('productrating__rating'),
+        review_count=Count('productrating')
+    )
 
 def admin_dashboard(request):
     context = {
@@ -94,7 +105,10 @@ from django.shortcuts import render, get_object_or_404
 from .models import Product
 
 def product_detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = Product.objects.annotate(
+    avg_rating=Avg('productrating__rating'),
+    review_count=Count('productrating')
+).get(id=product_id)
 
     base_variants = product.variants.all().order_by("price")
 
@@ -130,10 +144,14 @@ def product_detail(request, product_id):
 
     # recommendations (keep your logic)
     recommendations = (
-        Product.objects
-        .exclude(id=product_id)
-        .prefetch_related("variants")
+    Product.objects
+    .exclude(id=product_id)
+    .prefetch_related("variants")
+    .annotate(
+        avg_rating=Avg('productrating__rating'),
+        review_count=Count('productrating__id')
     )
+)
 
     for p in recommendations:
         p.sorted_variants = sorted(
@@ -167,13 +185,32 @@ def toggle_wishlist(request, product_id):
         return JsonResponse({"added": True})
 
 
+# @login_required
+# def wishlist_page(request):
+#     wishlist_items = Wishlist.objects.filter(user=request.user).select_related("product")
+#     return render(request, "store/wishlist.html", {
+#     "wishlist_items": wishlist_items
+# })
+from django.db.models import Avg, Count
+
+
+
 @login_required
 def wishlist_page(request):
-    wishlist_items = Wishlist.objects.filter(user=request.user).select_related("product")
-    return render(request, "store/wishlist.html", {
-    "wishlist_items": wishlist_items
-})
 
+    wishlist_items = (
+        Wishlist.objects
+        .filter(user=request.user)
+        .select_related("product")
+        .annotate(
+            avg_rating=Avg("product__productrating__rating"),
+            review_count=Count("product__productrating")
+        )
+    )
+
+    return render(request, "store/wishlist.html", {
+        "wishlist_items": wishlist_items
+    })
 
 
 
@@ -361,12 +398,20 @@ def cart_view(request):
         "coupon_valid": coupon_valid,
 
         # recommendations
-        "recommendations": Product.objects.exclude(
-            id__in=[
-                v.product.id
-                for v in ProductVariant.objects.filter(id__in=cart.keys())
-            ]
-        ),
+        "recommendations": (
+    Product.objects.exclude(
+        id__in=[
+            v.product.id
+            for v in ProductVariant.objects.filter(id__in=cart.keys())
+        ]
+    )
+    .annotate(
+        avg_rating=Avg("productrating__rating"),
+        review_count=Count("productrating", distinct=True)
+    )
+    .select_related("category")
+    .prefetch_related("variants")
+),
     }
 
     return render(request, "store/cart.html", context)
@@ -488,27 +533,46 @@ def remove_from_cart(request, variant_id):
 
 
 
+
+
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from delivery.models import DeliveryPartner
+
 def login_view(request):
+
     if request.method == "POST":
+
         email = request.POST.get("email")
         password = request.POST.get("password")
 
         try:
-            username = User.objects.get(email=email).username
+            user_obj = User.objects.get(email=email)
         except User.DoesNotExist:
             return render(request, "store/login.html", {"error": "Invalid Email or Password"})
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=user_obj.username, password=password)
 
-        if user:
+        if user is not None:
             login(request, user)
+
+            # ✅ Handle "next" parameter FIRST
+            next_url = request.GET.get("next")
+            if next_url:
+                return redirect(next_url)
+
+            # ✅ Then role-based redirect
+            if DeliveryPartner.objects.filter(user=user).exists():
+                return redirect("/delivery/dashboard/")   # direct URL (no reverse issue)
+
+            # Normal customer
             return redirect("home")
+
         else:
             return render(request, "store/login.html", {"error": "Invalid Email or Password"})
 
     return render(request, "store/login.html")
-
-
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -629,6 +693,7 @@ def checkout(request):
     # 📮 ADDRESS HANDLING
     if request.method == "POST":
         address = request.POST.get("address")
+        phone = request.POST.get("phone") 
         if not address:
             return render(request, "store/checkout.html", {
                 "items": items,
@@ -637,6 +702,7 @@ def checkout(request):
             })
 
         request.session["address"] = address
+        request.session["phone"] = phone
         return redirect("payment")
 
     return render(request, "store/checkout.html", {
@@ -793,6 +859,7 @@ def place_order(request):
         payment_method="cod",
         payment_status="pending",
         address=address,
+        phone=request.session.get("phone"),
         mrp_total=mrp_total,
         item_discount=mrp_total - subtotal,
         coupon_discount=coupon_discount,
@@ -1049,7 +1116,7 @@ def my_orders(request):
         Order.objects
         .filter(user=request.user)
         .order_by("-created_at")
-        .prefetch_related("orderitem_set__variant__product")
+        .prefetch_related("items__variant__product")
     )
 
     return render(request, "store/my_orders.html", {
@@ -1057,31 +1124,90 @@ def my_orders(request):
     })
 
 
+# @login_required
+# def order_detail(request, order_id):
+#     order = get_object_or_404(
+#         Order,
+#         id=order_id,
+#         user=request.user
+#     )
+
+#     items = order.items.select_related("variant__product")
+
+#     ratings = ProductRating.objects.filter(user=request.user)
+
+#     for item in items:
+#         rating = ratings.filter(
+#             product=item.variant.product
+#         ).first()
+#         item.user_rating = rating.rating if rating else None
+
+#     return render(request, "store/order_detail.html", {
+#         "order": order,
+#         "items": items,
+#     })
+
+# @login_required
+# def order_detail(request, order_id):
+
+#     order = get_object_or_404(Order, id=order_id)
+
+#     # ✅ Customer
+#     if order.user == request.user:
+#         template = "store/order_detail.html"
+
+#     # ✅ Delivery partner
+#     elif DeliveryPartner.objects.filter(user=request.user).exists():
+#         partner = DeliveryPartner.objects.get(user=request.user)
+
+#         if order.delivery_partner != partner:
+#             return redirect("home")
+
+#         template = "delivery/order_detail.html"   # 🔥 CHANGE HERE
+
+#     # ❌ Unauthorized
+#     else:
+#         return redirect("home")
+
+#     items = order.items.select_related("variant__product")
+
+#     return render(request, template, {
+#         "order": order,
+#         "items": items
+#     })
+
+from .models import ProductRating
+
 @login_required
 def order_detail(request, order_id):
-    order = get_object_or_404(
-        Order,
-        id=order_id,
-        user=request.user
-    )
+    order = get_object_or_404(Order, id=order_id)
 
-    items = order.orderitem_set.select_related("variant__product")
+    # Customer / delivery logic (keep as it is)
+    if order.user == request.user:
+        template = "store/order_detail.html"
+    elif DeliveryPartner.objects.filter(user=request.user).exists():
+        partner = DeliveryPartner.objects.get(user=request.user)
 
-    ratings = ProductRating.objects.filter(user=request.user)
+        if order.delivery_partner != partner:
+            return redirect("home")
 
+        template = "delivery/order_detail.html"
+    else:
+        return redirect("home")
+
+    items = order.items.select_related('variant__product')
+
+    # ✅ ADD THIS BLOCK (IMPORTANT)
     for item in items:
-        rating = ratings.filter(
+        item.user_rating = ProductRating.objects.filter(
+            user=request.user,
             product=item.variant.product
         ).first()
-        item.user_rating = rating.rating if rating else None
 
-    return render(request, "store/order_detail.html", {
+    return render(request, template, {
         "order": order,
-        "items": items,
+        "items": items
     })
-
-
-
 
 
 
@@ -1164,7 +1290,7 @@ Our team will review and update you soon.
     to_email=item.order.user.email
 )
 
-
+ 
     # GET request → show reason page
     return render(
         request,
@@ -1176,9 +1302,26 @@ Our team will review and update you soon.
 @login_required
 def rate_product(request, item_id):
     if request.method == "POST":
-        rating = request.POST.get("rating")
 
-        order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user)
+        order_item = get_object_or_404(OrderItem, id=item_id)
+
+        # Allow rating only after delivery
+        if order_item.order.status != "delivered":
+            messages.error(request, "You can only rate delivered items")
+            return redirect("order_detail", order_id=order_item.order.id)
+
+        rating_value = request.POST.get("rating")
+
+        if not rating_value:
+            messages.error(request, "Please select a rating.")
+            return redirect("order_detail", order_id=order_item.order.id)
+
+        rating = int(rating_value)
+
+        if rating < 1 or rating > 5:
+            messages.error(request, "Invalid rating")
+            return redirect("order_detail", order_id=order_item.order.id)
+
         product = order_item.variant.product
 
         ProductRating.objects.update_or_create(
@@ -1188,11 +1331,14 @@ def rate_product(request, item_id):
         )
 
         messages.success(request, "Thank you for your rating!")
-        return redirect("order_detail", order_item.order.id)
+
+        return redirect("order_detail", order_id=order_item.order.id)
 
 
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
+
+from django.db.models import Avg, Count
 
 def category_products(request, category_id):
     category = get_object_or_404(Category, id=category_id)
@@ -1202,7 +1348,12 @@ def category_products(request, category_id):
         .filter(category=category)
         .select_related("category")
         .prefetch_related("variants")
+        .annotate(
+            avg_rating=Avg('productrating__rating'),
+            review_count=Count('productrating')
+        )
     )
+
     wishlist_product_ids = []
 
     if request.user.is_authenticated:
@@ -1210,13 +1361,11 @@ def category_products(request, category_id):
             user=request.user
         ).values_list("product_id", flat=True)
 
-
     context = {
         "category": category,
         "products": products,
         "wishlist_product_ids": wishlist_product_ids,
     }
-    
 
     return render(request, "store/category_products.html", context)
 
@@ -1238,6 +1387,25 @@ def razorpay_health_check(request):
     return JsonResponse(order)
 
 
+import json
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from .models import Review, Product
 
+@login_required
+def submit_review(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        product = Product.objects.get(id=data.get("product_id"))
+
+        Review.objects.create(
+            user=request.user,
+            product=product,
+            rating=data.get("rating"),
+            comment=data.get("comment")
+        )
+
+        return JsonResponse({"status": "success"})
 
 

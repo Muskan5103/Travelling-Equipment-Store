@@ -25,6 +25,50 @@ from django.db.models import F
 
 from django.db.models import Sum, F
 
+# @staff_member_required(login_url='/admin/login/')
+# def warehouse_dashboard(request):
+
+#     total_warehouses = Warehouse.objects.count()
+#     total_sections = Section.objects.count()
+#     total_racks = Rack.objects.count()
+#     total_products = Product.objects.count()
+
+#     total_stock = ProductVariant.objects.aggregate(
+#         total=Sum('stock')
+#     )['total'] or 0
+
+#     # Low Stock
+#     low_stock_products = ProductVariant.objects.filter(
+#         stock__lte=F('product__minimum_stock'),
+#         stock__gt=0
+#     ).count()
+
+#     # Out of Stock
+#     out_of_stock_count = ProductVariant.objects.filter(
+#         stock=0
+#     ).count()
+
+#     variants = (
+#         ProductVariant.objects
+#         .select_related("product", "product__category", "product__supplier")
+#         .order_by("product__name")
+#     )
+
+#     context = {
+#         "total_warehouses": total_warehouses,
+#         "total_sections": total_sections,
+#         "total_racks": total_racks,
+#         "total_products": total_products,
+#         "total_stock": total_stock,
+#         "low_stock_products": low_stock_products,
+#         "out_of_stock_count": out_of_stock_count,
+#         "variants": variants
+#     }
+
+#     return render(request, "warehouse/dashboard.html", context)
+
+from store.models import Order
+
 @staff_member_required(login_url='/admin/login/')
 def warehouse_dashboard(request):
 
@@ -54,6 +98,9 @@ def warehouse_dashboard(request):
         .order_by("product__name")
     )
 
+    # ⭐ Orders that need packing
+    orders = Order.objects.filter(status__in=["placed", "processing"])
+
     context = {
         "total_warehouses": total_warehouses,
         "total_sections": total_sections,
@@ -62,10 +109,33 @@ def warehouse_dashboard(request):
         "total_stock": total_stock,
         "low_stock_products": low_stock_products,
         "out_of_stock_count": out_of_stock_count,
-        "variants": variants
+        "variants": variants,
+        "orders": orders
     }
 
     return render(request, "warehouse/dashboard.html", context)
+
+from django.shortcuts import get_object_or_404, redirect
+
+def mark_packed(request, order_id):
+
+    order = get_object_or_404(Order, id=order_id)
+
+    order.status = "packed"
+    order.save()
+
+    return redirect("warehouse_dashboard")
+
+from store.models import Order
+
+def orders_to_pack(request):
+
+    orders = Order.objects.filter(status__in=["placed","processing"])
+
+    return render(request,
+        "warehouse/orders_to_pack.html",
+        {"orders": orders}
+    )
 
 from .models import StockTransaction
 # from store.models import ProductVariant

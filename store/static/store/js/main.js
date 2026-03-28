@@ -71,105 +71,7 @@ if (checked && boxes[checked.value]) {
 }
 
 
-// const payBtn = document.getElementById("pay-btn");
 
-// if (payBtn) {
-//   payBtn.addEventListener("click", function () {
-
-//     console.log(RAZORPAY_KEY, ORDER_ID, AMOUNT); // 🔍 debug once
-
-//     const options = {
-//       key: RAZORPAY_KEY,
-//       amount: AMOUNT,
-//       currency: "INR",
-//       name: "Travel Equipment Store",
-//       description: "Order Payment",
-//       order_id: ORDER_ID,
-
-//       handler: function (response) {
-//         fetch("/verify-razorpay-payment/", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//             "X-CSRFToken": getCookie("csrftoken"),
-//           },
-//           body: JSON.stringify(response),
-//         })
-//         .then(res => res.json())
-//         .then(data => {
-//           if (data.status === "success") {
-//             window.location.href = "/order-success/";
-//           } else {
-//             alert("Payment verification failed");
-//           }
-//         });
-//       }
-//     };
-
-//     const rzp = new Razorpay(options);
-//     rzp.open();
-//   });
-// }
-
-
-// const payBtn = document.getElementById("pay-btn");
-
-// if (payBtn) {
-//   payBtn.addEventListener("click", function () {
-
-//     const selected = document.querySelector('input[name="payment"]:checked');
-
-//     if (!selected) {
-//       alert("Please select a payment method");
-//       return;
-//     }
-
-//     // ✅ COD → normal form submit
-//     if (selected.value === "cod") {
-//       document.getElementById("payment-form").submit();
-//       return;
-//     }
-
-//     // 🔵 ONLINE PAYMENT → RAZORPAY
-//     const options = {
-//       key: RAZORPAY_KEY,
-//       amount: AMOUNT,
-//       currency: "INR",
-//       name: "Travel Equipment Store",
-//       description: "Order Payment",
-//       order_id: ORDER_ID,
-
-//      handler: function (response) {
-//   fetch("/verify-razorpay-payment/", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "X-CSRFToken": getCookie("csrftoken"),
-//     },
-//     body: JSON.stringify({
-//       razorpay_payment_id: response.razorpay_payment_id,
-//       razorpay_order_id: response.razorpay_order_id,
-//       razorpay_signature: response.razorpay_signature,
-//     }),
-//   })
-//   .then(res => res.json())
-//   .then(data => {
-//     if (data.status === "success") {
-//       window.location.href = "/order-success/";
-//     } else {
-//       alert("Payment verification failed");
-//     }
-//   });
-// }
-
-
-//     };
-
-//     const rzp = new Razorpay(options);
-//     rzp.open();
-
-//   }); // ✅ closes addEventListener
-// } // ✅ closes if(payBtn)
 
 
 const payBtn = document.getElementById("pay-btn");
@@ -244,7 +146,7 @@ if (payBtn) {
 
     let timeout = null;
 
-    input.addEventListener("keyup", function () {
+    input.addEventListener("input", function () {
       const query = input.value.trim();
       clearTimeout(timeout);
 
@@ -256,35 +158,41 @@ if (payBtn) {
 
       timeout = setTimeout(() => {
         fetch(`/ajax/search/?q=${query}`)
-          .then(res => res.json())
-          .then(data => {
-            resultsBox.innerHTML = "";
+  .then(res => res.json())
+  .then(data => {
+    resultsBox.innerHTML = "";
 
-            if (data.results.length === 0) {
-              resultsBox.innerHTML = `<div class="search-empty">No results found</div>`;
-              resultsBox.style.display = "block";
-              return;
-            }
+    if (!data.results || data.results.length === 0) {
+      resultsBox.innerHTML = `<div class="search-empty">No results found</div>`;
+      resultsBox.style.display = "block";
+      return;
+    }
 
-            data.results.forEach(item => {
-              resultsBox.innerHTML += `
-              <a href="/product/${item.id}/" class="search-item">
-                <img src="${item.image}" alt="">
-                <div>
-                  <div class="search-name">
-                    ${item.name.replace(
+    data.results.forEach(item => {
+      resultsBox.innerHTML += `
+        <a href="/product/${item.id}/" class="search-item">
+          <img src="${item.image}" alt="">
+          <div>
+            <div class="search-name">
+              ${item.name.replace(
                 new RegExp(query, "gi"),
                 match => `<span style="color:#2563eb">${match}</span>`
               )}
-                  </div>
-                  <div class="search-price">₹ ${item.price}</div>
-                </div>
-              </a>
-            `;
-            });
+            </div>
+            <div class="search-price">₹ ${item.price}</div>
+          </div>
+        </a>
+      `;
+    });
 
-            resultsBox.style.display = "block";
-          });
+    resultsBox.style.display = "block";
+  })
+  .catch(err => {
+    console.error("Search error:", err);
+    resultsBox.innerHTML = `<div class="search-empty">Error loading results</div>`;
+    resultsBox.style.display = "block";
+  });
+          
       }, 300);
     });
 
@@ -428,6 +336,15 @@ if (ordersDataEl && revenueDataEl) {
     }
   });
 
+  document.querySelectorAll('.rating-value').forEach(el => {
+    let rating = parseFloat(el.innerText);
+
+    if (rating < 3) {
+        el.style.backgroundColor = "#d32f2f"; // red
+    } else if (rating < 4) {
+        el.style.backgroundColor = "#fbc02d"; // yellow
+    }
+});
   // ---------------- REVENUE PER MONTH ----------------
   const revenueLabels = revenueRaw.map(r => {
     const date = new Date(r.month);
@@ -472,6 +389,65 @@ function closeDrawer() {
 
     document.body.classList.remove("no-scroll");
 }
+
+function showReviewBox() {
+    document.getElementById("review-box").style.display = "block";
+}
+
+function submitReview() {
+    const review = document.getElementById("review-text").value;
+    const rating = document.querySelectorAll(".star.selected").length; // if using stars
+
+    fetch("/submit-review/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+        },
+        body: JSON.stringify({
+            review: review,
+            rating: rating,
+            product_id: 1   // pass dynamic product id
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("Review submitted!");
+        document.getElementById("review-box").style.display = "none";
+    });
+}
+
+// CSRF helper
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie) {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            if (cookie.trim().startsWith(name + '=')) {
+                cookieValue = cookie.split('=')[1];
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showReviewBox(id) {
+
+    const box = document.getElementById("review-box-" + id);
+
+    if (!box) {
+        console.log("Review box not found for id:", id);
+        return;
+    }
+
+    if (box.style.display === "none" || box.style.display === "") {
+        box.style.display = "block";
+    } else {
+        box.style.display = "none";
+    }
+
+}
+
 
 
 

@@ -34,6 +34,15 @@
           {% if product.display_mrp and product.display_mrp > product.display_price %}
           <span class="mrp">₹ {{ product.display_mrp }}</span>
           <span class="discount-badge">{{ product.discount_percent }}% OFF</span>
+          <div class="rating-box">
+    <span class="rating-value">
+{{ product.avg_rating|default:0|floatformat:1 }} ★
+</span>
+
+<span class="review-count">
+{{ product.review_count|default:0 }} Reviews
+</span>
+</div>
           {% endif %}
         </div>
 

@@ -1,9 +1,18 @@
+from random import random
+from django.core.mail import send_mail
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+
+from django.forms import ValidationError
+from urllib3 import request
+from urllib3 import request
+from travel_equipment_store import settings
 from warehouse.models import Supplier
-
-
+from delivery.models import DeliveryPartner
+import random
+from django.db.models import Avg
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -18,7 +27,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="products/", blank=True, null=True)
-
+    phone = models.CharField(max_length=15, blank=True, null=True)
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -66,7 +75,32 @@ class Product(models.Model):
     def display_quantity(self):
         v = self.first_variant
         return f"{v.quantity}{v.unit}" if v else None
+    
+    @property
+    def average_rating(self):
+        avg = self.reviews.aggregate(avg=Avg("rating"))["avg"]
+        return round(avg, 1) if avg else 0
 
+    @property
+    def total_reviews(self):
+        return self.reviews.count()
+
+
+from django.contrib.auth.models import User
+
+class Review(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.product} ({self.rating})"
 
 class Wishlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wishlist")
@@ -122,17 +156,37 @@ class ProductVariant(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ("placed", "Placed"),
-        ("shipped", "Shipped"),
-        ("delivered", "Delivered"),
-        ("cancelled", "Cancelled"),
-        ("returned", "Returned"),
-    ]
+    ("placed", "Placed"),
+    ("processing", "Processing"),
+    ("packed", "Packed"),
+    ("out_for_delivery", "Out for Delivery"),
+    ("delivered", "Delivered"),
+    ("cancelled", "Cancelled"),
+    ("returned", "Returned"),
+]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    delivery_partner = models.ForeignKey(
+    DeliveryPartner,
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    related_name="assigned_orders"
+)
     total_amount = models.DecimalField(
     max_digits=10,
     decimal_places=2,
     default=0
+)
+    ACCEPT_STATUS = [
+    ("pending", "Pending"),
+    ("accepted", "Accepted"),
+    ("rejected", "Rejected"),
+]
+
+    delivery_response = models.CharField(
+    max_length=10,
+    choices=ACCEPT_STATUS,
+    default="pending"
 )
     PAYMENT_CHOICES = [
         ("cod", "Cash on Delivery"),
@@ -145,6 +199,7 @@ class Order(models.Model):
     payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
     upi_app = models.CharField(max_length=20, blank=True, null=True)
     estimated_delivery = models.DateField(blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     status = models.CharField(
         max_length=20,
@@ -173,6 +228,29 @@ class Order(models.Model):
     return_comment = models.TextField(blank=True, null=True)
     razorpay_payment_id = models.CharField(max_length=255, blank=True, null=True)
     razorpay_order_id = models.CharField(max_length=255, blank=True, null=True)
+    assigned_at = models.DateTimeField(null=True, blank=True)
+    delivery_otp = models.CharField(max_length=6, blank=True)
+    delivery_image = models.ImageField(upload_to='delivery_proof/', null=True, blank=True)
+
+    
+    def save(self, *args, **kwargs):
+        # 🚫 Prevent assigning offline partner
+        if self.delivery_partner and not self.delivery_partner.is_online:
+            raise ValidationError("❌ Cannot assign order to OFFLINE delivery partner")
+
+        super().save(*args, **kwargs)
+
+    def assign_to_partner(self, partner):
+        self.delivery_partner = partner
+        self.assigned_at = timezone.now()
+        self.save()
+    
+    def generate_otp(self):
+        self.delivery_otp = str(random.randint(100000, 999999))
+        self.save()
+
+        
+    
 
 
     def __str__(self):
@@ -180,7 +258,11 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(
+    Order,
+    on_delete=models.CASCADE,
+    related_name="items"   # ✅ ADD THIS
+)
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)

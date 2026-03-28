@@ -1,0 +1,66 @@
+{% extends "store/base.html" %}
+
+{% block content %}
+
+<div class="container  do mtt-4">
+
+    <h3 class="mb-4">📦 Order #{{ order.id }}</h3>
+
+    <div class="order-wrapper">
+
+        <!-- LEFT: Items -->
+        <div class="order-items">
+
+            <h5 class="mb-3">🛒 Items</h5>
+
+            {% for item in items %}
+            <div class="item-card">
+
+                <img src="{% if item.variant.product.image %}{{ item.variant.product.image.url }}{% else %}/static/default.png{% endif %}"
+                    class="product-img">
+
+                <div class="item-info">
+                    <h6>{{ item.variant.product.name }}</h6>
+                    <p>Variant: {{ item.variant }}</p>
+                    <p>Qty: {{ item.quantity }}</p>
+                    <span class="price">₹{{ item.price }}</span>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- RIGHT: Order Details -->
+        <div class="order-summary">
+
+            <h5 class="mb-3">📄 Order Details</h5>
+
+            <p><strong>Customer:</strong> {{ order.user.username }}</p>
+            <p><strong>Address:</strong> {{ order.address }}</p>
+            <p><strong>Total:</strong> ₹{{ order.total_amount }}</p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="status {{ order.status }}">
+                    {{ order.status }}
+                </span>
+            </p>
+
+            <p><strong>Payment:</strong> {{ order.payment_method }}</p>
+            <p><strong>Date:</strong> {{ order.created_at }}</p>
+            {% if order.phone %}
+<a href="tel:{{ order.phone }}" class="call-btn">
+<i class="bi bi-telephone-fill"></i> Call Customer
+</a>
+{% else %}
+<p class="text-muted">No phone available</p>
+{% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
