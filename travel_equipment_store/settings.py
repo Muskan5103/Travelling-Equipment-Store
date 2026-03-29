@@ -25,10 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1^&i-)b2&g80#)3r+fs+z*!ohefhq$dcaxz1md=ior3%-bp_*3'
+
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+print("DEBUG VALUE:", DEBUG)
 
 ALLOWED_HOSTS = []
 
@@ -202,10 +204,9 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = "musu5103@gmail.com"
-EMAIL_HOST_PASSWORD = "cjpyyuifwifazlli"
-# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = "Trek Ready <musu5103@gmail.com>"
 # ALLOWED_HOSTS = ['192.168.1.11', 'localhost', '127.0.0.1']
@@ -237,8 +238,10 @@ JAZZMIN_SETTINGS = {
 }
 
 
-RAZORPAY_KEY_ID = "rzp_test_SCkUYPE3P1cmal"
-RAZORPAY_KEY_SECRET = "Sc9jx8eGbS66kxWoW6SAV43Z"
+
+
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET")
 
 
 
