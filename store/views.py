@@ -1097,7 +1097,7 @@ from django.http import HttpResponse
 
 def download_invoice(request, order_id):
     order = Order.objects.get(id=order_id, user=request.user)
-    items = order.orderitem_set.all()
+    items = order.items.all()
 
 
     template = get_template("store/invoice.html")

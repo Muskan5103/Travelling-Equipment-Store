@@ -202,14 +202,14 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# EMAIL_HOST_USER = "musu5103@gmail.com"
-# EMAIL_HOST_PASSWORD = "cjpy yuif wifa zlli"
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = "musu5103@gmail.com"
+EMAIL_HOST_PASSWORD = "cjpyyuifwifazlli"
+# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
-DEFAULT_FROM_EMAIL = "Trek Ready <your-email@gmail.com>"
+DEFAULT_FROM_EMAIL = "Trek Ready <musu5103@gmail.com>"
 # ALLOWED_HOSTS = ['192.168.1.11', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['travelling-equipment-store.onrender.com']
+ALLOWED_HOSTS = ['travelling-equipment-store.onrender.com','192.168.1.11', 'localhost', '127.0.0.1']
 
 
 
