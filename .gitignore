@@ -22,3 +22,6 @@ staticfiles/
 Thumbs.db
 
 SECRET_KEY=!h=81+x2s7m$^xfxcg)*3$wehq^oqcedqcnh3#*b8^(9u%4q8n
+
+RAZORPAY_KEY_ID=rzp_test_ScKUYPE3P1cmal
+RAZORPAY_KEY_SECRET=Sc9jx8eGbS66kxWoW6SAV43Z

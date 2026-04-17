@@ -730,6 +730,8 @@ from django.shortcuts import render, redirect
 
 @login_required
 def payment(request):
+    print("KEY:", settings.RAZORPAY_KEY_ID)
+    print("SECRET:", settings.RAZORPAY_KEY_SECRET)
     cart = request.session.get("cart", {})
     applied_coupon = request.session.get("coupon")
 
@@ -787,6 +789,7 @@ def payment(request):
     request.session["coupon_discount"] = str(coupon_discount)
     request.session["delivery_fee"] = str(delivery_fee)
     request.session["final_amount"] = str(final_amount)
+    
 
     return render(request, "store/payment.html", {
         "items": items,
