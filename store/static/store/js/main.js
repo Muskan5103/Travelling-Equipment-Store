@@ -94,40 +94,67 @@ if (payBtn) {
 
     // 🔵 RAZORPAY
     const options = {
-      key: RAZORPAY_KEY,
-      amount: AMOUNT,
-      currency: "INR",
-      name: "Travel Equipment Store",
-      description: "Order Payment",
-      order_id: ORDER_ID,
+    key: RAZORPAY_KEY,
+    amount: Number(AMOUNT),
+    currency: "INR",
+    name: "Travel Equipment Store",
+    description: "Order Payment",
+    order_id: ORDER_ID,
 
-      handler: function (response) {
-  fetch("/verify-razorpay-payment/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": getCookie("csrftoken"),
+    method: {
+        upi: true,
+        card: true,
+        netbanking: true,
+        wallet: true
     },
-    body: JSON.stringify({
-      razorpay_payment_id: response.razorpay_payment_id,
-      razorpay_order_id: response.razorpay_order_id,
-      razorpay_signature: response.razorpay_signature,
-    }),
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === "success") {
-      // ✅ Redirect to actual order
-      window.location.href = `/order-success/`;
-    } else {
-      alert("Payment verification failed");
-    }
-  });
-}
 
-    };
+    prefill: {
+        name: "{{ request.user.first_name }}",
+        email: "{{ request.user.email }}"
+    },
+
+    theme: {
+        color: "#3399cc"
+    },
+
+    handler: function(response) {
+        fetch("/verify-razorpay-payment/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+            }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                window.location.href = "/order-success/";
+            } else {
+                alert("Payment verification failed");
+            }
+        });
+    }
+};
 
     const rzp = new Razorpay(options);
+    rzp.on("payment.failed", function (response) {
+  console.log("❌ Payment Failed Full Response:", response);
+
+  console.log("Error Code:", response.error.code);
+  console.log("Description:", response.error.description);
+  console.log("Source:", response.error.source);
+  console.log("Step:", response.error.step);
+  console.log("Reason:", response.error.reason);
+  console.log("Order ID:", response.error.metadata.order_id);
+  console.log("Payment ID:", response.error.metadata.payment_id);
+
+  alert("Payment Failed: " + response.error.description);
+});
     rzp.open();
   });
 }

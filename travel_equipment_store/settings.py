@@ -143,20 +143,13 @@ WSGI_APPLICATION = 'travel_equipment_store.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-import dj_database_url
-import os
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -217,10 +210,12 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = "Trek Ready <musu5103@gmail.com>"
 # ALLOWED_HOSTS = ['192.168.1.11', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['travelling-equipment-store.onrender.com','192.168.1.11', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['travelling-equipment-store.onrender.com','192.168.1.11', 'localhost', '127.0.0.1', 'childless-overjoyed-cadmium.ngrok-free.dev']
 
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://childless-overjoyed-cadmium.ngrok-free.dev"
+]
 
 JAZZMIN_SETTINGS = {
     "site_title": "Travel Gear Admin",

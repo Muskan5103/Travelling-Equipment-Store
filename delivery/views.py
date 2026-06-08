@@ -137,38 +137,69 @@ def delivery_history(request):
 
 from django.shortcuts import get_object_or_404, redirect
 from django.core.mail import send_mail
+# @login_required
+# def accept_order(request, order_id):
+
+#     partner = DeliveryPartner.objects.get(user=request.user)
+
+#     order = get_object_or_404(Order, id=order_id)
+
+#     order.delivery_partner = partner
+#     order.delivery_response = "accepted"
+#     order.status = "packed"
+#     if not order.delivery_otp:
+#         order.generate_otp()
+#         order.save()
+#         send_mail(
+#         subject="Delivery OTP",
+#         message=f"""
+#     Hello {order.user.username},
+
+#     Your delivery OTP is: {order.delivery_otp}
+
+#     Please share this OTP with delivery partner.
+
+#     Thanks,
+#     Trek Ready 🚚
+#     """,
+#         from_email=settings.EMAIL_HOST_USER,
+#         recipient_list=[order.user.email],
+#         fail_silently=False,
+#     )
+    
+#     return redirect("/delivery/dashboard/")
 @login_required
 def accept_order(request, order_id):
-
     partner = DeliveryPartner.objects.get(user=request.user)
-
     order = get_object_or_404(Order, id=order_id)
 
     order.delivery_partner = partner
     order.delivery_response = "accepted"
-    order.status = "packed"
+    order.status = "out_for_delivery"
+
+    # Generate OTP only once
     if not order.delivery_otp:
         order.generate_otp()
-        order.save()
+
         send_mail(
-        subject="Delivery OTP",
-        message=f"""
-    Hello {order.user.username},
+            subject="Delivery OTP",
+            message=f"""
+Hello {order.user.username},
 
-    Your delivery OTP is: {order.delivery_otp}
+Your delivery OTP is: {order.delivery_otp}
 
-    Please share this OTP with delivery partner.
+Please share this OTP with delivery partner.
 
-    Thanks,
-    Trek Ready 🚚
-    """,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[order.user.email],
-        fail_silently=False,
-    )
-    
+Thanks,
+Trek Ready 🚚
+""",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[order.user.email],
+            fail_silently=False,
+        )
+
+    order.save()
     return redirect("/delivery/dashboard/")
-
 
 @login_required
 def reject_order(request, order_id):
@@ -257,14 +288,17 @@ def verify_delivery(request, order_id):
         entered_otp = request.POST.get("otp")
         photo = request.FILES.get("photo")
 
-        if entered_otp == order.delivery_otp:
+        # Debug check
+        print("Entered OTP:", entered_otp)
+        print("Stored OTP:", order.delivery_otp)
+
+        if str(entered_otp).strip() == str(order.delivery_otp).strip():
             order.delivery_image = photo
             order.status = "delivered"
             order.save()
 
             messages.success(request, "✅ Delivery completed successfully!")
             return redirect("/delivery/dashboard/")
-
         else:
             messages.error(request, "❌ Invalid OTP")
 

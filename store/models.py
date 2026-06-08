@@ -229,7 +229,10 @@ class Order(models.Model):
     razorpay_payment_id = models.CharField(max_length=255, blank=True, null=True)
     razorpay_order_id = models.CharField(max_length=255, blank=True, null=True)
     assigned_at = models.DateTimeField(null=True, blank=True)
-    delivery_otp = models.CharField(max_length=6, blank=True)
+    delivery_otp = models.IntegerField(
+    null=True,
+    blank=True
+)
     delivery_image = models.ImageField(upload_to='delivery_proof/', null=True, blank=True)
 
     

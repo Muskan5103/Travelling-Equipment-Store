@@ -15,7 +15,7 @@ from django.contrib import messages
 from .models import Product, Order, OrderItem, ProductRating
 from decimal import Decimal
 from django.db.models import Q
-from warehouse.models import WarehouseStock, StockOut
+from warehouse.models import ReturnDamage, WarehouseStock, StockOut
 from django.db.models import Avg, Count, OuterRef, Subquery
 from .models import ProductRating
 from store.utils.whatsapp import send_whatsapp_message
@@ -720,7 +720,7 @@ def checkout(request):
 
 
 
-
+import time
 
 import razorpay
 from django.conf import settings
@@ -730,6 +730,7 @@ from django.shortcuts import render, redirect
 
 @login_required
 def payment(request):
+    
     print("KEY:", settings.RAZORPAY_KEY_ID)
     print("SECRET:", settings.RAZORPAY_KEY_SECRET)
     cart = request.session.get("cart", {})
@@ -770,18 +771,38 @@ def payment(request):
     total_savings = item_discount + coupon_discount
 
     # 🔥 RAZORPAY ORDER CREATION
+    # Razorpay client
+    if "razorpay_order_id" in request.session:
+        del request.session["razorpay_order_id"]
+
+# Razorpay client
     client = razorpay.Client(
         auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
     )
 
-    razorpay_amount = int(final_amount * 100)  # paise
+    razorpay_amount = int(final_amount * 100)
 
-    razorpay_order = client.order.create({
-        "amount": razorpay_amount,
-        "currency": "INR",
-        "payment_capture": 1,
-         "receipt": f"order_rcpt_{request.user.id}"
-    })
+    try:
+        # Always create fresh order
+        razorpay_order = client.order.create({
+            "amount": razorpay_amount,
+            "currency": "INR",
+            "payment_capture": 1,
+            "receipt": f"order_{request.user.id}_{int(time.time())}"
+        })
+
+        request.session["razorpay_order_id"] = razorpay_order["id"]
+
+    except Exception as e:
+        print("Razorpay Error:", e)
+        messages.error(request, "Payment gateway error")
+        return redirect("checkout")
+        
+
+   
+        
+    print("FINAL AMOUNT:", final_amount)
+    print("RAZORPAY AMOUNT:", razorpay_amount)
 
     request.session["razorpay_order_id"] = razorpay_order["id"]
     request.session["total_mrp"] = str(total_mrp)
@@ -958,7 +979,7 @@ def verify_razorpay_payment(request):
     order = Order.objects.create(
         user=request.user,
         payment_method="razorpay",
-        payment_status="paid",
+        payment_status="completed",
         razorpay_payment_id=payment_id,
         razorpay_order_id=order_id,
         address=address,
@@ -972,6 +993,11 @@ def verify_razorpay_payment(request):
     # 🔥 CREATE ORDER ITEMS
     for variant_id, qty in cart.items():
         variant = ProductVariant.objects.get(id=int(variant_id))
+        if variant.stock < qty:
+                return JsonResponse({
+                    "status": "failed",
+                    "message": "Out of stock"
+                })
 
         OrderItem.objects.create(
             order=order,
@@ -979,6 +1005,8 @@ def verify_razorpay_payment(request):
             quantity=qty,
             price=variant.price,
         )
+        variant.stock -= qty
+        variant.save()
 
     # Clear session
     clear_checkout_session(request)
@@ -1127,57 +1155,7 @@ def my_orders(request):
     })
 
 
-# @login_required
-# def order_detail(request, order_id):
-#     order = get_object_or_404(
-#         Order,
-#         id=order_id,
-#         user=request.user
-#     )
 
-#     items = order.items.select_related("variant__product")
-
-#     ratings = ProductRating.objects.filter(user=request.user)
-
-#     for item in items:
-#         rating = ratings.filter(
-#             product=item.variant.product
-#         ).first()
-#         item.user_rating = rating.rating if rating else None
-
-#     return render(request, "store/order_detail.html", {
-#         "order": order,
-#         "items": items,
-#     })
-
-# @login_required
-# def order_detail(request, order_id):
-
-#     order = get_object_or_404(Order, id=order_id)
-
-#     # ✅ Customer
-#     if order.user == request.user:
-#         template = "store/order_detail.html"
-
-#     # ✅ Delivery partner
-#     elif DeliveryPartner.objects.filter(user=request.user).exists():
-#         partner = DeliveryPartner.objects.get(user=request.user)
-
-#         if order.delivery_partner != partner:
-#             return redirect("home")
-
-#         template = "delivery/order_detail.html"   # 🔥 CHANGE HERE
-
-#     # ❌ Unauthorized
-#     else:
-#         return redirect("home")
-
-#     items = order.items.select_related("variant__product")
-
-#     return render(request, template, {
-#         "order": order,
-#         "items": items
-#     })
 
 from .models import ProductRating
 
@@ -1237,7 +1215,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from .models import OrderItem
-
+from warehouse.models import ReturnDamage
 
 @login_required
 def return_item(request, item_id):
@@ -1270,6 +1248,22 @@ def return_item(request, item_id):
         item.return_reason = reason
         item.return_comment = comment
         item.save()
+        
+        item.order.return_requested = True
+        item.order.return_reason = reason
+        item.order.return_comment = comment
+        item.order.status = "returned"
+        item.order.save()
+
+        return_obj = ReturnDamage.objects.create(
+        order_item=item,
+        customer=item.order.user,
+        equipment=item.variant.product.name,
+        quantity=item.quantity,
+        status="Returned",
+        action_status="Requested"
+    )
+        print("RETURN CREATED:", return_obj.id)
 
         messages.success(
             request,

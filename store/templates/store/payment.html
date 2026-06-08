@@ -8,7 +8,8 @@
 
     <!-- LEFT: PAYMENT METHODS -->
     <div class="col-lg-7">
-      <form id="payment-form" method="POST" action="{% url 'place_order' %}">
+      <!-- <form id="payment-form" method="POST" action="{% url 'place_order' %}"> -->
+       <form id="payment-form" method="POST" action="{% url 'place_order' %}">
         {% csrf_token %}
 
         <div class="payment-methods">
@@ -19,76 +20,22 @@
             <span>Cash on Delivery</span>
           </label>
 
-          <!-- UPI -->
+         
           <label class="payment-option">
             <input type="radio" name="payment" value="upi" checked>
-            <span>UPI (Google Pay / PhonePe / Paytm)</span>
+            <span>Online</span>
           </label>
 
-          <div class="payment-box" id="upi-box">
-            <div class="upi-options">
-              <label class="upi-app">
-                <input type="radio" name="upi_app" value="googlepay">
-                <span>Google Pay</span>
-              </label>
+         
+          
 
-              <label class="upi-app">
-                <input type="radio" name="upi_app" value="phonepe">
-                <span>PhonePe</span>
-              </label>
-
-              <label class="upi-app">
-                <input type="radio" name="upi_app" value="paytm">
-                <span>Paytm</span>
-              </label>
-
-              <label class="upi-app">
-                <input type="radio" name="upi_app" value="bhim">
-                <span>BHIM UPI</span>
-              </label>
-            </div>
-
-          </div>
-
-          <!-- Card -->
-          <label class="payment-option">
-            <input type="radio" name="payment" value="card">
-            <span>Debit / Credit Card</span>
-          </label>
-
-          <div class="payment-box " id="card-box">
-            <input type="text" placeholder="Card Number" maxlength="16">
-            <div class="card-row">
-              <input type="text" placeholder="MM/YY" maxlength="5">
-              <input type="password" placeholder="CVV" maxlength="3">
-            </div>
-            <input type="text" placeholder="Card Holder Name">
-          </div>
-
-          <!-- Net Banking -->
-          <label class="payment-option">
-            <input type="radio" name="payment" value="netbanking">
-            <span>Net Banking</span>
-          </label>
-
-          <div class="payment-box " id="netbanking-box">
-            <select>
-              <option>Select Bank</option>
-              <option>SBI</option>
-              <option>HDFC Bank</option>
-              <option>ICICI Bank</option>
-              <option>Axis Bank</option>
-              <option>PNB</option>
-              <option>Kotak Bank</option>
-            </select>
-          </div>
+          
 
         </div>
 
-        <button type="button" id="pay-btn" class="pay-btn mt-4" 
-    data-amount="{{ final_amount }}">
-  Pay ₹ {{ final_amount }}
-</button>
+        <button type="button" id="pay-btn" class="pay-btn mt-4" data-amount="{{ final_amount }}">
+          Pay ₹ {{ final_amount }}
+        </button>
 
       </form>
 
