@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -215,12 +215,14 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'childless-overjoyed-cadmium.ngrok-free.dev',
+    'trekready.pythonanywhere.com',
 ]
 
 
 CSRF_TRUSTED_ORIGINS = [
     "https://travelling-equipment-store-1.onrender.com",
     "https://childless-overjoyed-cadmium.ngrok-free.dev",
+    "https://trekready.pythonanywhere.com",
 ]
 
 JAZZMIN_SETTINGS = {
@@ -246,7 +248,7 @@ JAZZMIN_SETTINGS = {
 }
 
 
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+
 
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
