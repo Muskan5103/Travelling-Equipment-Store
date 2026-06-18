@@ -1,0 +1,2523 @@
+﻿[
+{
+  "model": "store.category",
+  "pk": 1,
+  "fields": {
+    "name": "Navigation & Smart Travel",
+    "icon": "category_icons/nav_1yCbuQP.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 2,
+  "fields": {
+    "name": "Destination-Based Categories",
+    "icon": "category_icons/des_FdRMU9v.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 3,
+  "fields": {
+    "name": "Transport-Based Travel Gear",
+    "icon": "category_icons/tra_P51Di1a.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 4,
+  "fields": {
+    "name": "Weather-Specific Travel Gear",
+    "icon": "category_icons/we_bgHR06J.jpg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 5,
+  "fields": {
+    "name": "Safety, Security & Anti-Theft",
+    "icon": "category_icons/lock_SaM9tOk.jpg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 6,
+  "fields": {
+    "name": "Packing & Organization",
+    "icon": "category_icons/pac_7SQm3Ns.webp"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 7,
+  "fields": {
+    "name": "Adventure & Outdoor Gear",
+    "icon": "category_icons/tent_QxSbokP.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 8,
+  "fields": {
+    "name": "Travel Accessories",
+    "icon": "category_icons/btt_uVHHFl4.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 9,
+  "fields": {
+    "name": "Footwear & Accessories",
+    "icon": "category_icons/sh_bD27u29.webp"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 10,
+  "fields": {
+    "name": "Document and security",
+    "icon": "category_icons/wa_SBiaNui.webp"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 11,
+  "fields": {
+    "name": "Comfort and Entertainment",
+    "icon": "category_icons/books_ODlyAmd.avif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 12,
+  "fields": {
+    "name": "Electronics and Tech",
+    "icon": "category_icons/el_UdFkvhi.jpg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 13,
+  "fields": {
+    "name": "Toilietries and Health",
+    "icon": "category_icons/hy_rdvk5G7.jfif"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 14,
+  "fields": {
+    "name": "Clothing and Apparel",
+    "icon": "category_icons/cl_CU5Emgm.jpeg"
+  }
+},
+{
+  "model": "store.category",
+  "pk": 15,
+  "fields": {
+    "name": "Luggage and Bags",
+    "icon": "category_icons/lb_3tfJppM.avif"
+  }
+},
+{
+  "model": "store.product",
+  "pk": 1,
+  "fields": {
+    "name": "Triphop Tech Kit Portable Gadgets Organiser",
+    "description": "Handy pouch to keep cables, power banks, and devices sorted.",
+    "image": "products/tri.jfif",
+    "phone": null,
+    "category": 1,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 2,
+  "fields": {
+    "name": "Garmin Drive 53 GPS Navigator",
+    "description": "High-resolution touchscreen car GPS with easy-to-use menus ╬ô├ç├╢ perfect for road trips.",
+    "image": "products/gps.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 1,
+    "minimum_stock": 10
+  }
+},
+{
+  "model": "store.product",
+  "pk": 3,
+  "fields": {
+    "name": "Nyalkaran Camping Tent",
+    "description": "Nyalkaran Camping Tent Waterproof, Portable Tent for Outdoor, Traveling,Hiking,Camping, Tent",
+    "image": "products/a.jfif",
+    "phone": null,
+    "category": 7,
+    "supplier": 1,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 5,
+  "fields": {
+    "name": "Polyester Tent",
+    "description": "Lifelong Polyester Tent for Camping - Dress Changing Pop Up with Portable Foldable Cloth Outdoor Bathroom Tent, Camp Toilet Rain Shelter, Height 7Ft-(Green1 Person)",
+    "image": "products/b_cvaFKmX.jpg",
+    "phone": null,
+    "category": 7,
+    "supplier": 4,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 6,
+  "fields": {
+    "name": "Tempo Tents",
+    "description": "15 ft - Walls and Doors ╬ô├ç├┤ Tempo Tents",
+    "image": "products/3.jfif",
+    "phone": null,
+    "category": 7,
+    "supplier": 4,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 7,
+  "fields": {
+    "name": "Sleeping Bag",
+    "description": "Comfort Temperature: 0Γö¼ΓûæC Limit Temperature: ╬ô├ç├┤5Γö¼ΓûæC Quintuple (5) Layer",
+    "image": "products/4.jfif",
+    "phone": null,
+    "category": 7,
+    "supplier": 3,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 8,
+  "fields": {
+    "name": "Cora Sleeping Bag",
+    "description": "Gipfel Cora Sleeping Bag +14Γö¼ΓûæC in India | Gipfel Climbing Equipment",
+    "image": "products/5.jfif",
+    "phone": null,
+    "category": 7,
+    "supplier": 1,
+    "minimum_stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 9,
+  "fields": {
+    "name": "Camping Sleeping Pad",
+    "description": "Fun Pack Foods Camping Sleeping Pad Extra Thick Durable Camping India | Ubuy",
+    "image": "products/6.jpg",
+    "phone": null,
+    "category": 7,
+    "supplier": 3,
+    "minimum_stock": 20
+  }
+},
+{
+  "model": "store.product",
+  "pk": 10,
+  "fields": {
+    "name": "Sleeping Pad",
+    "description": "Sleeping Pad vs. Air Mattress: 4 Factors to Consider for Camping",
+    "image": "products/7.jpeg",
+    "phone": null,
+    "category": 7,
+    "supplier": 1,
+    "minimum_stock": 30
+  }
+},
+{
+  "model": "store.product",
+  "pk": 11,
+  "fields": {
+    "name": "Trekking Bag",
+    "description": "Trekking Bags - Buy Trekking Bags online in India",
+    "image": "products/8.jpg",
+    "phone": null,
+    "category": 7,
+    "supplier": 3,
+    "minimum_stock": 20
+  }
+},
+{
+  "model": "store.product",
+  "pk": 12,
+  "fields": {
+    "name": "Windrush Windcheater Jacket",
+    "description": "Boldfit Windrush Windcheater Jacket for Men,Lightweight & Wind Resistant with Reflective",
+    "image": "products/9.jpg",
+    "phone": null,
+    "category": 14,
+    "supplier": 1,
+    "minimum_stock": 10
+  }
+},
+{
+  "model": "store.product",
+  "pk": 13,
+  "fields": {
+    "name": "Revolte Men Hooded",
+    "description": "StyleCast x Revolte Men Hooded Colourblocked Casual Windcheater Jacket - Jackets for Men",
+    "image": "products/10.jpg",
+    "phone": null,
+    "category": 14,
+    "supplier": 4,
+    "minimum_stock": 10
+  }
+},
+{
+  "model": "store.product",
+  "pk": 14,
+  "fields": {
+    "name": "Women's Windcheater Jacket",
+    "description": "Buy YFMINTER Women's Windcheater Jacket - Stylish & Lightweight Polyester Zipper Closure |",
+    "image": "products/11.jpg",
+    "phone": null,
+    "category": 14,
+    "supplier": 1,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 15,
+  "fields": {
+    "name": "Insulated Jacket",
+    "description": "Insulated Jackets Hood Long Velvet Puffer Coat Packable Quilted Down Jacket",
+    "image": "products/12.jpg",
+    "phone": null,
+    "category": 14,
+    "supplier": 3,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 16,
+  "fields": {
+    "name": "Puffer Jacket",
+    "description": "Puffer Jacket Men&#039;s Insulated Winter Jacket Insulated Jacket Best Brand For Down Jackets",
+    "image": "products/13.jfif",
+    "phone": null,
+    "category": 14,
+    "supplier": 2,
+    "minimum_stock": 10
+  }
+},
+{
+  "model": "store.product",
+  "pk": 17,
+  "fields": {
+    "name": "Men's Softshell Jackets",
+    "description": "Men's Softshell Jackets | Artilect Performance",
+    "image": "products/14.jfif",
+    "phone": null,
+    "category": 14,
+    "supplier": 1,
+    "minimum_stock": 10
+  }
+},
+{
+  "model": "store.product",
+  "pk": 18,
+  "fields": {
+    "name": "Softshell Jacket",
+    "description": "Men's Softshell Jackets Online : Buy Camping & Hiking Softshell Jackets for Men in India",
+    "image": "products/15.jpg",
+    "phone": null,
+    "category": 14,
+    "supplier": 4,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 19,
+  "fields": {
+    "name": "Rain Poncho",
+    "description": "FISHOAKY Adults & Kids Disposable Rain Poncho, 4 Pack, Lightweight Waterproof Raincoat",
+    "image": "products/16.jpg",
+    "phone": null,
+    "category": 14,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 20,
+  "fields": {
+    "name": "TALLGO Travel Pillow",
+    "description": "TALLGO Travel Pillow, Best Memory Foam Neck Pillow Head Support Soft Pillow for Sleeping Rest, Airplane Car & Home Use (Dark Blue)",
+    "image": "products/17.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 3,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 21,
+  "fields": {
+    "name": "Weighted Eye Mask",
+    "description": "Weighted Eye Mask for Sleeping - Blackout Sleep Mask for Women Men, FACEMOON Lash Extension Eye Covers, Memory Foam, 3D Contoured, Airplane Travel Essentials, Blindfold for Meditation(Gray)",
+    "image": "products/18.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 4,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 22,
+  "fields": {
+    "name": "Neck Pillow",
+    "description": "Cervical Neck Pillow Memory Foam Pillows for Neck Pain Relief, Ergonomic Pillow for Shoulder Pain",
+    "image": "products/19.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 23,
+  "fields": {
+    "name": "Sleep Mask",
+    "description": "Buy Sleep Mask, Comfortable Eye Cover for Sleeping, Blackout Blindfold",
+    "image": "products/20.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 24,
+  "fields": {
+    "name": "Ear Plug",
+    "description": "RACORMY Ear Plug, Ear Plugs for Sleeping, Noise reducing India |",
+    "image": "products/21.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 4,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 25,
+  "fields": {
+    "name": "Compact Blanket",
+    "description": "Buy Cabeau Fold 'n Go Travel and Throw Blanket Plus Compact Case - for Home and Trav",
+    "image": "products/22.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 3,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 26,
+  "fields": {
+    "name": "Travel Blankets",
+    "description": "Travel Blankets: Buy Travel Blankets Online at Best Prices in India",
+    "image": "products/23.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 27,
+  "fields": {
+    "name": "Back Cushion",
+    "description": "Sleepsia Lumbar Support Memory Foam Orthopedic Back Cushion ╬ô├ç├┤ Back Rest Cushion for Car, Chair",
+    "image": "products/24.jpg",
+    "phone": null,
+    "category": 11,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 28,
+  "fields": {
+    "name": "Handheld GPS Navigator",
+    "description": "Garmin eTrex 22x, Handheld GPS Navigator by Asim Navigation : Amazon.in: Sports, Fitness & Outdoors",
+    "image": "products/25.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 29,
+  "fields": {
+    "name": "GPS Device",
+    "description": "GPS Devices for Outdoor Sports | Buy online | Bergfreunde",
+    "image": "products/26.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 4,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 30,
+  "fields": {
+    "name": "Fitness Tracker",
+    "description": "Buy Fitness Tracker Online with Up to 50% OFF",
+    "image": "products/27.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 3,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 31,
+  "fields": {
+    "name": "fitness tracker",
+    "description": "Best fitness trackers 2026: Measure steps, sleep, exercise performance and more",
+    "image": "products/28.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 1,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 32,
+  "fields": {
+    "name": "Solar Power Bank",
+    "description": "BLAVOR Solar Power Bank,Qi Wireless Charger 10,000Mah External Battery Pack With Type C",
+    "image": "products/29.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 2,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 33,
+  "fields": {
+    "name": "Compass",
+    "description": "DGX Deluxe Pro Compass w/Bungee Mount and Cord | Dive Gear Express",
+    "image": "products/30.jpg",
+    "phone": null,
+    "category": 1,
+    "supplier": 3,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 34,
+  "fields": {
+    "name": "Spinner Suitcase",
+    "description": "Safari Large Polycarbonate (Pc) Persia Spinner Suitcase Hardside Size Check-in 4 Wheels Luggage Pearl Blue Color 77Cm",
+    "image": "products/bag1.jpg",
+    "phone": "9878441443",
+    "category": 15,
+    "supplier": 5,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.product",
+  "pk": 35,
+  "fields": {
+    "name": "Safari Pentago",
+    "description": "Safari Pentagon Pro 8 Wheels Set of 3 (Cabin + Medium + Large) Trolley Bags, Hard Case Polypropylene, 360┬║ Wheeling Luggage, Suitcase for Travel, Cyan, Spinner Wheels",
+    "image": "products/b2.jpg",
+    "phone": "06284056515",
+    "category": 15,
+    "supplier": 5,
+    "minimum_stock": 5
+  }
+},
+{
+  "model": "store.review",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "user": 1,
+    "rating": 5,
+    "comment": "Great!",
+    "created_at": "2026-03-22T18:34:12.002Z"
+  }
+},
+{
+  "model": "store.review",
+  "pk": 2,
+  "fields": {
+    "product": 1,
+    "user": 1,
+    "rating": 4,
+    "comment": "Nice!",
+    "created_at": "2026-03-22T18:34:35.627Z"
+  }
+},
+{
+  "model": "store.review",
+  "pk": 3,
+  "fields": {
+    "product": 1,
+    "user": 1,
+    "rating": 5,
+    "comment": "Great!",
+    "created_at": "2026-03-22T18:34:40.419Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 1,
+  "fields": {
+    "user": 3,
+    "product": 2,
+    "added_at": "2026-02-14T17:21:09.755Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "product": 5,
+    "added_at": "2026-02-15T09:02:32.247Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "product": 15,
+    "added_at": "2026-02-15T09:02:34.048Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "product": 14,
+    "added_at": "2026-02-15T09:02:35.241Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "product": 23,
+    "added_at": "2026-02-15T09:02:36.979Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 6,
+  "fields": {
+    "user": 3,
+    "product": 31,
+    "added_at": "2026-02-15T09:02:40.952Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 7,
+  "fields": {
+    "user": 2,
+    "product": 13,
+    "added_at": "2026-03-21T10:54:51.898Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 8,
+  "fields": {
+    "user": 2,
+    "product": 14,
+    "added_at": "2026-03-21T10:54:53.150Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 9,
+  "fields": {
+    "user": 2,
+    "product": 22,
+    "added_at": "2026-03-21T10:54:55.163Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 10,
+  "fields": {
+    "user": 2,
+    "product": 24,
+    "added_at": "2026-03-21T10:54:56.374Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 11,
+  "fields": {
+    "user": 2,
+    "product": 29,
+    "added_at": "2026-03-21T10:54:57.989Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 12,
+  "fields": {
+    "user": 2,
+    "product": 2,
+    "added_at": "2026-03-21T10:54:59.616Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 13,
+  "fields": {
+    "user": 2,
+    "product": 31,
+    "added_at": "2026-03-22T18:06:13.381Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 14,
+  "fields": {
+    "user": 2,
+    "product": 12,
+    "added_at": "2026-03-28T07:32:32.061Z"
+  }
+},
+{
+  "model": "store.wishlist",
+  "pk": 15,
+  "fields": {
+    "user": 2,
+    "product": 21,
+    "added_at": "2026-03-28T07:32:34.750Z"
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "400.00",
+    "price": "299.00",
+    "stock": 613
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 2,
+  "fields": {
+    "product": 2,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "15000.00",
+    "price": "12000.00",
+    "stock": 85
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 3,
+  "fields": {
+    "product": 3,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "3000.00",
+    "price": "2900.00",
+    "stock": 0
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 4,
+  "fields": {
+    "product": 5,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1700.00",
+    "price": "1500.00",
+    "stock": 57
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 5,
+  "fields": {
+    "product": 6,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "5000.00",
+    "price": "4500.00",
+    "stock": 55
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 6,
+  "fields": {
+    "product": 7,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "3000.00",
+    "price": "2800.00",
+    "stock": 196
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 7,
+  "fields": {
+    "product": 8,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "2500.00",
+    "price": "2200.00",
+    "stock": 0
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 8,
+  "fields": {
+    "product": 9,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1600.00",
+    "price": "1499.00",
+    "stock": 96
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 9,
+  "fields": {
+    "product": 10,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1800.00",
+    "price": "1600.00",
+    "stock": 50
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 10,
+  "fields": {
+    "product": 11,
+    "quantity": "5.00",
+    "unit": "l",
+    "mrp": "1800.00",
+    "price": "1600.00",
+    "stock": 34
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 11,
+  "fields": {
+    "product": 12,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1800.00",
+    "price": "1500.00",
+    "stock": 0
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 12,
+  "fields": {
+    "product": 13,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1600.00",
+    "price": "1100.00",
+    "stock": 0
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 13,
+  "fields": {
+    "product": 14,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1900.00",
+    "price": "1699.00",
+    "stock": 120
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 14,
+  "fields": {
+    "product": 15,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "2000.00",
+    "price": "1700.00",
+    "stock": 147
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 15,
+  "fields": {
+    "product": 16,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1800.00",
+    "price": "1600.00",
+    "stock": 96
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 16,
+  "fields": {
+    "product": 17,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "4500.00",
+    "price": "4200.00",
+    "stock": 100
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 17,
+  "fields": {
+    "product": 18,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "5000.00",
+    "price": "4500.00",
+    "stock": 150
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 18,
+  "fields": {
+    "product": 19,
+    "quantity": "4.00",
+    "unit": "pcs",
+    "mrp": "500.00",
+    "price": "450.00",
+    "stock": 100
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 19,
+  "fields": {
+    "product": 20,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1400.00",
+    "price": "1350.00",
+    "stock": 50
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 20,
+  "fields": {
+    "product": 21,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1000.00",
+    "price": "900.00",
+    "stock": 246
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 21,
+  "fields": {
+    "product": 22,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1100.00",
+    "price": "950.00",
+    "stock": 96
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 22,
+  "fields": {
+    "product": 23,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "600.00",
+    "price": "550.00",
+    "stock": 100
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 23,
+  "fields": {
+    "product": 24,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1600.00",
+    "price": "1300.00",
+    "stock": 50
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 24,
+  "fields": {
+    "product": 25,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "3500.00",
+    "price": "3300.00",
+    "stock": 20
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 25,
+  "fields": {
+    "product": 26,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "4000.00",
+    "price": "3800.00",
+    "stock": 50
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 26,
+  "fields": {
+    "product": 27,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "2500.00",
+    "price": "2300.00",
+    "stock": 150
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 27,
+  "fields": {
+    "product": 28,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "2500.00",
+    "price": "2200.00",
+    "stock": 36
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 28,
+  "fields": {
+    "product": 29,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "3500.00",
+    "price": "3200.00",
+    "stock": 60
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 29,
+  "fields": {
+    "product": 30,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "3800.00",
+    "price": "3500.00",
+    "stock": 97
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 30,
+  "fields": {
+    "product": 31,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "4500.00",
+    "price": "4300.00",
+    "stock": 100
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 31,
+  "fields": {
+    "product": 32,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "4500.00",
+    "price": "4300.00",
+    "stock": 150
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 32,
+  "fields": {
+    "product": 33,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "1500.00",
+    "price": "1200.00",
+    "stock": 46
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 33,
+  "fields": {
+    "product": 34,
+    "quantity": "1.00",
+    "unit": "pcs",
+    "mrp": "3500.00",
+    "price": "3300.00",
+    "stock": 16
+  }
+},
+{
+  "model": "store.productvariant",
+  "pk": 34,
+  "fields": {
+    "product": 35,
+    "quantity": "3.00",
+    "unit": "pcs",
+    "mrp": "7500.00",
+    "price": "7000.00",
+    "stock": 55
+  }
+},
+{
+  "model": "store.order",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "delivery_partner": 1,
+    "total_amount": "299.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "mp",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-02-14T17:20:56.905Z",
+    "mrp_total": "400.00",
+    "item_discount": "101.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "delivery_partner": 1,
+    "total_amount": "299.00",
+    "delivery_response": "accepted",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": " vd ",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-02-14T17:57:50.706Z",
+    "mrp_total": "400.00",
+    "item_discount": "101.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": "pay_SG7GXZNZnSPp8j",
+    "razorpay_order_id": "order_SG7GBgsVTp1BaU",
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "delivery_partner": 1,
+    "total_amount": "11900.00",
+    "delivery_response": "accepted",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": "2026-03-16",
+    "phone": null,
+    "address": "agc",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-02-19T17:43:36.156Z",
+    "mrp_total": "15000.00",
+    "item_discount": "3000.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": "pay_SI5h4fIonEhaXT",
+    "razorpay_order_id": "order_SI5WOuHVOzmrjG",
+    "assigned_at": "2026-03-21T19:28:02Z",
+    "delivery_otp": 170158,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 6,
+  "fields": {
+    "user": 4,
+    "delivery_partner": 1,
+    "total_amount": "299.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "agc",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-02-20T06:06:40.113Z",
+    "mrp_total": "400.00",
+    "item_discount": "101.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": "2026-03-21T19:23:51Z",
+    "delivery_otp": 217779,
+    "delivery_image": "delivery_proof/sign.jpeg"
+  }
+},
+{
+  "model": "store.order",
+  "pk": 7,
+  "fields": {
+    "user": 4,
+    "delivery_partner": 1,
+    "total_amount": "299.00",
+    "delivery_response": "accepted",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "mk",
+    "status": "out_for_delivery",
+    "payment_status": "pending",
+    "created_at": "2026-02-20T06:19:02.109Z",
+    "mrp_total": "400.00",
+    "item_discount": "101.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": "pay_SIIZ3vCEdErAk7",
+    "razorpay_order_id": "order_SIIYb2RtBRf9rC",
+    "assigned_at": null,
+    "delivery_otp": 523135,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 8,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 1,
+    "total_amount": "4400.00",
+    "delivery_response": "rejected",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "mm",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-03-14T12:17:37.751Z",
+    "mrp_total": "5000.00",
+    "item_discount": "500.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": "pay_SR6QW5Y3TQ28p9",
+    "razorpay_order_id": "order_SR6QAAhwaszuSJ",
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 9,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 1,
+    "total_amount": "11900.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-03-17T17:20:51.361Z",
+    "mrp_total": "15000.00",
+    "item_discount": "3000.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 10,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 2,
+    "total_amount": "4500.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "out_for_delivery",
+    "payment_status": "pending",
+    "created_at": "2026-03-20T18:15:09.104Z",
+    "mrp_total": "5000.00",
+    "item_discount": "500.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 342831,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 11,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "1600.00",
+    "delivery_response": "pending",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "agc",
+    "status": "packed",
+    "payment_status": "pending",
+    "created_at": "2026-03-21T10:52:50.700Z",
+    "mrp_total": "2000.00",
+    "item_discount": "300.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": "pay_STqimwMBFEyZsS",
+    "razorpay_order_id": "order_STqiTUGd3pco9R",
+    "assigned_at": "2026-03-21T18:50:33Z",
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 12,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 2,
+    "total_amount": "1600.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "9878441443",
+    "address": "ssss",
+    "status": "out_for_delivery",
+    "payment_status": "pending",
+    "created_at": "2026-03-21T20:08:25.529Z",
+    "mrp_total": "1800.00",
+    "item_discount": "200.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 312176,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 13,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 1,
+    "total_amount": "4300.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "9878441443",
+    "address": "majitha road",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-03-22T11:50:40.174Z",
+    "mrp_total": "4800.00",
+    "item_discount": "400.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 813326,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 14,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 2,
+    "total_amount": "14200.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "majitha road",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-03-22T15:02:43.255Z",
+    "mrp_total": "17500.00",
+    "item_discount": "3300.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": "2026-03-22T15:03:25Z",
+    "delivery_otp": 137631,
+    "delivery_image": "delivery_proof/varun_sign.jpeg"
+  }
+},
+{
+  "model": "store.order",
+  "pk": 15,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "1400.00",
+    "delivery_response": "pending",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "batala road",
+    "status": "packed",
+    "payment_status": "paid",
+    "created_at": "2026-03-29T09:16:22.505Z",
+    "mrp_total": "1700.00",
+    "item_discount": "200.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": "pay_SWzLpkJxrfJlQW",
+    "razorpay_order_id": "order_SWzLTUQnkAzN27",
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 16,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "2200.00",
+    "delivery_response": "pending",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "batala road",
+    "status": "packed",
+    "payment_status": "paid",
+    "created_at": "2026-03-29T09:19:46.611Z",
+    "mrp_total": "2500.00",
+    "item_discount": "300.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": "pay_SWzPRbEw1Rna6e",
+    "razorpay_order_id": "order_SWzP8mx5NSMOw3",
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 17,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "4400.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "9878441443",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-03-29T09:22:30.537Z",
+    "mrp_total": "5000.00",
+    "item_discount": "500.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 18,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "2200.00",
+    "delivery_response": "pending",
+    "payment_method": "razorpay",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": null,
+    "address": "ssss",
+    "status": "packed",
+    "payment_status": "paid",
+    "created_at": "2026-03-30T03:54:37.464Z",
+    "mrp_total": "2500.00",
+    "item_discount": "300.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": "pay_SXIP4XmFb1cxOo",
+    "razorpay_order_id": "order_SXIOa7xZoTxqac",
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 19,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "1399.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-03-30T04:26:45.663Z",
+    "mrp_total": "1600.00",
+    "item_discount": "101.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 20,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "1100.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-18T13:50:24.799Z",
+    "mrp_total": "1600.00",
+    "item_discount": "500.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 21,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "1850.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-18T13:51:03.259Z",
+    "mrp_total": "2100.00",
+    "item_discount": "250.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 22,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "1850.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-18T13:52:53.484Z",
+    "mrp_total": "2100.00",
+    "item_discount": "250.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": "",
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 23,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 2,
+    "total_amount": "4500.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": "2026-04-26",
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-04-20T05:35:21.793Z",
+    "mrp_total": "5000.00",
+    "item_discount": "500.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 744782,
+    "delivery_image": "delivery_proof/sign_WkxMgMQ.jpeg"
+  }
+},
+{
+  "model": "store.order",
+  "pk": 24,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 1,
+    "total_amount": "3400.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-04-21T16:53:17.781Z",
+    "mrp_total": "3800.00",
+    "item_discount": "300.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 436210,
+    "delivery_image": "delivery_proof/sign_2HCGs8I.jpeg"
+  }
+},
+{
+  "model": "store.order",
+  "pk": 25,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 1,
+    "total_amount": "299.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": "2026-04-25",
+    "phone": "6284056515",
+    "address": "ssss",
+    "status": "out_for_delivery",
+    "payment_status": "pending",
+    "created_at": "2026-04-25T14:54:34.180Z",
+    "mrp_total": "400.00",
+    "item_discount": "101.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 972166,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 26,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "2200.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "1254789652",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-26T14:53:02.142Z",
+    "mrp_total": "2500.00",
+    "item_discount": "300.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 27,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "3300.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "9878441443",
+    "address": "majitha road",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-26T16:14:25.056Z",
+    "mrp_total": "3500.00",
+    "item_discount": "200.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 28,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "3300.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "9878441443",
+    "address": "majitha road",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-26T16:14:25.511Z",
+    "mrp_total": "3500.00",
+    "item_discount": "200.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 29,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 2,
+    "total_amount": "1200.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "1254789652",
+    "address": "ssss",
+    "status": "delivered",
+    "payment_status": "pending",
+    "created_at": "2026-04-27T05:18:27.465Z",
+    "mrp_total": "1500.00",
+    "item_discount": "300.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 367656,
+    "delivery_image": "delivery_proof/sign_3uPueTy.jpeg"
+  }
+},
+{
+  "model": "store.order",
+  "pk": 30,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "2800.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "1254789652",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-27T05:30:31.985Z",
+    "mrp_total": "3000.00",
+    "item_discount": "100.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 31,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "2800.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "1254789652",
+    "address": "ssss",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-04-27T05:30:46.085Z",
+    "mrp_total": "3000.00",
+    "item_discount": "100.00",
+    "coupon_discount": "100.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 32,
+  "fields": {
+    "user": 2,
+    "delivery_partner": 1,
+    "total_amount": "299.00",
+    "delivery_response": "accepted",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "1254789652",
+    "address": "ssss",
+    "status": "out_for_delivery",
+    "payment_status": "pending",
+    "created_at": "2026-04-27T05:31:13.358Z",
+    "mrp_total": "400.00",
+    "item_discount": "101.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": "",
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": 186968,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.order",
+  "pk": 33,
+  "fields": {
+    "user": 2,
+    "delivery_partner": null,
+    "total_amount": "12000.00",
+    "delivery_response": "pending",
+    "payment_method": "cod",
+    "upi_app": null,
+    "estimated_delivery": null,
+    "phone": "2578965478",
+    "address": "bhj",
+    "status": "placed",
+    "payment_status": "pending",
+    "created_at": "2026-06-15T16:04:34.995Z",
+    "mrp_total": "15000.00",
+    "item_discount": "3000.00",
+    "coupon_discount": "0.00",
+    "delivery_fee": "0.00",
+    "return_requested": false,
+    "return_reason": null,
+    "return_comment": null,
+    "razorpay_payment_id": null,
+    "razorpay_order_id": null,
+    "assigned_at": null,
+    "delivery_otp": null,
+    "delivery_image": ""
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 1,
+  "fields": {
+    "order": 3,
+    "variant": 1,
+    "quantity": 1,
+    "price": "299.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 2,
+  "fields": {
+    "order": 4,
+    "variant": 1,
+    "quantity": 1,
+    "price": "299.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 3,
+  "fields": {
+    "order": 5,
+    "variant": 2,
+    "quantity": 1,
+    "price": "12000.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 4,
+  "fields": {
+    "order": 6,
+    "variant": 1,
+    "quantity": 1,
+    "price": "299.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 5,
+  "fields": {
+    "order": 7,
+    "variant": 1,
+    "quantity": 1,
+    "price": "299.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 6,
+  "fields": {
+    "order": 8,
+    "variant": 5,
+    "quantity": 1,
+    "price": "4500.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 7,
+  "fields": {
+    "order": 9,
+    "variant": 2,
+    "quantity": 1,
+    "price": "12000.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 8,
+  "fields": {
+    "order": 10,
+    "variant": 5,
+    "quantity": 1,
+    "price": "4500.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 9,
+  "fields": {
+    "order": 11,
+    "variant": 14,
+    "quantity": 1,
+    "price": "1700.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 10,
+  "fields": {
+    "order": 12,
+    "variant": 15,
+    "quantity": 1,
+    "price": "1600.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 11,
+  "fields": {
+    "order": 13,
+    "variant": 10,
+    "quantity": 1,
+    "price": "1600.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 12,
+  "fields": {
+    "order": 13,
+    "variant": 6,
+    "quantity": 1,
+    "price": "2800.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 13,
+  "fields": {
+    "order": 14,
+    "variant": 27,
+    "quantity": 1,
+    "price": "2200.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 14,
+  "fields": {
+    "order": 14,
+    "variant": 2,
+    "quantity": 1,
+    "price": "12000.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 15,
+  "fields": {
+    "order": 15,
+    "variant": 4,
+    "quantity": 1,
+    "price": "1500.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 16,
+  "fields": {
+    "order": 16,
+    "variant": 27,
+    "quantity": 1,
+    "price": "2200.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 17,
+  "fields": {
+    "order": 17,
+    "variant": 5,
+    "quantity": 1,
+    "price": "4500.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 18,
+  "fields": {
+    "order": 18,
+    "variant": 27,
+    "quantity": 1,
+    "price": "2200.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 19,
+  "fields": {
+    "order": 19,
+    "variant": 8,
+    "quantity": 1,
+    "price": "1499.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 20,
+  "fields": {
+    "order": 21,
+    "variant": 20,
+    "quantity": 1,
+    "price": "900.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 21,
+  "fields": {
+    "order": 22,
+    "variant": 20,
+    "quantity": 1,
+    "price": "900.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 22,
+  "fields": {
+    "order": 22,
+    "variant": 21,
+    "quantity": 1,
+    "price": "950.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 23,
+  "fields": {
+    "order": 23,
+    "variant": 5,
+    "quantity": 1,
+    "price": "4500.00",
+    "return_status": "requested",
+    "return_reason": "Wrong item delivered",
+    "return_comment": "no"
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 24,
+  "fields": {
+    "order": 24,
+    "variant": 29,
+    "quantity": 1,
+    "price": "3500.00",
+    "return_status": "requested",
+    "return_reason": "Damaged product",
+    "return_comment": "no"
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 25,
+  "fields": {
+    "order": 25,
+    "variant": 1,
+    "quantity": 1,
+    "price": "299.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 26,
+  "fields": {
+    "order": 26,
+    "variant": 27,
+    "quantity": 1,
+    "price": "2200.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 27,
+  "fields": {
+    "order": 27,
+    "variant": 33,
+    "quantity": 1,
+    "price": "3300.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 28,
+  "fields": {
+    "order": 28,
+    "variant": 33,
+    "quantity": 1,
+    "price": "3300.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 29,
+  "fields": {
+    "order": 29,
+    "variant": 32,
+    "quantity": 1,
+    "price": "1200.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 30,
+  "fields": {
+    "order": 32,
+    "variant": 1,
+    "quantity": 1,
+    "price": "299.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.orderitem",
+  "pk": 31,
+  "fields": {
+    "order": 33,
+    "variant": 2,
+    "quantity": 1,
+    "price": "12000.00",
+    "return_status": "none",
+    "return_reason": null,
+    "return_comment": null
+  }
+},
+{
+  "model": "store.productrating",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "product": 6,
+    "rating": 4,
+    "created_at": "2026-03-21T10:53:58.288Z"
+  }
+},
+{
+  "model": "store.productrating",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "product": 28,
+    "rating": 3,
+    "created_at": "2026-03-22T17:28:24.723Z"
+  }
+},
+{
+  "model": "store.productrating",
+  "pk": 3,
+  "fields": {
+    "user": 2,
+    "product": 2,
+    "rating": 3,
+    "created_at": "2026-03-22T17:35:03.346Z"
+  }
+},
+{
+  "model": "store.productrating",
+  "pk": 4,
+  "fields": {
+    "user": 2,
+    "product": 11,
+    "rating": 1,
+    "created_at": "2026-03-28T13:12:11.927Z"
+  }
+},
+{
+  "model": "store.productrating",
+  "pk": 5,
+  "fields": {
+    "user": 2,
+    "product": 30,
+    "rating": 1,
+    "created_at": "2026-04-25T16:54:09.366Z"
+  }
+}
+]
