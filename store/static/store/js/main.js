@@ -106,6 +106,7 @@ if (payBtn) {
         card: true,
         netbanking: true,
         wallet: true
+        
     },
 
     prefill: {
