@@ -32,11 +32,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 DEBUG = os.getenv("DEBUG") == "True"
 
 
-ALLOWED_HOSTS = [
-    'travelling-equipment-store-1.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
 
 
 
@@ -214,11 +209,18 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = "Trek Ready <musu5103@gmail.com>"
 # ALLOWED_HOSTS = ['192.168.1.11', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = ['travelling-equipment-store.onrender.com','192.168.1.11', 'localhost', '127.0.0.1', 'childless-overjoyed-cadmium.ngrok-free.dev']
+ALLOWED_HOSTS = [
+    'travelling-equipment-store-1.onrender.com',
+    '192.168.1.11',
+    'localhost',
+    '127.0.0.1',
+    'childless-overjoyed-cadmium.ngrok-free.dev',
+]
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://childless-overjoyed-cadmium.ngrok-free.dev"
+    "https://travelling-equipment-store-1.onrender.com",
+    "https://childless-overjoyed-cadmium.ngrok-free.dev",
 ]
 
 JAZZMIN_SETTINGS = {
