@@ -1256,13 +1256,12 @@ def return_item(request, item_id):
         item.order.save()
 
         return_obj = ReturnDamage.objects.create(
-        order_item=item,
-        customer=item.order.user,
-        equipment=item.variant.product.name,
-        quantity=item.quantity,
-        status="Returned",
-        action_status="Requested"
-    )
+    product=item.variant.product,
+    customer_name=item.order.user.username,
+    quantity=item.quantity,
+    status="Returned",
+    action_status="Pending"
+)
         print("RETURN CREATED:", return_obj.id)
 
         messages.success(

@@ -1,5 +1,7 @@
-from curses import raw
 
+
+
+from django.db import connection
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models import OrderItem
@@ -9,6 +11,7 @@ from warehouse.models import OutwardStock
 
 @receiver(post_save, sender=Order)
 def order_status_email(sender, instance, created, **kwargs):
+    raw = kwargs.get("raw", False)
     if raw:
         return
     if instance.status == "shipped":
