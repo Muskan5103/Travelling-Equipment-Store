@@ -1,7 +1,7 @@
 {% extends 'store/base.html' %}
 {% block content %}
 
-<h2 class="text-center fw-bold my-4">My Wishlist ❤️</h2>
+<h2 class="text-center to fw-bold my-4">My Wishlist ❤️</h2>
 
 {% if wishlist_items %}
 <section class="py-3 cats">
@@ -11,9 +11,9 @@
 
             {% for item in wishlist_items %}
             {% with product=item.product %}
-            <div class="col-6 col-md-4 col-lg-2 wii">
+           <div class="col-6 col-sm-6 col-md-4 col-lg-2 wii">
 
-                <div class="card product-card h-100">
+                <div class="card product-card h-100 hh">
 
                     <!-- Image -->
                     <div class="product-image-wrapper position-relative">

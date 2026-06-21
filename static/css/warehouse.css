@@ -588,14 +588,22 @@ td[colspan="4"] {
 }
 
 .nav-home-btn {
-    
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
     color: white;
-    font-size: 1.4rem;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-weight: 500;
     text-decoration: none;
-    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    margin-left:20px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.main-navbar .container > div:first-child{
+    display: flex;
+    align-items: center;
 }
 
 .nav-home-btn:hover {

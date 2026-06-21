@@ -51,12 +51,10 @@
         <div class="container d-flex align-items-center justify-content-between">
 
             <!-- LEFT: Hamburger + Logo -->
-            <div class="d-flex align-items-center gap-3">
-
+            <!-- <div class="nav-top d-flex align-items-center gap-3"> -->
+<div class="nav-top">
                 {% if request.user.is_authenticated and request.user.is_staff %}
-                <button class="menu-toggle-navbar" onclick="toggleDrawer()">
-                    <i class="bi bi-list"></i>
-                </button>
+
                 {% endif %}
 
                 <!-- Logo -->
@@ -78,7 +76,7 @@
             </div>
 
 
-            <!-- STOCK ALERT (Staff Only) -->
+
             {% if request.user.is_staff %}
             <li class="nav-item dropdown">
                 <a class="nav-link navbar-bell" href="#" data-bs-toggle="dropdown">
@@ -121,12 +119,13 @@
             </li>
             {% endif %}
 
-
             <!-- SEARCH (Customers Only) -->
+
             {% if not request.user.is_staff and not is_delivery_partner %}
             <div class="nav-search-wrapper d-flex align-items-center">
                 <form method="GET" action="{% url 'home' %}" class="search-form">
-                    <input type="text" id="searchInput" name="q" placeholder="Search backpacks, tents, shoes..." class="search-input">
+                    <input type="text" id="searchInput" name="q" placeholder="Search backpacks, tents, shoes..."
+                        class="search-input">
 
                     <button type="submit" class="nav-search-btn">
                         <i class="bi bi-search"></i>
@@ -153,7 +152,9 @@
                 <div class="profile-dropdown">
                     <button class="profile-btn">
                         <i class="bi bi-person-badge"></i>
-                        <span class="profile-name">{{ request.user.username }}</span>
+                        <span class="profilee-name">
+    {{ request.user.first_name }}
+</span>
                         <i class="bi bi-caret-down-fill"></i>
                     </button>
 
@@ -276,6 +277,7 @@
             </div>
 
         </div>
+
     </nav>
 
 
@@ -384,7 +386,7 @@
 
             <!-- FOOTER BOTTOM -->
             <div class="footer-bottom">
-                <p>© {{ now|date:"Y" }} Trek Ready. All rights reserved.</p>
+                <p class="ce">© {{ now|date:"Y" }} Trek Ready. All rights reserved.</p>
 
                 <div class="footer-social">
                     <span>Download App</span>
@@ -582,6 +584,7 @@
             }, 4000);
         }
     </script>
+
 </body>
 
 </html>

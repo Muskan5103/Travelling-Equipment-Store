@@ -3,7 +3,7 @@
 
 <div class="container py-5">
 
-  <h2 class="mb-4 cart-title">Your Cart</h2>
+  <h2 class="mb-4 to cart-title">Your Cart</h2>
 
   {% if cart_empty %}
 
@@ -16,9 +16,9 @@
 
   <h5 class="recom mb-3">Recommended for you</h5>
 
-  <div class="row g-4">
+  <div class="recommend-scroll">
     {% for product in recommendations %}
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="recommend-item">
       <div class="recommend-card">
 
         <a href="{% url 'product_detail' product.id %}"></a>
@@ -35,14 +35,14 @@
           <span class="mrp">₹ {{ product.display_mrp }}</span>
           <span class="discount-badge">{{ product.discount_percent }}% OFF</span>
           <div class="rating-box">
-    <span class="rating-value">
-{{ product.avg_rating|default:0|floatformat:1 }} ★
-</span>
+            <span class="rating-value">
+              {{ product.avg_rating|default:0|floatformat:1 }} ★
+            </span>
 
-<span class="review-count">
-{{ product.review_count|default:0 }} Reviews
-</span>
-</div>
+            <span class="review-count">
+              {{ product.review_count|default:0 }} Reviews
+            </span>
+          </div>
           {% endif %}
         </div>
 
@@ -114,7 +114,7 @@
 
     </div>
 
-    
+
     <div class="col-lg-4">
       <div class="cart-summary-box">
 
@@ -144,68 +144,68 @@
 
         <!-- Delivery -->
         <div class="summary-row">
-  <span>Delivery Fee</span>
-  {% if delivery_fee == 0 %}
-    <span class="text-success">FREE</span>
-  {% else %}
-    <span>₹ {{ delivery_fee }}</span>
-  {% endif %}
-</div>
-{% if delivery_fee > 0 %}
-  <p class="delivery-note">
-    Free delivery on orders above ₹199
-  </p>
-{% endif %}
+          <span>Delivery Fee</span>
+          {% if delivery_fee == 0 %}
+          <span class="text-success">FREE</span>
+          {% else %}
+          <span>₹ {{ delivery_fee }}</span>
+          {% endif %}
+        </div>
+        {% if delivery_fee > 0 %}
+        <p class="delivery-note">
+          Free delivery on orders above ₹199
+        </p>
+        {% endif %}
 
 
 
         <hr>
 
         <!-- ✅ APPLY COUPON BOX (ADD HERE) -->
-   <div class="coupon-box">
-  <div class="coupon-header">
-    <span class="coupon-icon">%</span>
-    <span class="coupon-title">Apply Coupon</span>
-  </div>
+        <div class="coupon-box">
+          <div class="coupon-header">
+            <span class="coupon-icon">%</span>
+            <span class="coupon-title">Apply Coupon</span>
+          </div>
 
-  {% if applied_coupon and coupon_discount > 0 %}
-    <p class="coupon-applied">
-      Coupon <strong>{{ applied_coupon }}</strong> applied 🎉
-    </p>
+          {% if applied_coupon and coupon_discount > 0 %}
+          <p class="coupon-applied">
+            Coupon <strong>{{ applied_coupon }}</strong> applied 🎉
+          </p>
 
-    <form method="post" action="{% url 'remove_coupon' %}">
-      {% csrf_token %}
-      <button type="submit" class="remove-coupon-btn">
-        Remove / Change Coupon
-      </button>
-    </form>
-  {% else %}
+          <form method="post" action="{% url 'remove_coupon' %}">
+            {% csrf_token %}
+            <button type="submit" class="remove-coupon-btn">
+              Remove / Change Coupon
+            </button>
+          </form>
+          {% else %}
 
-    <!-- Toggle Button -->
-    <button class="show-coupons-btn" onclick="toggleCoupons()">
-      View Available Coupons
-    </button>
+          <!-- Toggle Button -->
+          <button class="show-coupons-btn" onclick="toggleCoupons()">
+            View Available Coupons
+          </button>
 
-    <!-- Dropdown -->
-    <div class="coupon-dropdown" id="couponDropdown">
-      {% for c in available_coupons %}
-      <div class="coupon-item">
-        <div>
-          <span class="coupon-code">{{ c.code }}</span>
-          <p class="coupon-desc">{{ c.desc }}</p>
+          <!-- Dropdown -->
+          <div class="coupon-dropdown" id="couponDropdown">
+            {% for c in available_coupons %}
+            <div class="coupon-item">
+              <div>
+                <span class="coupon-code">{{ c.code }}</span>
+                <p class="coupon-desc">{{ c.desc }}</p>
+              </div>
+
+              <form method="post" action="{% url 'apply_coupon' %}">
+                {% csrf_token %}
+                <input type="hidden" name="coupon" value="{{ c.code }}">
+                <button type="submit" class="apply-link">Apply</button>
+              </form>
+            </div>
+            {% endfor %}
+          </div>
+
+          {% endif %}
         </div>
-
-        <form method="post" action="{% url 'apply_coupon' %}">
-          {% csrf_token %}
-          <input type="hidden" name="coupon" value="{{ c.code }}">
-          <button type="submit" class="apply-link">Apply</button>
-        </form>
-      </div>
-      {% endfor %}
-    </div>
-
-  {% endif %}
-</div>
 
 
 
