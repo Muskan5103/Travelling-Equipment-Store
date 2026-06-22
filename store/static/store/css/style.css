@@ -510,11 +510,7 @@ border-radius: 30px;
     font-size: 1rem;
 }
 
-@media (max-width: 768px) {
-    .sticky-cart-bar {
-        display: flex;
-    }
-}
+
 /* ===============================
    RECOMMENDED PRODUCT CAROUSEL
 ================================*/
@@ -4060,7 +4056,7 @@ main{
     .see-all{
         font-size:10px;
         width:30px;
-        margin-top:-60px;
+        margin-top:-60px; 
     }
 
     .category-grid{
@@ -4221,26 +4217,42 @@ main{
     padding:12px;
 }
 
-.earnings-card h6{
-    font-size:14px;
-    margin-bottom:6px;
 }
 
-.earnings-card p{
-    font-size:13px;
+/* Mobile View */
+@media (max-width: 768px) {
+
+    .status-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .status-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
 }
 
-@media (max-width:768px){
+@media (max-width: 768px) {
 
-    .earnings-card h6{
-        font-size:12px;
+    .earnings-card .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 110px;
     }
 
-    .earnings-card p{
-        font-size:11px;
+    .earnings-card h6,
+    .earnings-card p {
+        margin-bottom: 5px;
     }
 
-    .earnings-card .card-body{
-        padding:8px;
-    }
 }
+
