@@ -16,52 +16,55 @@
     <!-- Card -->
     <div class="card rack-card">
         <div class="card-body">
+<div class="table-responsive rack-table-wrapper">
 
-            <table class="table rack-table text-center align-middle">
-                <thead class="rack-head">
-                    <tr>
-                        <th>Rack Number</th>
-                        <th>Section</th>
-                        <th>Warehouse</th>
-                        <th>Created At</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+    <table class="table rack-table text-center align-middle">
+        <thead class="rack-head">
+            <tr>
+                <th>Rack Number</th>
+                <th>Section</th>
+                <th>Warehouse</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
-                <tbody>
-                    {% for rack in racks %}
-                    <tr>
-                        <td>{{ rack.rack_number }}</td>
-                        <td>{{ rack.section.name }}</td>
-                        <td>{{ rack.section.warehouse.name }}</td>
-                        <td>{{ rack.created_at|date:"d M Y" }}</td>
+        <tbody>
+            {% for rack in racks %}
+            <tr>
+                <td>{{ rack.rack_number }}</td>
+                <td>{{ rack.section.name }}</td>
+                <td>{{ rack.section.warehouse.name }}</td>
+                <td>{{ rack.created_at|date:"d M Y" }}</td>
 
-                        <td>
-                            <a href="{% url 'rack_update' rack.id %}"
-                               class="btn btn-primary btn-sm">
-                                ✏ Edit
-                            </a>
+                <td>
+                    <div class="d-flex gap-1 flex-nowrap justify-content-center">
+                        <a href="{% url 'rack_update' rack.id %}"
+                           class="btn btn-primary btn-sm">
+                            ✏ Edit
+                        </a>
 
-                            <form method="POST"
-                                  action="{% url 'rack_delete' rack.id %}"
-                                  style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm">
-                                    🗑 Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                        <form method="POST"
+                              action="{% url 'rack_delete' rack.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="btn btn-danger btn-sm">
+                                🗑 Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
 
-                    {% empty %}
-                    <tr>
-                        <td colspan="5">No racks available.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
+            {% empty %}
+            <tr>
+                <td colspan="5">No racks available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-            </table>
+</div>
 
         </div>
     </div>

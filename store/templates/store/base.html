@@ -51,8 +51,13 @@
         <div class="container d-flex align-items-center justify-content-between">
 
             <!-- LEFT: Hamburger + Logo -->
-            <!-- <div class="nav-top d-flex align-items-center gap-3"> -->
-<div class="nav-top">
+            <div class="nav-top d-flex align-items-center gap-3">
+                  {% if request.user.is_staff %}
+    <button class="menu-btn" onclick="openDrawer()">
+        <i class="fas fa-bars"></i>
+    </button>
+    {% endif %}
+<!-- <div class="nav-top"> -->
                 {% if request.user.is_authenticated and request.user.is_staff %}
 
                 {% endif %}
@@ -152,8 +157,8 @@
                 <div class="profile-dropdown">
                     <button class="profile-btn">
                         <i class="bi bi-person-badge"></i>
-                        <span class="profilee-name">
-    {{ request.user.first_name }}
+                      <span class="profilee-name">
+    {{ request.user.username }}
 </span>
                         <i class="bi bi-caret-down-fill"></i>
                     </button>
@@ -170,60 +175,52 @@
 
 
                 <!-- DELIVERY PARTNER -->
-                {% elif is_delivery_partner %}
-                <div class="dashboard-header">
-                    <div class="container d-flex justify-content-between align-items-center">
-                        <h4 class="hf">🚚 Delivery Partner Dashboard</h4>
+              {% elif is_delivery_partner %}
+
+<div class="position-relative me-2">
+    <a href="/delivery/history/" class="text-white fs-5">
+        <i class="bi bi-bell-fill"></i>
+    </a>
+
+    <span id="orderCount"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        0
+    </span>
+</div>
+
+<div class="profile-dropdown">
+    <button class="profile-btn">
+        <i class="bi bi-truck"></i>
+
+        <span class="profilee-name">
+            {{ request.user.username }}
+        </span>
+
+        <i class="bi bi-caret-down-fill"></i>
+    </button>
+
+    <div class="profile-menu">
+        <a href="/delivery/profile/">
+            <i class="bi bi-person"></i> My Profile
+        </a>
+
+        <a href="/delivery/dashboard/">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+
+        <a href="/delivery/history/">
+            <i class="bi bi-clock-history"></i> History
+        </a>
+
+        <div class="dropdown-divider"></div>
+
+        <a href="{% url 'logout' %}" class="logout-item">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+</div>
 
 
-                    </div>
-                </div>
-                <div class="position-relative me-3">
-
-                    <a href="/delivery/history/" class="text-white fs-5">
-                        🔔
-                    </a>
-
-                    <span id="orderCount"
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-
-                        0
-
-                    </span>
-
-                </div>
-                <div class="profile-dropdown">
-
-                    <button class="profile-btn">
-                        <i class="bi bi-truck"></i>
-                        <span class="profilee-name">{{ request.user.username }}</span>
-                        <i class="bi bi-caret-down-fill"></i>
-                    </button>
-
-                    <div class="profile-menu">
-
-                        <!-- PROFILE -->
-                        <a href="/delivery/profile/">
-                            <i class="bi bi-person"></i> My Profile
-                        </a>
-
-                        <!-- DASHBOARD -->
-                        <a href="/delivery/dashboard/">
-                            <i class="bi bi-speedometer2"></i> Delivery Dashboard
-                        </a>
-                        <a href="/delivery/history/">
-                            <i class="bi bi-clock-history"></i> Delivery History
-                        </a>
-                        <div class="dropdown-divider"></div>
-
-                        <!-- LOGOUT -->
-                        <a href="{% url 'logout' %}" class="logout-item">
-                            <i class="bi bi-box-arrow-right"></i> Logout
-                        </a>
-
-                    </div>
-
-                </div>
 
 
                 <!-- CUSTOMER -->
@@ -584,7 +581,15 @@
             }, 4000);
         }
     </script>
+<script>
+function openDrawer() {
+    document.getElementById("overlay").style.display = "block";
+}
 
+function closeDrawer() {
+    document.getElementById("overlay").style.display = "none";
+}
+</script>
 </body>
 
 </html>

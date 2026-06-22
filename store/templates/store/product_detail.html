@@ -92,63 +92,7 @@
             <i class="bi bi-chevron-left"></i>
         </button>
 
-        <!-- Cards Scrollable Area -->
-        <!-- <div class="recommendation-slider" id="rec-slider">
-            {% for p in recommendations %}
-            <div class="rec-card">
-
-                <a href="{% url 'product_detail' p.id %}" class="rec-img-box">
-                    <img src="{{ p.image.url }}" alt="{{ p.name }}">
-                </a>
-
-                <div class="rec-info">
-                    <p class="rec-name">{{ p.name }}</p>
-
-                    {% if p.display_price %}
-                    <p class="small text-muted">
-                        {{ p.display_quantity }}
-                    </p>
-
-                    <div class="price-row">
-                        <span class="selling-price">₹ {{ p.display_price }}</span>
-
-                        {% if p.display_mrp and p.display_mrp > p.display_price %}
-                        <span class="mrp">₹ {{ p.display_mrp }}</span>
-                        <span class="pr">{{ p.discount_percent }}% OFF</span>
-                        <div class="rating-box">
-                            <span class="rating-value">
-                                {{ product.avg_rating|default:0|floatformat:1 }} ★
-                            </span>
-                            <span class="review-count">
-                                {{ product.total_reviews }} Reviews
-                            </span>
-                        </div>
-                        {% endif %}
-                    </div>
-
-
-                    {% else %}
-                    <p class="small text-muted">Price not available</p>
-                    {% endif %}
-
-
-                    <div class="d-flex gap-2 mt-2">
-                        <a href="{% url 'product_detail' p.id %}" class="btn-view">
-                            View
-                        </a>
-
-                        {% if p.first_variant %}
-                        <button class="rec-add-btn add-to-cart-btn" data-variant-id="{{ p.first_variant.id }}">
-                            Add
-                        </button>
-                        {% endif %}
-                    </div>
-                </div>
-
-            </div>
-            {% endfor %}
-
-        </div> -->
+       
 <div class="recommendation-slider" id="rec-slider">
 {% for p in recommendations %}
 
@@ -194,7 +138,7 @@
 <a href="{% url 'product_detail' p.id %}" class="btn-view">View</a>
 
 {% if p.first_variant %}
-<button class="rec-add-btn add-to-cart-btn"
+<button class="rec-add-btn btn-add add-to-cart-btn"
 data-variant-id="{{ p.first_variant.id }}">
 Add
 </button>

@@ -24,43 +24,35 @@ Delivery Partner Dashboard
 
 <div class="container do mtt-4">
 
-<div class="row mb-4">
+<div class="row g-2 mb-4">
 
-<div class="col-md-6">
-<div class="card shadow-sm">
-<div class="card-body">
+    <div class="col-6">
+        <div class="card shadow-sm earnings-card">
+            <div class="card-body text-center">
+                <h6>📅 Today</h6>
+                <p class="mb-1">
+                    <strong>{{ today_completed }}</strong> Orders
+                </p>
+                <p class="mb-0">
+                    ₹{{ today_earnings }}
+                </p>
+            </div>
+        </div>
+    </div>
 
-<h5>📅 Today's Earnings</h5>
-
-<p class="mb-1">
-Orders Completed: <strong>{{ today_completed }}</strong>
-</p>
-
-<p class="mb-0">
-Earnings: <strong>₹{{ today_earnings }}</strong>
-</p>
-
-</div>
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="card shadow-sm">
-<div class="card-body">
-
-<h5>📊 Weekly Earnings</h5>
-
-<p class="mb-1">
-Orders: <strong>{{ weekly_completed }}</strong>
-</p>
-
-<p class="mb-0">
-Earnings: <strong>₹{{ weekly_earnings }}</strong>
-</p>
-
-</div>
-</div>
-</div>
+    <div class="col-6">
+        <div class="card shadow-sm earnings-card">
+            <div class="card-body text-center">
+                <h6>📊 Week</h6>
+                <p class="mb-1">
+                    <strong>{{ weekly_completed }}</strong> Orders
+                </p>
+                <p class="mb-0">
+                    ₹{{ weekly_earnings }}
+                </p>
+            </div>
+        </div>
+    </div>
 
 </div>
 

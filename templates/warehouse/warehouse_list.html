@@ -15,9 +15,8 @@
             ➕ Add Warehouse
         </a>
     </div>
-
     <!-- Table Card -->
-    <div class="card shadow-sm">
+    <!-- <div class="card shadow-sm">
         <div class="card-body">
 
             <table class="table table-bordered table-hover text-center align-middle">
@@ -68,8 +67,62 @@
             </table>
 
         </div>
-    </div>
+    </div> -->
+<!-- Table Card -->
+<div class="card shadow-sm">
+    <div class="card-body p-2">
 
+        <div class="table-responsive warehouse-table">
+            <table class="table table-bordered table-hover text-center align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Capacity</th>
+                        <th>Created At</th>
+                        <th>Total Products</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for warehouse in warehouses %}
+                    <tr>
+                        <td>{{ warehouse.name }}</td>
+                        <td>{{ warehouse.location }}</td>
+                        <td>{{ warehouse.capacity }}</td>
+                        <td>{{ warehouse.created_at|date:"d M Y" }}</td>
+                        <td>{{ warehouse.total_products }}</td>
+
+                        <td>
+                            <div class="d-flex gap-1 justify-content-center flex-nowrap">
+                                <a href="{% url 'warehouse_update' warehouse.id %}"
+                                   class="btn btn-primary btn-sm">
+                                    ✏ Edit
+                                </a>
+
+                                <form method="POST"
+                                      action="{% url 'warehouse_delete' warehouse.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm">
+                                        🗑 Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No warehouses found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
 </div>
 
 {% endblock %}

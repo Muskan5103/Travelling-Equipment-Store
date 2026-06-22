@@ -844,3 +844,54 @@ body {
 .stat-orange .card-body p {
     color: white;
 }
+
+/* All warehouse tables mobile responsive */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+    min-width: 800px;
+}
+
+.table-responsive th,
+.table-responsive td {
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .page-header .btn {
+        width: 100%;
+    }
+}
+
+
+
+.stock-card {
+    max-width: 700px;
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+
+    .stock-card {
+        width: 100%;
+    }
+
+    .stock-card .btn {
+        width: 100%;
+    }
+
+    .stock-card .d-flex {
+        flex-direction: column;
+    }
+}

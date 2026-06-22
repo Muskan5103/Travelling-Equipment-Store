@@ -14,9 +14,10 @@
     </div>
 
     <!-- Card -->
-    <div class="card location-card">
-        <div class="card-body">
+  <div class="card location-card">
+    <div class="card-body">
 
+        <div class="table-responsive">
             <table class="table location-table text-center align-middle">
                 <thead class="location-head">
                     <tr>
@@ -36,6 +37,7 @@
                         <td>{{ loc.rack.section.warehouse.name }}</td>
                         <td>{{ loc.rack.section.name }}</td>
                         <td>{{ loc.rack.rack_number }}</td>
+
                         <td>
                             <span class="badge bg-primary">
                                 {{ loc.quantity }}
@@ -43,20 +45,21 @@
                         </td>
 
                         <td>
-                            <a href="{% url 'product_location_update' loc.id %}"
-                               class="btn btn-primary btn-sm">
-                                ✏ Edit
-                            </a>
+                            <div class="d-flex gap-1 justify-content-center flex-nowrap">
+                                <a href="{% url 'product_location_update' loc.id %}"
+                                   class="btn btn-primary btn-sm">
+                                    ✏ Edit
+                                </a>
 
-                            <form method="POST"
-                                  action="{% url 'product_location_delete' loc.id %}"
-                                  style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm">
-                                    🗑 Delete
-                                </button>
-                            </form>
+                                <form method="POST"
+                                      action="{% url 'product_location_delete' loc.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm">
+                                        🗑 Delete
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
 
@@ -66,11 +69,11 @@
                     </tr>
                     {% endfor %}
                 </tbody>
-
             </table>
-
         </div>
+
     </div>
+</div>
 
 </div>
 
